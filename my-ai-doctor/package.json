@@ -1,0 +1,8 @@
+{
+  "name": "my-ai-doctor",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "tailwindcss": "^4.0.17"
+  }
+}
