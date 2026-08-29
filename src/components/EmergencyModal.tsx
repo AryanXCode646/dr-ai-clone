@@ -25,14 +25,17 @@ interface EmergencyModalProps {
   open: boolean;
   onClose: () => void;
   detectedSymptom?: string;
+  symptom?: string;
 }
 
 export const EmergencyModal: React.FC<EmergencyModalProps> = ({
   open,
   onClose,
   detectedSymptom,
+  symptom,
 }) => {
   const navigate = useNavigate();
+  const activeSymptom = symptom || detectedSymptom;
 
   const emergencyContacts = [
     {
@@ -109,11 +112,11 @@ export const EmergencyModal: React.FC<EmergencyModalProps> = ({
           </Box>
         </Box>
 
-        {detectedSymptom && (
+        {activeSymptom && (
           <Box className="mt-3 p-3 rounded-lg bg-black/20 border border-white/20 flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-amber-300 flex-shrink-0" />
             <Typography variant="body2" className="text-white text-sm">
-              <strong>High Urgency Trigger:</strong> "{detectedSymptom}" was detected. Do not delay emergency response.
+              <strong>High Urgency Trigger:</strong> "{activeSymptom}" was detected. Do not delay emergency response.
             </Typography>
           </Box>
         )}

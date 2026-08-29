@@ -7,10 +7,10 @@ const router = express.Router();
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
-// Send message and get AI clinical triage response
+// Send message and get AI clinical triage response with multi-turn clarifying inquiry
 router.post('/message', async (req: Request, res: Response) => {
   try {
-    const { message, persona = 'general', history = [] } = req.body;
+    const { message, persona = 'general', history = [], stage = 1 } = req.body;
 
     if (!message || typeof message !== 'string') {
       return res.status(400).json({ error: 'Message text is required' });
@@ -30,13 +30,37 @@ router.post('/message', async (req: Request, res: Response) => {
       'passed out',
       'severe bleeding',
       'anaphylaxis',
+      'worst headache of my life',
+      'thunderclap',
     ];
     const isEmergency = emergencyTriggers.some((t) => lower.includes(t));
 
-    // If OpenAI API key is active, call OpenAI
+    if (isEmergency) {
+      return res.json({
+        reply: `⚠️ CRITICAL RED-FLAG DETECTED: Your symptoms indicate a high-priority emergency. Please call 911 / 112 or go to the nearest Hospital Emergency Room immediately.`,
+        isEmergency: true,
+        diagnosticCard: {
+          primaryImpression: 'Acute Cardiopulmonary / Neurovascular Emergency (ICD-11)',
+          confidence: 95,
+          urgency: 'Emergency',
+          differential: [
+            { condition: 'Acute Coronary Syndrome', probability: 'High Urgency' },
+            { condition: 'Pulmonary Embolism', probability: 'High Urgency' },
+          ],
+          recommendations: ['Call 911 immediately', 'Sit upright in rested posture', 'Await emergency responders'],
+          otcSuggestions: ['Do not self-medicate; await paramedics'],
+          doctorQuestions: ['Time of onset?', 'Radiation to jaw or left arm?'],
+          redFlags: ['Crushing chest pressure', 'Dizziness', 'Cold sweats'],
+        },
+        stage: 5,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // If OpenAI API key is active, call OpenAI with strict clinical reasoning
     if (openai) {
       try {
-        const systemPrompt = `You are Dr.AI, a board-certified clinical AI triage assistant specialized in ${persona}. Provide structured, compassionate, and medically grounded evaluations. Include primary impression, urgency level (Low/Moderate/High/Emergency), home care advice, and questions to ask a doctor. If red flags are present, advise immediate emergency care (911).`;
+        const systemPrompt = `You are Dr.AI, an expert clinical triage assistant (${persona}). Follow standard medical intake protocols (SOCRATES / OPQRST). If the patient provides a brief symptom, ask 2-3 targeted clarifying questions (character, duration, severity, and red flags) before jumping to a final diagnosis. Once sufficient clinical details are gathered, provide a structured diagnostic evaluation.`;
 
         const completion = await openai.chat.completions.create({
           model: 'gpt-3.5-turbo',
@@ -56,40 +80,90 @@ router.post('/message', async (req: Request, res: Response) => {
           timestamp: new Date().toISOString(),
         });
       } catch (openAiError) {
-        console.warn('OpenAI API call failed, falling back to clinical decision engine:', openAiError);
+        console.warn('OpenAI API call failed, falling back to multi-turn clinical decision engine:', openAiError);
       }
     }
 
-    // Built-in resilient clinical decision engine fallback
-    let reply = `Based on your reported symptoms ("${message}"), our clinical triage algorithm has evaluated your condition against standard ICD-11 diagnostic classifications.`;
-    let primaryImpression = 'Constitutional Symptom Evaluation';
-    let confidence = 85;
-    let urgency = 'Low';
+    // Built-in Multi-Turn Clinical Intake Decision Engine
+    // Stage 1: Clarify character and exact location
+    if (stage === 1 && history.length <= 1) {
+      if (lower.includes('head') || lower.includes('migraine')) {
+        return res.json({
+          reply: `I understand you are experiencing a headache. To evaluate this accurately:\n\n1. What does the pain feel like (throbbing, constant tight band, sharp behind one eye)?\n2. Where is it located (one side, forehead, back of neck)?`,
+          suggestedOptions: [
+            'Throbbing on one side',
+            'Band-like forehead pressure',
+            'Sharp piercing behind one eye',
+            'Back of neck & head tension',
+          ],
+          nextStage: 2,
+          timestamp: new Date().toISOString(),
+        });
+      }
+      if (lower.includes('fever') || lower.includes('cough') || lower.includes('throat')) {
+        return res.json({
+          reply: `Thank you for reaching out about your respiratory/fever symptoms. Could you describe:\n\n1. Is the cough dry or productive with phlegm?\n2. Is your throat scratchy or severely painful when swallowing?`,
+          suggestedOptions: [
+            'Dry persistent cough',
+            'Productive cough with phlegm',
+            'Painful swallowing & scratchy throat',
+            'Fever chills & sinus pressure',
+          ],
+          nextStage: 2,
+          timestamp: new Date().toISOString(),
+        });
+      }
+      if (lower.includes('stomach') || lower.includes('nausea') || lower.includes('belly')) {
+        return res.json({
+          reply: `I hear you regarding your stomach discomfort. To narrow down the cause:\n\n1. Is it sharp cramping, burning acid, or constant dull ache?\n2. Is there any nausea, vomiting, or diarrhea?`,
+          suggestedOptions: [
+            'Sharp lower abdomen cramps',
+            'Burning acid reflux in upper stomach',
+            'Nausea with stomach bloating',
+            'Watery diarrhea',
+          ],
+          nextStage: 2,
+          timestamp: new Date().toISOString(),
+        });
+      }
+    }
 
-    if (isEmergency) {
-      urgency = 'Emergency';
-      primaryImpression = 'Acute Cardiopulmonary / Neurovascular Warning';
-      confidence = 94;
-      reply = `CRITICAL WARNING: The symptoms you described indicate a potential high-urgency medical emergency. Please call emergency dispatch (911 / 112) or go to the nearest Emergency Department immediately.`;
-    } else if (lower.includes('headache') || lower.includes('migraine')) {
-      urgency = 'Moderate';
-      primaryImpression = 'Tension-Type Cephalea / Acute Migraine Episode';
-      confidence = 88;
-      reply = `Your symptoms are consistent with tension-type headache or acute migraine. Ensure adequate hydration, rest in a darkened room, and monitor for any visual changes or stiff neck.`;
-    } else if (lower.includes('fever') || lower.includes('cough') || lower.includes('throat')) {
-      urgency = 'Low';
-      primaryImpression = 'Upper Respiratory Viral Infection (Viral Rhinopharyngitis)';
+    // Stage 2: Clarify duration and severity
+    if (stage === 2 && history.length <= 3) {
+      return res.json({
+        reply: `Thank you for those details. How long have you had this, and on a scale of 1 to 10, how severe is the discomfort?`,
+        suggestedOptions: [
+          'Started today (< 4 hours) • Mild (3/10)',
+          '1 to 3 days • Moderate (5/10)',
+          'Severe (7-8/10) with light sensitivity',
+          'Persistent for > 1 week',
+        ],
+        nextStage: 3,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Stage 3 / 4: Final Synthesis & Differential Diagnosis
+    let primaryImpression = 'Tension-Type Cephalea / Acute Migraine (ICD-11: 8A80)';
+    let confidence = 88;
+    let urgency = 'Moderate';
+
+    if (lower.includes('fever') || lower.includes('cough') || lower.includes('throat')) {
+      primaryImpression = 'Acute Upper Respiratory Viral Infection (ICD-11: CA40.0)';
       confidence = 86;
-      reply = `Your symptoms indicate an acute viral upper respiratory process. Prioritize fluid intake, warm salt water gargles, and restful recovery. Consult a physician if fever exceeds 103°F or lasts beyond 3 days.`;
-    } else if (lower.includes('rash') || lower.includes('skin') || lower.includes('itch')) {
       urgency = 'Low';
-      primaryImpression = 'Contact Dermatitis / Acute Allergic Urticaria';
+    } else if (lower.includes('stomach') || lower.includes('nausea') || lower.includes('cramp')) {
+      primaryImpression = 'Acute Viral Gastroenteritis / Reflux Dyspepsia (ICD-11: DA42)';
       confidence = 84;
-      reply = `Your skin symptoms suggest localized contact irritation or mild allergic dermatitis. Avoid scratching, use gentle barrier moisturizers, and monitor for spreading redness.`;
+      urgency = 'Moderate';
+    } else if (lower.includes('rash') || lower.includes('skin') || lower.includes('itch')) {
+      primaryImpression = 'Contact Dermatitis / Acute Allergic Eczema (ICD-11: EA80)';
+      confidence = 86;
+      urgency = 'Low';
     }
 
     res.json({
-      reply,
+      reply: `### 📋 Clinical Intake & Triage Assessment Complete\n\nBased on your comprehensive multi-turn clinical inquiry, your presentation corresponds to **${primaryImpression}**.`,
       isEmergency,
       diagnosticCard: {
         primaryImpression,
@@ -97,17 +171,19 @@ router.post('/message', async (req: Request, res: Response) => {
         urgency,
         differential: [
           { condition: primaryImpression, probability: `${confidence}%` },
-          { condition: 'Secondary Clinical Presentation', probability: `${100 - confidence}%` },
+          { condition: 'Secondary Clinical Differential', probability: `${100 - confidence}%` },
         ],
         recommendations: [
-          'Rest and maintain continuous oral hydration',
-          'Monitor body temperature and vitals',
-          'Schedule a telehealth video consultation with a physician for confirmation',
+          'Rest in a comfortable, quiet environment',
+          'Maintain regular oral hydration with electrolyte fluids',
+          'Schedule a telehealth video visit with a board-certified physician for targeted examination',
         ],
-        otcSuggestions: ['Acetaminophen / Ibuprofen as appropriate with food'],
-        doctorQuestions: ['When did symptoms begin?', 'Has anything provided relief?'],
+        otcSuggestions: ['Acetaminophen / Ibuprofen as appropriate with food', 'Oral hydration fluids'],
+        doctorQuestions: ['How often do these episodes recur?', 'Has anything provided lasting relief?'],
+        redFlags: ['Sudden escalation to max pain', 'High fever with neck stiffness', 'Shortness of breath'],
       },
       persona,
+      stage: 5,
       timestamp: new Date().toISOString(),
     });
   } catch (error: any) {

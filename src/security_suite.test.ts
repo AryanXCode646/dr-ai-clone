@@ -11,7 +11,9 @@
  * 7. Mass-Fuzzing Permutation Benchmark (Combinatorial Attack Matrix)
  */
 
-const crypto = require('crypto');
+import crypto from 'crypto';
+
+export {};
 
 describe('Dr.AI Enterprise Security & Penetration Testing Suite', () => {
   // 1. XSS Injection Sanitization Tests
@@ -27,8 +29,8 @@ describe('Dr.AI Enterprise Security & Penetration Testing Suite', () => {
       '<input onfocus=alert(1) autofocus>',
     ];
 
-    test.each(xssPayloads)('neutralizes malicious payload: %s', (payload) => {
-      const sanitizeInput = (input) => {
+    test.each(xssPayloads)('neutralizes malicious payload: %s', (payload: string) => {
+      const sanitizeInput = (input: string): string => {
         return String(input)
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
@@ -49,7 +51,7 @@ describe('Dr.AI Enterprise Security & Penetration Testing Suite', () => {
 
   // 2. NoSQL & SQL Query Injection Resistance
   describe('2. NoSQL / SQL Injection Immunity', () => {
-    const injectionVectors = [
+    const injectionVectors: any[] = [
       { $gt: '' },
       { $where: 'this.password.length > 0' },
       { $ne: null },
@@ -60,8 +62,8 @@ describe('Dr.AI Enterprise Security & Penetration Testing Suite', () => {
       "'; DROP TABLE users; --",
     ];
 
-    test.each(injectionVectors)('rejects non-string or tainted query parameter: %p', (vector) => {
-      const validateStringParam = (param) => {
+    test.each(injectionVectors)('rejects non-string or tainted query parameter: %p', (vector: any) => {
+      const validateStringParam = (param: any): boolean => {
         if (typeof param !== 'string') return false;
         // Check for SQL / NoSQL keywords and meta-characters
         const forbiddenPatterns = [
@@ -92,8 +94,8 @@ describe('Dr.AI Enterprise Security & Penetration Testing Suite', () => {
       '/etc/hosts\0.jpg',
     ];
 
-    test.each(traversalPayloads)('blocks directory traversal attempt: %s', (path) => {
-      const isSafePath = (filepath) => {
+    test.each(traversalPayloads)('blocks directory traversal attempt: %s', (path: string) => {
+      const isSafePath = (filepath: string): boolean => {
         const decoded = decodeURIComponent(filepath);
         if (decoded.includes('..') || decoded.includes('\0') || decoded.startsWith('/') || decoded.includes('\\')) {
           return false;
@@ -109,14 +111,14 @@ describe('Dr.AI Enterprise Security & Penetration Testing Suite', () => {
   describe('4. JWT Authentication Integrity & Anti-Forgery', () => {
     const SECRET = 'dr-ai-super-secure-production-secret-key-256';
 
-    const createToken = (payload, key) => {
+    const createToken = (payload: any, key: string): string => {
       const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
       const body = Buffer.from(JSON.stringify(payload)).toString('base64url');
       const signature = crypto.createHmac('sha256', key).update(`${header}.${body}`).digest('base64url');
       return `${header}.${body}.${signature}`;
     };
 
-    const verifyToken = (token, key) => {
+    const verifyToken = (token: string, key: string): any => {
       const parts = token.split('.');
       if (parts.length !== 3) return null;
       const [header, body, sig] = parts;
@@ -174,7 +176,6 @@ describe('Dr.AI Enterprise Security & Penetration Testing Suite', () => {
       const boundaries = ['Zero-Length', 'Max-Buffer-64KB', 'UTF-8-Boundary', 'Emoji-Payload', 'Nested-JSON'];
 
       // Permutation space: 7 * 7 * 7 * 5 = 1,715 core vectors
-      // Simulating scaling factor for multi-tenant security verification
       let simulatedEvaluations = 0;
       for (let i = 0; i < attackCategories.length; i++) {
         for (let j = 0; j < encoders.length; j++) {
