@@ -291,9 +291,6 @@
             <button onclick="sendSimOption('🤕 I have a throbbing headache')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
               🤕 Throbbing Headache
             </button>
-            <button onclick="sendSimOption('💊 What is the use of Tapentadol?')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-900 hover:bg-indigo-600 text-white border border-indigo-700 transition-colors">
-              💊 Drug Profile: Tapentadol
-            </button>
             <button onclick="sendSimOption('🌡️ I have a fever and sore throat')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
               🌡️ Fever & Sore Throat
             </button>
@@ -544,6 +541,20 @@
 
       box.appendChild(div);
       box.scrollTop = box.scrollHeight;
+    }
+
+    function sendSimOption(val) {
+      document.getElementById('simInput').value = val;
+      handleSimSubmit();
+    }
+
+    function setOptionChips(options) {
+      const container = document.getElementById('simOptionChips');
+      container.innerHTML = options.map(opt => \`
+        <button onclick="sendSimOption('\${opt}')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
+          \${opt}
+        </button>
+      \`).join('');
     }
 
     // Comprehensive Pharmacology & Drug Monograph Database
