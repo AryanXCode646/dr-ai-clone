@@ -526,14 +526,19 @@
     function appendSimMessage(sender, text, isCard = false) {
       const box = document.getElementById('simChatBox');
       const div = document.createElement('div');
-      div.className = sender === 'user' ? 'flex gap-2.5 justify-end' : 'flex gap-2.5 justify-start';
+      div.className = sender === 'user' ? 'flex gap-2.5 justify-end items-end' : 'flex gap-2.5 justify-start items-start';
 
       if (sender === 'user') {
         div.innerHTML = `
-          <div class="p-3 rounded-2xl rounded-tr-none bg-gradient-to-r from-emerald-500 to-teal-600 text-white max-w-md">
+          <div class="p-3 rounded-2xl rounded-tr-none bg-gradient-to-r from-emerald-500 to-teal-600 text-white max-w-md text-xs leading-relaxed">
             ${text}
           </div>
-        <div class="p-3 rounded-2xl rounded-tl-none bg-slate-900 text-slate-200 border border-slate-800 max-w-xl leading-relaxed">
+          <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">👤</div>
+        `;
+      } else {
+        div.innerHTML = `
+          <div class="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">🩺</div>
+          <div class="p-3 rounded-2xl rounded-tl-none bg-slate-900 text-slate-200 border border-slate-800 max-w-xl text-xs leading-relaxed">
             ${text}
           </div>
         `;
