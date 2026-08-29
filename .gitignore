@@ -1,5 +1,7 @@
 # dependencies
 /node_modules
+/dr-ai-backend/node_modules
+/dr-ai-backend/dist
 /.pnp
 .pnp.js
 

@@ -7,224 +7,268 @@ import {
   TextField,
   Button,
   Paper,
-  useTheme,
+  MenuItem,
   Snackbar,
   Alert,
+  Card,
+  CardContent,
 } from '@mui/material';
 import {
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  LocationOn as LocationIcon,
-  Send as SendIcon,
-} from '@mui/icons-material';
+  Mail,
+  PhoneCall,
+  MapPin,
+  Send,
+  Clock,
+  ShieldAlert,
+  Sparkles,
+  CheckCircle,
+  HelpCircle,
+  Building,
+} from 'lucide-react';
+import { EmergencyModal } from '../components/EmergencyModal';
 
-const Contact: React.FC = () => {
-  const theme = useTheme();
+export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    category: 'General Clinical Support',
     subject: '',
     message: '',
   });
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'success' as 'success' | 'error',
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const [submitted, setSubmitted] = useState(false);
+  const [emergencyOpen, setEmergencyOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData);
-    setSnackbar({
-      open: true,
-      message: 'Message sent successfully! We will get back to you soon.',
-      severity: 'success',
-    });
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-    });
+    if (formData.name && formData.email && formData.message) {
+      setSubmitted(true);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        category: 'General Clinical Support',
+        subject: '',
+        message: '',
+      });
+    }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
-  };
-
-  const contactInfo = [
+  const contactChannels = [
     {
-      icon: <EmailIcon sx={{ fontSize: 40 }} />,
-      title: 'Email',
-      content: 'support@mediai.com',
-      link: 'mailto:support@mediai.com',
+      title: '24/7 Clinical Support',
+      value: '+1 (800) 555-MED-AI',
+      sub: 'Toll-free medical customer service',
+      icon: <PhoneCall className="w-6 h-6 text-emerald-500" />,
+      action: 'tel:18005556332',
     },
     {
-      icon: <PhoneIcon sx={{ fontSize: 40 }} />,
-      title: 'Phone',
-      content: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
+      title: 'Email Medical Concierge',
+      value: 'care@mediai.com',
+      sub: 'Response within 2 hours',
+      icon: <Mail className="w-6 h-6 text-cyan-500" />,
+      action: 'mailto:care@mediai.com',
     },
     {
-      icon: <LocationIcon sx={{ fontSize: 40 }} />,
-      title: 'Address',
-      content: '123 Healthcare Ave, Medical District, City, Country',
-      link: 'https://maps.google.com',
+      title: 'Clinical Headquarters',
+      value: '500 Howard St, Suite 400',
+      sub: 'San Francisco, CA 94105, USA',
+      icon: <MapPin className="w-6 h-6 text-rose-500" />,
+      action: 'https://maps.google.com',
     },
   ];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
+    <Container maxWidth="xl" className="py-8 space-y-12">
       {/* Header */}
-      <Box sx={{ textAlign: 'center', mb: 8 }}>
-        <Typography
-          variant="h2"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontWeight: 700,
-            background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-            backgroundClip: 'text',
-            textFillColor: 'transparent',
-          }}
-        >
-          Contact Us
+      <Box className="text-center max-w-3xl mx-auto space-y-3">
+        <Box className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+          <Sparkles className="w-3.5 h-3.5" /> 24/7 Patient Care Support
+        </Box>
+        <Typography variant="h3" component="h1" className="font-black text-gray-900 dark:text-white tracking-tight">
+          We’re Here for Your Health
         </Typography>
-        <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
-          Get in touch with us for any questions or support you need
+        <Typography variant="body1" className="text-gray-500 dark:text-gray-400">
+          Have questions about our AI triage engine, need help scheduling a video consult, or looking for physician partnerships?
         </Typography>
       </Box>
 
+      {/* Emergency Notification Strip */}
+      <Box className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-red-900 dark:text-red-200">
+        <Box className="flex items-center gap-3 text-xs sm:text-sm">
+          <ShieldAlert className="w-5 h-5 text-red-600 flex-shrink-0" />
+          <span>
+            <strong>Experiencing acute medical distress?</strong> Do not use this contact form. Call <strong>911 / 112</strong> or click below.
+          </span>
+        </Box>
+        <Button
+          variant="contained"
+          color="error"
+          size="small"
+          onClick={() => setEmergencyOpen(true)}
+          sx={{ borderRadius: 2, fontWeight: 'bold', whiteSpace: 'nowrap' }}
+        >
+          Emergency 911 Hotline
+        </Button>
+      </Box>
+
+      {/* Main Grid: Channels & Form */}
       <Grid container spacing={4}>
-        {/* Contact Information */}
-        <Grid item xs={12} md={4}>
-          <Grid container spacing={3}>
-            {contactInfo.map((info, index) => (
-              <Grid item xs={12} key={index}>
-                <Paper
-                  elevation={2}
-                  sx={{
-                    p: 3,
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    transition: 'transform 0.2s',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                    },
-                  }}
-                >
-                  <Box sx={{ color: theme.palette.primary.main, mb: 2 }}>
-                    {info.icon}
-                  </Box>
-                  <Typography variant="h6" gutterBottom>
-                    {info.title}
+        {/* Left Column: Channels */}
+        <Grid item xs={12} lg={4} className="space-y-4">
+          <Typography variant="h6" className="font-extrabold text-gray-900 dark:text-white">
+            Direct Support Channels
+          </Typography>
+
+          {contactChannels.map((ch, idx) => (
+            <Card key={idx} elevation={0} className="glass-card rounded-3xl p-5 border border-gray-200 dark:border-gray-800">
+              <Box className="flex items-start gap-4">
+                <Box className="p-3 rounded-2xl bg-gray-50 dark:bg-gray-800">{ch.icon}</Box>
+                <Box className="flex-1">
+                  <Typography variant="subtitle2" className="font-bold text-gray-800 dark:text-gray-200">
+                    {ch.title}
                   </Typography>
-                  <Button
-                    href={info.link}
-                    color="primary"
-                    sx={{ textTransform: 'none' }}
-                  >
-                    {info.content}
-                  </Button>
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
+                  <Typography variant="body2" className="font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                    {ch.value}
+                  </Typography>
+                  <Typography variant="caption" className="text-gray-400 block text-xs">
+                    {ch.sub}
+                  </Typography>
+                </Box>
+              </Box>
+            </Card>
+          ))}
+
+          {/* Operating Hours Card */}
+          <Paper elevation={0} className="glass-card rounded-3xl p-5 border border-gray-200 dark:border-gray-800 space-y-2 text-xs">
+            <Typography variant="subtitle2" className="font-bold flex items-center gap-1.5">
+              <Clock className="w-4 h-4 text-emerald-500" /> Clinic Operating Times
+            </Typography>
+            <Box className="flex justify-between text-gray-600 dark:text-gray-300">
+              <span>AI Diagnostic Engine:</span>
+              <span className="font-bold text-emerald-600">24/7 / 365 Days</span>
+            </Box>
+            <Box className="flex justify-between text-gray-600 dark:text-gray-300">
+              <span>Physician Video Telehealth:</span>
+              <span className="font-bold">6:00 AM – 11:00 PM Daily</span>
+            </Box>
+            <Box className="flex justify-between text-gray-600 dark:text-gray-300">
+              <span>Emergency Services (ER):</span>
+              <span className="font-bold text-rose-500">Continuous 24/7</span>
+            </Box>
+          </Paper>
         </Grid>
 
-        {/* Contact Form */}
-        <Grid item xs={12} md={8}>
-          <Paper elevation={3} sx={{ p: 4 }}>
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
+        {/* Right Column: Contact Form */}
+        <Grid item xs={12} lg={8}>
+          <Paper elevation={0} className="glass-card rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-800">
+            <Typography variant="h5" className="font-extrabold text-gray-900 dark:text-white mb-2">
+              Send Our Healthcare Concierge a Message
+            </Typography>
+            <Typography variant="body2" className="text-gray-500 text-sm mb-6">
+              Fill out the details below and our team will get back to you promptly.
+            </Typography>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     fullWidth
-                    label="Name"
-                    name="name"
+                    label="Your Full Name"
                     value={formData.name}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     fullWidth
-                    label="Email"
-                    name="email"
                     type="email"
+                    label="Email Address"
                     value={formData.email}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Phone Number (Optional)"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    select
+                    fullWidth
+                    label="Inquiry Category"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  >
+                    <MenuItem value="General Clinical Support">General Clinical Support</MenuItem>
+                    <MenuItem value="Video Consult Scheduling">Video Consult Scheduling</MenuItem>
+                    <MenuItem value="Doctor Partner Program">Doctor Partner Program</MenuItem>
+                    <MenuItem value="Billing & Health Insurance">Billing & Health Insurance</MenuItem>
+                    <MenuItem value="Technical Bug / Feedback">Technical Bug / Feedback</MenuItem>
+                  </TextField>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
                     label="Subject"
-                    name="subject"
+                    placeholder="Brief summary of your inquiry..."
                     value={formData.subject}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    label="Message"
-                    name="message"
                     multiline
                     rows={4}
+                    label="Detailed Message"
+                    placeholder="Describe how we can assist you..."
                     value={formData.message}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    startIcon={<SendIcon />}
-                    fullWidth
-                  >
-                    Send Message
-                  </Button>
-                </Grid>
               </Grid>
+
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                endIcon={<Send className="w-4 h-4" />}
+                sx={{
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  borderRadius: 2.5,
+                  fontWeight: 'bold',
+                  px: 4,
+                  py: 1.4,
+                  mt: 2,
+                }}
+              >
+                Send Inquiry
+              </Button>
             </form>
           </Paper>
         </Grid>
       </Grid>
 
-      {/* Snackbar for form submission feedback */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
+      {/* Emergency Modal */}
+      <EmergencyModal open={emergencyOpen} onClose={() => setEmergencyOpen(false)} />
+
+      {/* Feedback Snackbar */}
+      <Snackbar open={submitted} autoHideDuration={5000} onClose={() => setSubmitted(false)}>
+        <Alert severity="success" sx={{ width: '100%', borderRadius: 2 }}>
+          Your message has been dispatched to the Dr.AI clinical concierge team! We will respond shortly.
         </Alert>
       </Snackbar>
     </Container>
   );
 };
 
-export default Contact; 
+export default Contact;

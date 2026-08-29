@@ -1,0 +1,40 @@
+name: Dr.AI CI/CD & Security Verification
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install Frontend Dependencies
+      run: npm install --legacy-peer-deps
+
+    - name: Run Test Suite & Security Matrix
+      run: npm test -- --watchAll=false
+
+    - name: Build Production Frontend Bundle
+      run: npm run build
+
+    - name: Install Backend Dependencies
+      run: |
+        cd dr-ai-backend
+        npm install --legacy-peer-deps
+
+    - name: Build Backend TypeScript
+      run: |
+        cd dr-ai-backend
+        npm run build
