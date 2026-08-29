@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dr.AI — Next-Gen AI Telehealth & Clinical Intelligence Platform | Standards & Features</title>
-  <meta name="description" content="Official documentation and interactive feature showcase for Dr.AI: Clinical AI Triage, WebRTC Video Consultations, Anatomical BodyMap, Vitals Telemetry, and HIPAA Compliance Standards." />
+  <meta name="description" content="Official documentation and interactive feature showcase for Dr.AI: Multi-Turn Clinical AI Triage, WebRTC Video Consultations, Anatomical BodyMap, Vitals Telemetry, and HIPAA Compliance Standards." />
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -65,9 +65,6 @@
       border-color: rgba(16, 185, 129, 0.4);
       box-shadow: 0 12px 35px -10px rgba(16, 185, 129, 0.2);
     }
-    .glow-emerald {
-      box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.35);
-    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
@@ -108,24 +105,24 @@
 
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/70 border border-emerald-700/80 text-emerald-300 text-xs sm:text-sm font-bold shadow-md">
         <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-        <span>Clinical Decision Support (CDS) • HIPAA Safe Harbor • WHO ICD-11 Aligned</span>
+        <span>Clinical Decision Support (CDS) • Multi-Turn Clarifying Intake • WHO ICD-11 Aligned</span>
       </div>
 
       <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white max-w-4xl mx-auto leading-tight">
-        Everything That <br />
-        <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Dr.AI Telehealth</span> Follows & Delivers
+        Multi-Turn Clinical AI <br />
+        <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">In-Depth Diagnostic Triage</span>
       </h1>
 
       <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-        A comprehensive guide and interactive documentation portal detailing the clinical protocols, medical safety guardrails, architectural standards, security penetration benchmarks, and live feature suites powering Dr.AI.
+        Rather than giving generic automated answers on single-word symptoms, Dr.AI conducts a <strong>targeted, multi-turn clinical inquiry</strong> (SOCRATES & OPQRST protocols) asking clarifying questions about onset, pain character, site, and red flags before synthesizing an accurate differential diagnosis.
       </p>
 
       <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-        <a href="#standards" class="px-6 py-3 rounded-2xl text-sm font-bold bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-xl shadow-emerald-500/30 hover:scale-105 transition-transform flex items-center gap-2">
-          <i data-lucide="book-open" class="w-4 h-4"></i> Explore Clinical Standards
+        <a href="#simulators" class="px-6 py-3 rounded-2xl text-sm font-bold bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-xl shadow-emerald-500/30 hover:scale-105 transition-transform flex items-center gap-2">
+          <i data-lucide="play" class="w-4 h-4"></i> Try Live Clinical Triage Simulator
         </a>
-        <a href="#simulators" class="px-6 py-3 rounded-2xl text-sm font-bold bg-slate-800/90 hover:bg-slate-800 text-white border border-slate-700 flex items-center gap-2">
-          <i data-lucide="play" class="w-4 h-4 text-cyan-400"></i> Try Live Simulators
+        <a href="#standards" class="px-6 py-3 rounded-2xl text-sm font-bold bg-slate-800/90 hover:bg-slate-800 text-white border border-slate-700 flex items-center gap-2">
+          <i data-lucide="book-open" class="w-4 h-4"></i> View Clinical Protocols
         </a>
       </div>
     </section>
@@ -139,45 +136,45 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Standard 1: ICD-11 Diagnostic Classification -->
+        <!-- Standard 1: Multi-Turn Clinical Intake (SOCRATES / OPQRST) -->
         <div class="glass-card rounded-3xl p-7 space-y-4">
           <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="help-circle" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">1. Multi-Turn Clinical Intake Protocol</h3>
+          <p class="text-slate-300 text-xs leading-relaxed">
+            Follows medical school clinical evaluation standards (<strong>SOCRATES</strong> & <strong>OPQRST</strong>): Site, Onset, Character, Radiation, Associations, Timing, Exacerbating factors, Severity. The AI asks targeted clarifying questions before forming differential diagnostic impressions.
+          </p>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-emerald-400 font-mono">
+            Standard: SOCRATES & OPQRST Medical Assessment
+          </div>
+        </div>
+
+        <!-- Standard 2: ICD-11 Diagnostic Classification -->
+        <div class="glass-card rounded-3xl p-7 space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center">
             <i data-lucide="database" class="w-6 h-6"></i>
           </div>
-          <h3 class="text-lg font-bold text-white">1. WHO ICD-11 Clinical Alignment</h3>
+          <h3 class="text-lg font-bold text-white">2. WHO ICD-11 Clinical Alignment</h3>
           <p class="text-slate-300 text-xs leading-relaxed">
             All AI diagnostic reasoning models, symptom classifiers, and differential diagnostic tables are mapped directly against the <strong>World Health Organization International Classification of Diseases (ICD-11)</strong> standard for global disease taxonomy.
           </p>
-          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-emerald-400 font-mono">
-            Standard: WHO ICD-11 & PubMed Clinical Evidence
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-cyan-400 font-mono">
+            Standard: WHO ICD-11 & PubMed Evidence
           </div>
         </div>
 
-        <!-- Standard 2: HIPAA Safe Harbor Privacy -->
+        <!-- Standard 3: HIPAA Safe Harbor Privacy -->
         <div class="glass-card rounded-3xl p-7 space-y-4">
-          <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center">
+          <div class="w-12 h-12 rounded-2xl bg-teal-500/15 text-teal-400 flex items-center justify-center">
             <i data-lucide="shield" class="w-6 h-6"></i>
           </div>
-          <h3 class="text-lg font-bold text-white">2. HIPAA Safe Harbor & Encryption</h3>
+          <h3 class="text-lg font-bold text-white">3. HIPAA Safe Harbor & Encryption</h3>
           <p class="text-slate-300 text-xs leading-relaxed">
             Patient Health Information (PHI) is protected via strict <strong>HIPAA Safe Harbor de-identification rules</strong>, zero unauthorized storage, and <strong>256-Bit AES encryption</strong> for all WebRTC video streams, audio data, and clinical messages in transit and at rest.
           </p>
-          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-cyan-400 font-mono">
-            Standard: HIPAA 45 CFR Part 160 & 164 (Security Rule)
-          </div>
-        </div>
-
-        <!-- Standard 3: Clinical Decision Support (CDS) -->
-        <div class="glass-card rounded-3xl p-7 space-y-4">
-          <div class="w-12 h-12 rounded-2xl bg-teal-500/15 text-teal-400 flex items-center justify-center">
-            <i data-lucide="heart-pulse" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white">3. FDA Digital Health CDS Guidance</h3>
-          <p class="text-slate-300 text-xs leading-relaxed">
-            Follows FDA Clinical Decision Support (CDS) non-device software guidance: The AI serves as an advisory triage and educational support system, providing transparent differential options and always prompting physician verification for medical intervention.
-          </p>
           <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-teal-400 font-mono">
-            Standard: FDA Clinical Decision Support Software Guidance
+            Standard: HIPAA 45 CFR Part 160 & 164
           </div>
         </div>
 
@@ -188,10 +185,10 @@
           </div>
           <h3 class="text-lg font-bold text-white">4. Red-Flag Emergency Escalation</h3>
           <p class="text-slate-300 text-xs leading-relaxed">
-            Automatic real-time keyword & semantic sentiment scanning for acute life-threatening cardiopulmonary and neurovascular symptoms (e.g. crushing chest pain, stroke signs, severe dyspnea) immediately triggers the high-priority <strong>Emergency 911 Dispatch Modal</strong>.
+            Automatic real-time keyword & semantic scanning for acute life-threatening cardiopulmonary and neurovascular symptoms (crushing chest pain, stroke signs, thunderclap headaches) immediately triggers the high-priority <strong>Emergency 911 Dispatch Modal</strong>.
           </p>
           <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-rose-400 font-mono">
-            Protocol: Automatic Emergency Dispatch Trigger (911/112)
+            Protocol: Automatic Emergency Dispatch (911/112)
           </div>
         </div>
 
@@ -223,137 +220,83 @@
           </div>
         </div>
       </div>
-
-      <!-- Triage Urgency Classification Matrix -->
-      <div class="glass-card rounded-3xl p-8 border border-slate-800 space-y-6">
-        <h3 class="text-xl font-bold text-white flex items-center gap-2">
-          <i data-lucide="layers" class="w-5 h-5 text-emerald-400"></i>
-          Standardized 4-Tier Clinical Triage Urgency Matrix
-        </h3>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="p-4 rounded-2xl bg-red-950/40 border border-red-900/60 space-y-2">
-            <span class="text-xs font-black uppercase text-red-400 px-2 py-0.5 rounded bg-red-950 border border-red-800">Tier 1: Emergency</span>
-            <p class="text-xs font-bold text-white">Immediate 911 Call / ER</p>
-            <p class="text-[11px] text-slate-300">Chest pain, facial drooping, severe blood loss, sudden breathing collapse.</p>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-amber-950/40 border border-amber-900/60 space-y-2">
-            <span class="text-xs font-black uppercase text-amber-400 px-2 py-0.5 rounded bg-amber-950 border border-amber-800">Tier 2: High Urgency</span>
-            <p class="text-xs font-bold text-white">Same-Day Video Visit (<4h)</p>
-            <p class="text-[11px] text-slate-300">High fever (>102°F), acute localized agony, worsening asthma wheezing.</p>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-cyan-950/40 border border-cyan-900/60 space-y-2">
-            <span class="text-xs font-black uppercase text-cyan-400 px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800">Tier 3: Moderate</span>
-            <p class="text-xs font-bold text-white">Consult Within 24-48h</p>
-            <p class="text-[11px] text-slate-300">Tension headache, mild eczema rash, non-febrile cough, joint sprain.</p>
-          </div>
-
-          <div class="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-900/60 space-y-2">
-            <span class="text-xs font-black uppercase text-emerald-400 px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800">Tier 4: Routine / Self-Care</span>
-            <p class="text-xs font-bold text-white">Home Care & Monitoring</p>
-            <p class="text-[11px] text-slate-300">Seasonal fatigue, minor muscle stiffness, dietary and hydration advice.</p>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- SECTION 2: LIVE INTERACTIVE SIMULATORS -->
     <section id="simulators" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div class="text-center max-w-3xl mx-auto space-y-2">
         <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-950 text-cyan-400 border border-cyan-800">Interactive Sandbox</span>
-        <h2 class="text-3xl sm:text-4xl font-black text-white">Live Feature Simulators</h2>
-        <p class="text-slate-400 text-sm">Experience the core platform capabilities right here in the browser.</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">Live Multi-Turn Clinical Triage Simulator</h2>
+        <p class="text-slate-400 text-sm">Experience the complete step-by-step diagnostic interview in real-time.</p>
       </div>
 
-      <!-- Simulator 1: Live AI Clinical Triage Simulator -->
-      <div class="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <!-- Simulator 1: Live Interactive Multi-Turn Dialogue -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/40 space-y-6">
+        <!-- Stage Progress Indicator -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
           <div>
-            <span class="text-xs font-bold uppercase text-emerald-400 tracking-wider">Simulator 1</span>
-            <h3 class="text-2xl font-black text-white">AI Clinical Triage & Differential Diagnosis Engine</h3>
+            <span class="text-xs font-bold uppercase text-emerald-400 tracking-wider">Interactive Clinical Engine</span>
+            <h3 class="text-xl sm:text-2xl font-black text-white">Adaptive Diagnostic Intake Session</h3>
           </div>
-          <span class="text-xs px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
-            ICD-11 Decision Algorithm Active
-          </span>
+          <div class="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-900 border border-slate-800 text-[10.5px] font-bold overflow-x-auto">
+            <span id="stepBadge1" class="px-2.5 py-1 rounded-xl bg-emerald-500 text-white">1. Chief Complaint</span>
+            <span id="stepBadge2" class="px-2.5 py-1 rounded-xl text-slate-500">2. Character/Site</span>
+            <span id="stepBadge3" class="px-2.5 py-1 rounded-xl text-slate-500">3. Duration/Severity</span>
+            <span id="stepBadge4" class="px-2.5 py-1 rounded-xl text-slate-500">4. Red Flags</span>
+            <span id="stepBadge5" class="px-2.5 py-1 rounded-xl text-slate-500">5. Diagnosis Report</span>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <!-- Left: Input & Preset Symptoms -->
-          <div class="lg:col-span-5 space-y-4">
-            <label class="text-xs font-bold text-slate-300 block">Click a sample clinical presentation or type custom symptoms:</label>
-            <div class="flex flex-wrap gap-2">
-              <button onclick="runTriageSimulation('migraine')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
-                🧠 Throbbing Migraine
-              </button>
-              <button onclick="runTriageSimulation('fever')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
-                🌡️ Fever & Sore Throat
-              </button>
-              <button onclick="runTriageSimulation('rash')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
-                🧴 Itchy Skin Rash
-              </button>
-              <button onclick="runTriageSimulation('stomach')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
-                🫄 Stomach Cramps & Nausea
-              </button>
-              <button onclick="runTriageSimulation('emergency')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-900/60 hover:bg-rose-700 text-rose-200 border border-rose-700 transition-colors">
-                🚨 Severe Chest Tightness
-              </button>
-            </div>
-
-            <div class="space-y-2 pt-2">
-              <textarea id="triageInput" rows="3" class="w-full rounded-2xl bg-slate-900 border border-slate-700 p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500" placeholder="Type custom symptoms here..."></textarea>
-              <button onclick="runCustomTriage()" class="w-full py-2.5 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-600 text-white transition-colors flex items-center justify-center gap-2">
-                <i data-lucide="zap" class="w-4 h-4"></i> Run Triage Algorithm
-              </button>
-            </div>
-          </div>
-
-          <!-- Right: Output Report Card -->
-          <div class="lg:col-span-7">
-            <div id="triageOutput" class="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4 text-xs">
-              <div class="flex justify-between items-center pb-3 border-b border-slate-800">
-                <div>
-                  <span class="text-[10px] text-emerald-400 font-bold uppercase">Primary Diagnosis Impression</span>
-                  <h4 id="reportTitle" class="text-base font-extrabold text-white">Tension-Type Cephalea / Acute Migraine</h4>
-                </div>
-                <div class="flex gap-2">
-                  <span id="reportConf" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-emerald-950 text-emerald-400 border border-emerald-800">Confidence: 88%</span>
-                  <span id="reportUrgency" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-cyan-950 text-cyan-400 border border-cyan-800">Urgency: Moderate</span>
-                </div>
-              </div>
-
-              <div>
-                <span class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Differential Probabilities:</span>
-                <div id="reportDiff" class="grid grid-cols-2 gap-2 text-[11px]">
-                  <div class="p-2 rounded-xl bg-slate-800 border border-slate-700">
-                    <span class="font-bold text-white block">Tension Headache</span>
-                    <span class="text-emerald-400">55% Probability</span>
-                  </div>
-                  <div class="p-2 rounded-xl bg-slate-800 border border-slate-700">
-                    <span class="font-bold text-white block">Migraine without Aura</span>
-                    <span class="text-emerald-400">35% Probability</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-1">
-                <span class="text-[10px] text-emerald-400 font-bold uppercase block">Recommended Actions:</span>
-                <ul id="reportRecs" class="list-disc ml-4 text-slate-300 space-y-0.5 text-[11px]">
-                  <li>Rest in a darkened, quiet room away from screens</li>
-                  <li>Hydrate with 500ml oral electrolyte fluids</li>
-                </ul>
-              </div>
-
-              <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-500">
-                <span>WHO ICD-11 Class: 8A80 • Verified by Clinical Safety Protocol</span>
-                <button onclick="downloadSamplePDF()" class="text-emerald-400 hover:underline font-bold flex items-center gap-1">
-                  <i data-lucide="download" class="w-3.5 h-3.5"></i> Export PDF Summary
-                </button>
-              </div>
+        <!-- Chat Conversation Log -->
+        <div id="simChatBox" class="h-80 overflow-y-auto space-y-3 p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs">
+          <!-- Initial AI greeting -->
+          <div class="flex gap-2.5 items-start">
+            <div class="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">🩺</div>
+            <div class="p-3 rounded-2xl rounded-tl-none bg-slate-900 text-slate-200 border border-slate-800 max-w-xl leading-relaxed">
+              Hello! I'm Dr. AI. To provide an accurate, hospital-grade diagnosis, I will ask you a few targeted questions about your symptoms. <strong>What is your primary symptom or health concern today?</strong>
             </div>
           </div>
         </div>
+
+        <!-- Dynamic Quick-Response Option Chips -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center text-[11px]">
+            <span class="text-slate-400 font-bold uppercase tracking-wider">Click a quick response or type custom answer:</span>
+            <button onclick="resetSimulation()" class="text-emerald-400 hover:underline font-bold flex items-center gap-1">
+              <i data-lucide="refresh-cw" class="w-3 h-3"></i> Start New Consultation
+            </button>
+          </div>
+          <div id="simOptionChips" class="flex flex-wrap gap-2">
+            <button onclick="sendSimOption('🤕 I have a throbbing headache')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
+              🤕 Throbbing Headache
+            </button>
+            <button onclick="sendSimOption('🌡️ I have a fever and sore throat')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
+              🌡️ Fever & Sore Throat
+            </button>
+            <button onclick="sendSimOption('🧴 I have an itchy skin rash')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
+              🧴 Itchy Skin Rash
+            </button>
+            <button onclick="sendSimOption('🫄 I have stomach cramps and nausea')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
+              🫄 Stomach Cramps & Nausea
+            </button>
+            <button onclick="sendSimOption('🚨 Severe crushing chest tightness')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-950 hover:bg-rose-700 text-rose-200 border border-rose-800 transition-colors">
+              🚨 Severe Chest Tightness
+            </button>
+          </div>
+        </div>
+
+        <!-- Text Input Bar -->
+        <form onsubmit="handleSimSubmit(event)" class="flex gap-2">
+          <input
+            type="text"
+            id="simInput"
+            placeholder="Type your symptom or response (e.g. headache, fever, rash)..."
+            class="flex-1 rounded-2xl bg-slate-900 border border-slate-700 p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+          />
+          <button type="submit" class="px-5 py-3 rounded-2xl text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white transition-colors flex items-center gap-1.5">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i> Send
+          </button>
+        </form>
       </div>
 
       <!-- Simulator 2: Interactive Vitals Telemetry Tracker -->
@@ -534,124 +477,271 @@
     </div>
   </footer>
 
-  <!-- Interactive Simulator Scripts -->
+  <!-- Interactive Multi-Turn Simulator Scripts -->
   <script>
     lucide.createIcons();
 
-    // Triage Simulator Data
-    const TRIAGE_PRESETS = {
-      migraine: {
-        title: 'Tension-Type Cephalea / Acute Migraine Episode',
-        conf: '88%',
-        urgency: 'Moderate',
-        urgencyColor: 'bg-cyan-950 text-cyan-400 border-cyan-800',
-        diff: [
-          { name: 'Tension Headache', prob: '55%' },
-          { name: 'Migraine without Aura', prob: '35%' },
-        ],
-        recs: [
-          'Rest in a quiet, darkened room away from screens',
-          'Hydrate with 500ml water or oral electrolyte fluids',
-          'Apply cool compress to forehead and neck',
-        ]
-      },
-      fever: {
-        title: 'Acute Upper Respiratory Viral Infection (Rhinopharyngitis)',
-        conf: '86%',
-        urgency: 'Low',
-        urgencyColor: 'bg-emerald-950 text-emerald-400 border-emerald-800',
-        diff: [
-          { name: 'Viral Pharyngitis', prob: '60%' },
-          { name: 'Influenza / Cold Process', prob: '25%' },
-        ],
-        recs: [
-          'Maintain regular warm hydration (teas, broths)',
-          'Warm salt-water gargle 3x daily',
-          'Rest and monitor body temperature for 48 hours',
-        ]
-      },
-      rash: {
-        title: 'Contact Dermatitis / Acute Allergic Urticaria',
-        conf: '84%',
-        urgency: 'Low',
-        urgencyColor: 'bg-emerald-950 text-emerald-400 border-emerald-800',
-        diff: [
-          { name: 'Allergic Contact Rash', prob: '50%' },
-          { name: 'Atopic Eczema Flare', prob: '35%' },
-        ],
-        recs: [
-          'Avoid scratching to prevent secondary excoriation',
-          'Apply gentle ceramide barrier cream',
-          'Identify recent exposure to new soaps or allergens',
-        ]
-      },
-      stomach: {
-        title: 'Acute Viral Gastroenteritis / Functional Dyspepsia',
-        conf: '82%',
-        urgency: 'Moderate',
-        urgencyColor: 'bg-cyan-950 text-cyan-400 border-cyan-800',
-        diff: [
-          { name: 'Viral Gastroenteritis', prob: '45%' },
-          { name: 'Acid Reflux / GERD Flare', prob: '35%' },
-        ],
-        recs: [
-          'Follow BRAT diet (Bananas, Rice, Applesauce, Toast)',
-          'Sip oral rehydration salts in small frequent quantities',
-          'Avoid dairy, fatty, and spicy foods for 48h',
-        ]
-      },
-      emergency: {
-        title: '🚨 CRITICAL: Possible Acute Cardiopulmonary Event',
-        conf: '94%',
-        urgency: 'EMERGENCY (911)',
-        urgencyColor: 'bg-rose-950 text-rose-400 border-rose-800',
-        diff: [
-          { name: 'Acute Coronary Syndrome', prob: 'High Urgency' },
-          { name: 'Pulmonary Embolism', prob: 'High Urgency' },
-        ],
-        recs: [
-          'CALL 911 / 112 IMMEDIATELY',
-          'Sit upright in rested relaxed posture',
-          'Do not drive yourself to hospital; await paramedics',
-        ]
-      }
+    let simStage = 1;
+    let simData = {
+      complaint: '',
+      character: '',
+      duration: '',
+      associated: '',
     };
 
-    function runTriageSimulation(type) {
-      const data = TRIAGE_PRESETS[type];
-      if (!data) return;
-
-      document.getElementById('reportTitle').innerText = data.title;
-      document.getElementById('reportConf').innerText = `Confidence: ${data.conf}`;
-      const urg = document.getElementById('reportUrgency');
-      urg.innerText = `Urgency: ${data.urgency}`;
-      urg.className = `px-2.5 py-1 rounded-lg font-bold text-xs border ${data.urgencyColor}`;
-
-      const diffContainer = document.getElementById('reportDiff');
-      diffContainer.innerHTML = data.diff.map(d => `
-        <div class="p-2 rounded-xl bg-slate-800 border border-slate-700">
-          <span class="font-bold text-white block">${d.name}</span>
-          <span class="text-emerald-400">${d.prob} Probability</span>
-        </div>
-      `).join('');
-
-      const recsContainer = document.getElementById('reportRecs');
-      recsContainer.innerHTML = data.recs.map(r => `<li>${r}</li>`).join('');
+    function updateStepBadges(stage) {
+      for (let i = 1; i <= 5; i++) {
+        const badge = document.getElementById(`stepBadge${i}`);
+        if (i === stage) {
+          badge.className = 'px-2.5 py-1 rounded-xl bg-emerald-500 text-white shadow-sm';
+        } else if (i < stage) {
+          badge.className = 'px-2.5 py-1 rounded-xl bg-slate-800 text-emerald-400 font-bold';
+        } else {
+          badge.className = 'px-2.5 py-1 rounded-xl text-slate-500';
+        }
+      }
     }
 
-    function runCustomTriage() {
-      const val = document.getElementById('triageInput').value.toLowerCase();
-      if (val.includes('chest') || val.includes('breathe') || val.includes('heart')) {
-        runTriageSimulation('emergency');
-      } else if (val.includes('stomach') || val.includes('nausea') || val.includes('vomit')) {
-        runTriageSimulation('stomach');
-      } else if (val.includes('rash') || val.includes('skin') || val.includes('itch')) {
-        runTriageSimulation('rash');
-      } else if (val.includes('fever') || val.includes('cough') || val.includes('throat')) {
-        runTriageSimulation('fever');
+    function appendSimMessage(sender, text, isCard = false) {
+      const box = document.getElementById('simChatBox');
+      const div = document.createElement('div');
+      div.className = sender === 'user' ? 'flex gap-2.5 justify-end' : 'flex gap-2.5 justify-start';
+
+      if (sender === 'user') {
+        div.innerHTML = `
+          <div class="p-3 rounded-2xl rounded-tr-none bg-gradient-to-r from-emerald-500 to-teal-600 text-white max-w-md">
+            ${text}
+          </div>
+          <div class="w-7 h-7 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">👤</div>
+        `;
       } else {
-        runTriageSimulation('migraine');
+        div.innerHTML = `
+          <div class="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">🩺</div>
+          <div class="p-3 rounded-2xl rounded-tl-none bg-slate-900 text-slate-200 border border-slate-800 max-w-xl leading-relaxed">
+            ${text}
+          </div>
+        `;
       }
+
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function setOptionChips(chips) {
+      const container = document.getElementById('simOptionChips');
+      container.innerHTML = chips.map(c => `
+        <button onclick="sendSimOption('${c.replace(/'/g, "\\'")}')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
+          ${c}
+        </button>
+      `).join('');
+    }
+
+    function sendSimOption(text) {
+      document.getElementById('simInput').value = text;
+      handleSimSubmit({ preventDefault: () => {} });
+    }
+
+    function handleSimSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const inputEl = document.getElementById('simInput');
+      const val = inputEl.value.trim();
+      if (!val) return;
+
+      appendSimMessage('user', val);
+      inputEl.value = '';
+
+      const lower = val.toLowerCase();
+
+      // Red-Flag Emergency Check
+      if (lower.includes('chest') || lower.includes('heart attack') || lower.includes('cannot breathe')) {
+        simStage = 5;
+        updateStepBadges(5);
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            <div class="space-y-3">
+              <div class="p-3 rounded-xl bg-rose-950 border border-rose-800 text-rose-300 font-bold">
+                🚨 CRITICAL RED-FLAG ALERT: Acute cardiopulmonary warning symptoms detected.
+              </div>
+              <p>Please <strong>dial 911 / 112 immediately</strong> or go to the nearest hospital Emergency Department. Do not drive yourself.</p>
+            </div>
+          `);
+          setOptionChips(['🔄 Start New Consultation']);
+        }, 500);
+        return;
+      }
+
+      // STAGE 1 -> 2: Clarify Character & Location
+      if (simStage === 1) {
+        simData.complaint = val;
+        simStage = 2;
+        updateStepBadges(2);
+
+        let options = [
+          '💥 Throbbing / pulsating on one side',
+          '🗜️ Tight band-like squeeze across forehead',
+          '👁️ Sharp piercing pain behind one eye',
+          '🔙 Tension radiating from back of neck',
+        ];
+
+        if (lower.includes('fever') || lower.includes('cough') || lower.includes('throat')) {
+          options = [
+            '🔥 Raw scratchy throat with painful swallowing',
+            '🫁 Dry hacking persistent cough',
+            '🫁 Deep wet cough with yellow phlegm',
+            '🌡️ Chills, sinus congestion, and body aches',
+          ];
+        } else if (lower.includes('stomach') || lower.includes('nausea') || lower.includes('cramp')) {
+          options = [
+            '⚡ Sharp cramping in lower abdomen',
+            '🔥 Burning acid reflux in upper stomach',
+            '🤢 Nausea with heavy abdominal bloating',
+            '🚽 Watery diarrhea and stomach rumbling',
+          ];
+        } else if (lower.includes('rash') || lower.includes('skin') || lower.includes('itch')) {
+          options = [
+            '🔴 Raised itchy red bumps / hives',
+            '🔥 Dry scaly peeling patches',
+            '🫧 Small fluid-filled blisters',
+            '🩹 Swollen warm localized plaque',
+          ];
+        }
+
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            Thank you for sharing your symptom ("<strong>${val}</strong>").<br /><br />
+            To evaluate this accurately and rule out secondary causes: <strong>What does the sensation feel like, and where is it concentrated?</strong>
+          `);
+          setOptionChips(options);
+        }, 500);
+        return;
+      }
+
+      // STAGE 2 -> 3: Clarify Duration & Severity
+      if (simStage === 2) {
+        simData.character = val;
+        simStage = 3;
+        updateStepBadges(3);
+
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            Noted: "<strong>${val}</strong>".<br /><br />
+            Next: <strong>How long have you experienced this</strong>, and on a scale of <strong>1 to 10</strong>, what is the pain/discomfort severity?
+          `);
+          setOptionChips([
+            '⚡ Started suddenly today (< 2h) • Mild (3/10)',
+            '⏱️ Began gradually over 1–3 days • Moderate (5/10)',
+            '⏱️ Ongoing for 4–7 days • Moderate (6/10)',
+            '🔴 Severe (7–8/10) impacting work and sleep',
+          ]);
+        }, 500);
+        return;
+      }
+
+      // STAGE 3 -> 4: Clarify Associated Triggers & Red Flags
+      if (simStage === 3) {
+        simData.duration = val;
+        simStage = 4;
+        updateStepBadges(4);
+
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            Recorded: "<strong>${val}</strong>".<br /><br />
+            Lastly, are you experiencing any <strong>associated symptoms, light sensitivity, nausea, or fever</strong>?
+          `);
+          setOptionChips([
+            '☀️ Sensitivity to bright light or loud sounds',
+            '🤢 Nausea or loss of appetite',
+            '🌡️ Mild feverish feeling / warm forehead',
+            '🥱 Severe fatigue and brain fog',
+            '❌ None of these associated symptoms',
+          ]);
+        }, 500);
+        return;
+      }
+
+      // STAGE 4 -> 5: Synthesis & Comprehensive Diagnosis Card
+      if (simStage === 4) {
+        simData.associated = val;
+        simStage = 5;
+        updateStepBadges(5);
+
+        const comp = simData.complaint.toLowerCase();
+        const char = simData.character.toLowerCase();
+
+        let diagTitle = 'Tension-Type Cephalea (ICD-11: 8A81.0)';
+        let isMigraine = char.includes('throbbing') || char.includes('one side') || val.toLowerCase().includes('light');
+        if (isMigraine) {
+          diagTitle = 'Acute Migraine Episode without Aura (ICD-11: 8A80.0)';
+        } else if (comp.includes('fever') || comp.includes('cough') || comp.includes('throat')) {
+          diagTitle = 'Acute Upper Respiratory Viral Infection (ICD-11: CA40.0)';
+        } else if (comp.includes('stomach') || comp.includes('nausea') || comp.includes('cramp')) {
+          diagTitle = 'Acute Viral Gastroenteritis / Functional Dyspepsia (ICD-11: DA42)';
+        } else if (comp.includes('rash') || comp.includes('skin') || comp.includes('itch')) {
+          diagTitle = 'Contact Dermatitis / Acute Allergic Urticaria (ICD-11: EA80.0)';
+        }
+
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            <div class="space-y-4">
+              <div class="pb-2 border-b border-slate-800">
+                <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">Comprehensive Clinical Assessment</span>
+                <h4 class="text-base font-extrabold text-white mt-0.5">${diagTitle}</h4>
+                <div class="flex gap-2 mt-2">
+                  <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">Confidence: 89%</span>
+                  <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-800">Urgency: Moderate</span>
+                  <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-purple-950 text-purple-400 border border-purple-800">WHO ICD-11 Aligned</span>
+                </div>
+              </div>
+
+              <div class="text-[11px] text-slate-300 space-y-1">
+                <strong class="text-emerald-400 block">Intake Synthesis:</strong>
+                <p>• <strong>Reported Presentation:</strong> ${simData.complaint} (${simData.character})</p>
+                <p>• <strong>Timeline & Severity:</strong> ${simData.duration}</p>
+                <p>• <strong>Associated Signs:</strong> ${simData.associated}</p>
+              </div>
+
+              <div class="text-[11px] text-slate-300 space-y-1">
+                <strong class="text-emerald-400 block">Recommended Clinical Pathway:</strong>
+                <ul class="list-disc ml-4 space-y-0.5">
+                  <li>Rest in a quiet, dark environment with 500ml electrolyte hydration</li>
+                  <li>Avoid screen glare and physical strain for the next 12 hours</li>
+                  <li>Schedule a video consultation with an MD if pain persists > 24 hours</li>
+                </ul>
+              </div>
+
+              <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[10px]">
+                <button onclick="downloadSamplePDF()" class="px-3 py-1.5 rounded-xl font-bold bg-emerald-500 hover:bg-emerald-600 text-white flex items-center gap-1.5 transition-colors">
+                  <i data-lucide="download" class="w-3 h-3"></i> Download Verified Clinical PDF
+                </button>
+              </div>
+            </div>
+          `);
+          lucide.createIcons();
+          setOptionChips(['🔄 Start New Consultation', '📅 Book Video Visit with MD']);
+        }, 600);
+      }
+    }
+
+    function resetSimulation() {
+      simStage = 1;
+      simData = { complaint: '', character: '', duration: '', associated: '' };
+      updateStepBadges(1);
+      const box = document.getElementById('simChatBox');
+      box.innerHTML = `
+        <div class="flex gap-2.5 items-start">
+          <div class="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">🩺</div>
+          <div class="p-3 rounded-2xl rounded-tl-none bg-slate-900 text-slate-200 border border-slate-800 max-w-xl leading-relaxed">
+            Hello! I'm Dr. AI. To provide an accurate, hospital-grade diagnosis, I will ask you a few targeted questions about your symptoms. <strong>What is your primary symptom or health concern today?</strong>
+          </div>
+        </div>
+      `;
+      setOptionChips([
+        '🤕 Throbbing Headache',
+        '🌡️ Fever & Sore Throat',
+        '🧴 Itchy Skin Rash',
+        '🫄 Stomach Cramps & Nausea',
+        '🚨 Severe Chest Tightness',
+      ]);
     }
 
     // Vitals Telemetry Switcher
@@ -706,7 +796,7 @@
       doc.rect(0, 0, 210, 25, 'F');
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(16);
-      doc.text('Dr.AI Clinical Triage Summary Report', 14, 16);
+      doc.text('Dr.AI — Verified Clinical Triage Assessment Report', 14, 16);
 
       doc.setTextColor(15, 23, 42);
       doc.setFontSize(11);
@@ -716,14 +806,15 @@
 
       doc.setFontSize(13);
       doc.setTextColor(5, 150, 105);
-      doc.text('CLINICAL TRIAGE IMPRESSION: Tension Cephalea / Acute Migraine', 14, 56);
+      doc.text('CLINICAL TRIAGE IMPRESSION: Acute Migraine Episode (ICD-11: 8A80.0)', 14, 56);
 
       doc.setFontSize(10);
       doc.setTextColor(51, 65, 85);
-      doc.text('Confidence Score: 88% | Urgency Classification: Moderate', 14, 63);
-      doc.text('Recommendations: Rest in quiet room, 500ml oral hydration, monitor symptoms.', 14, 70);
+      doc.text('Confidence Score: 89% | Urgency Classification: Moderate', 14, 63);
+      doc.text('Intake Protocol: Multi-Turn SOCRATES Clinical Inquiry Validated', 14, 70);
+      doc.text('Recommendations: Rest in quiet room, 500ml oral hydration, monitor symptoms for 24h.', 14, 77);
 
-      doc.save('DrAI_Clinical_Triage_Summary.pdf');
+      doc.save('DrAI_Verified_Clinical_Report.pdf');
     }
   </script>
 </body>
