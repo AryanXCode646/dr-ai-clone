@@ -577,6 +577,52 @@
         return;
       }
 
+      // Conversational Follow-up Questions & Medical Q&A
+      if (
+        lower.includes('medicine') ||
+        lower.includes('medication') ||
+        lower.includes('ibuprofen') ||
+        lower.includes('paracetamol') ||
+        lower.includes('tylenol') ||
+        lower.includes('advil') ||
+        lower.includes('antibiotic') ||
+        lower.includes('take for')
+      ) {
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            <strong>💊 Medication & OTC Guidance:</strong><br />
+            • <strong>Acetaminophen (Tylenol/Paracetamol):</strong> 500–1000mg every 4–6 hours (max 3000mg/day). Suitable for fever and headache; gentler on stomach.<br />
+            • <strong>Ibuprofen (Advil/Motrin):</strong> 200–400mg every 6–8 hours with food. Effective for inflammatory pain; avoid if you have stomach ulcers or kidney issues.<br /><br />
+            <em>Always consult a pharmacist or licensed physician before starting new medicines.</em>
+          `);
+          setOptionChips(['⏱️ How long will it last?', '🥗 What should I eat?', '📅 Book Video Visit', '🔄 Start New Consultation']);
+        }, 500);
+        return;
+      }
+
+      if (lower.includes('how long') || lower.includes('when will') || lower.includes('recovery')) {
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            <strong>⏱️ Recovery Expectations:</strong><br />
+            • <strong>Tension Headaches/Migraines:</strong> Most resolve in 4–24 hours with rest and dark quiet room.<br />
+            • <strong>Viral Infections (Colds/Flu):</strong> Symptoms typically peak around Day 3 and clear in 7–10 days.<br />
+            • <strong>Stomach Bugs (Gastroenteritis):</strong> Eases in 24–48 hours; normal digestion returns in 3–5 days.
+          `);
+          setOptionChips(['💊 What medicines help?', '🥗 Nutritional advice?', '📅 Book Video Visit', '🔄 Start New Consultation']);
+        }, 500);
+        return;
+      }
+
+      if (lower.includes('thank') || lower.includes('ok') || lower.includes('okay') || lower.includes('great') || lower.includes('helpful')) {
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            You're very welcome! I'm glad I could provide helpful clinical clarity. Please rest well, stay hydrated, and feel free to schedule a video consult with our board-certified MDs if you need an official prescription or in-depth evaluation! 🩺✨
+          `);
+          setOptionChips(['📅 Book Video Visit with MD', '📄 Download Clinical PDF', '🔄 Start New Consultation']);
+        }, 400);
+        return;
+      }
+
       // STAGE 1 -> 2: Clarify Character & Location
       if (simStage === 1) {
         simData.complaint = val;
