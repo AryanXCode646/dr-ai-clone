@@ -226,6 +226,20 @@
             Standard: DEA / Surescripts e-Prescribing Standard
           </div>
         </div>
+
+        <!-- Standard 7: Clinical Pharmacology & Drug Monograph Engine -->
+        <div class="glass-card rounded-3xl p-7 space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="pill" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">7. Clinical Pharmacology Engine</h3>
+          <p class="text-slate-300 text-xs leading-relaxed">
+            Directly intercepts medication queries to provide structured drug monographs detailing Mechanism of Action (pharmacodynamics), dosage rules, side effects, contraindications, and safe OTC alternatives.
+          </p>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-indigo-400 font-mono">
+            Standard: FDA & EMA Drug Monograph Guidelines
+          </div>
+        </div>
       </div>
     </section>
 
@@ -276,6 +290,9 @@
           <div id="simOptionChips" class="flex flex-wrap gap-2">
             <button onclick="sendSimOption('🤕 I have a throbbing headache')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
               🤕 Throbbing Headache
+            </button>
+            <button onclick="sendSimOption('💊 What is the use of Tapentadol?')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-900 hover:bg-indigo-600 text-white border border-indigo-700 transition-colors">
+              💊 Drug Profile: Tapentadol
             </button>
             <button onclick="sendSimOption('🌡️ I have a fever and sore throat')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
               🌡️ Fever & Sore Throat
