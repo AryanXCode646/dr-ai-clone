@@ -46,28 +46,35 @@
 
   <style>
     body {
-      background-color: #0b1120;
+      background-color: #070B14;
+      background-image: radial-gradient(#1e293b 1px, transparent 1px);
+      background-size: 32px 32px;
       color: #f1f5f9;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .glass-nav {
-      background: rgba(11, 17, 32, 0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+      background: rgba(7, 11, 20, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
     }
     .glass-card {
-      background: rgba(19, 29, 51, 0.75);
-      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .glass-card:hover {
-      border-color: rgba(16, 185, 129, 0.4);
-      box-shadow: 0 12px 35px -10px rgba(16, 185, 129, 0.2);
+      transform: translateY(-2px);
+      border-color: rgba(16, 185, 129, 0.45);
+      box-shadow: 0 20px 45px -12px rgba(16, 185, 129, 0.25);
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white relative">
 
   <!-- Sticky Glass Navigation Header -->
   <header class="sticky top-0 z-50 glass-nav">
