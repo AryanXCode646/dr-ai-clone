@@ -306,7 +306,78 @@ export const Chat: React.FC = () => {
       };
     }
 
-    // STAGE 1 -> STAGE 2: Character & Location Inquiry
+    // Conversational Follow-up Questions & General Medical Q&A
+    if (
+      lower.includes('medicine') ||
+      lower.includes('medication') ||
+      lower.includes('ibuprofen') ||
+      lower.includes('paracetamol') ||
+      lower.includes('tylenol') ||
+      lower.includes('advil') ||
+      lower.includes('antibiotic') ||
+      lower.includes('take for')
+    ) {
+      return {
+        reply: `### 💊 Medication & OTC Guidance\n\nFor mild to moderate pain or fever reduction, over-the-counter options include:\n- **Acetaminophen (Tylenol / Paracetamol):** 500–1000 mg every 4–6 hours (max 3000 mg/24h). Gentler on the stomach; avoid if you have liver conditions.\n- **Ibuprofen (Advil / Motrin):** 200–400 mg every 6–8 hours with a meal or snack. Acts as an anti-inflammatory; avoid if you have stomach ulcers, kidney disease, or active bleeding.\n\n*Note: Antibiotics require a prescription and are only effective against bacterial infections, not viral illnesses.* Always verify with a licensed pharmacist or physician before starting new medications.`,
+        nextOptions: ['⏱️ How long will this last?', '🥗 What should I eat/drink?', '📅 Book Video Visit with MD', '🔄 Start New Clinical Triage'],
+        nextStage: currentInterview.stage,
+      };
+    }
+
+    if (
+      lower.includes('how long') ||
+      lower.includes('when will') ||
+      lower.includes('duration') ||
+      lower.includes('recovery time')
+    ) {
+      return {
+        reply: `### ⏱️ Expected Recovery Timeline\n\n- **Acute Migraines / Tension Headaches:** Typically resolve within 4–24 hours with rest, darkness, and adequate hydration.\n- **Upper Respiratory Viral Infections:** Usually peak around Day 3 and gradually subside over 7–10 days.\n- **Viral Gastroenteritis:** Acute stomach symptoms generally ease within 24–48 hours; full digestion normalizes in 3–5 days.\n\n*If your symptoms worsen instead of improving after 72 hours, or if you develop new red-flag signs, schedule a physician evaluation.*`,
+        nextOptions: ['💊 What medicines can I take?', '🥗 What foods help recovery?', '📅 Book Video Consult', '🔄 Start New Triage'],
+        nextStage: currentInterview.stage,
+      };
+    }
+
+    if (
+      lower.includes('contagious') ||
+      lower.includes('infectious') ||
+      lower.includes('go to work') ||
+      lower.includes('school')
+    ) {
+      return {
+        reply: `### 🛡️ Contagion & Workplace Advisory\n\n- **Headaches / Migraines / Allergies:** Not contagious. You may resume work or activities as soon as you feel comfortable.\n- **Respiratory & Viral Symptoms (Cough/Fever):** Contagious through airborne droplets. As a rule of thumb, stay home until you have been **fever-free for at least 24 hours** without fever-reducing medications, and practice regular hand hygiene.`,
+        nextOptions: ['💊 Safe OTC options?', '⏱️ Recovery timeline?', '📅 Schedule Doctor Video Call', '🔄 Start New Triage'],
+        nextStage: currentInterview.stage,
+      };
+    }
+
+    if (
+      lower.includes('eat') ||
+      lower.includes('food') ||
+      lower.includes('drink') ||
+      lower.includes('diet') ||
+      lower.includes('coffee') ||
+      lower.includes('water')
+    ) {
+      return {
+        reply: `### 🥗 Nutritional & Hydration Support\n\n- **For Headaches & Fatigue:** Hydrate with 2–3 liters of water or oral electrolyte solutions. Limit caffeine and avoid processed high-sodium foods.\n- **For Cough & Sore Throat:** Warm herbal teas with honey, lemon, and warm clear bone broths soothe inflamed mucous membranes.\n- **For Stomach Issues:** Follow the **BRAT diet** (Bananas, Rice, Applesauce, Toast). Avoid dairy, greasy foods, and citrus for 48 hours.`,
+        nextOptions: ['💊 Medication advice?', '⏱️ How long to recover?', '📅 Consult a Doctor', '🔄 Start New Triage'],
+        nextStage: currentInterview.stage,
+      };
+    }
+
+    if (
+      lower.includes('thank') ||
+      lower.includes('ok') ||
+      lower.includes('okay') ||
+      lower.includes('great') ||
+      lower.includes('helpful')
+    ) {
+      return {
+        reply: `You're very welcome! I'm glad I could provide clarity on your health concerns. Remember to prioritize rest, stay well-hydrated, and don't hesitate to reach out or book a video visit with one of our board-certified doctors if you need a formal clinical prescription or follow-up evaluation.\n\nTake care of yourself! 🩺✨`,
+        nextOptions: ['📅 Book Video Consult with MD', '📄 Export PDF Clinical Summary', '🔄 Start New Clinical Triage'],
+        nextStage: currentInterview.stage,
+      };
+    }
     if (currentInterview.stage === 1) {
       let category = 'general';
       let options = ['💥 Throbbing / Pulsating', '🗜️ Dull Constant Pressure', '⚡ Sharp / Stabbing', '🔥 Burning Sensation', '🤕 Aching & Sore'];
