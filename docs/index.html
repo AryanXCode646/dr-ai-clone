@@ -519,12 +519,7 @@
           <div class="p-3 rounded-2xl rounded-tr-none bg-gradient-to-r from-emerald-500 to-teal-600 text-white max-w-md">
             ${text}
           </div>
-          <div class="w-7 h-7 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">👤</div>
-        `;
-      } else {
-        div.innerHTML = `
-          <div class="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">🩺</div>
-          <div class="p-3 rounded-2xl rounded-tl-none bg-slate-900 text-slate-200 border border-slate-800 max-w-xl leading-relaxed">
+        <div class="p-3 rounded-2xl rounded-tl-none bg-slate-900 text-slate-200 border border-slate-800 max-w-xl leading-relaxed">
             ${text}
           </div>
         `;
@@ -534,18 +529,148 @@
       box.scrollTop = box.scrollHeight;
     }
 
-    function setOptionChips(chips) {
-      const container = document.getElementById('simOptionChips');
-      container.innerHTML = chips.map(c => `
-        <button onclick="sendSimOption('${c.replace(/'/g, "\\'")}')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-emerald-600 text-white border border-slate-700 transition-colors">
-          ${c}
-        </button>
-      `).join('');
-    }
+    // Comprehensive Pharmacology & Drug Monograph Database
+    function lookupDrugMonograph(query) {
+      const q = query.toLowerCase();
+      
+      if (q.includes('tapentadol') || q.includes('tapendadol') || q.includes('nucynta') || q.includes('aspadol') || q.includes('tapal')) {
+        return {
+          name: 'Tapentadol (Brand Names: Nucynta, Tapal, Aspadol)',
+          class: 'Centrally-Acting Synthetic Opioid Analgesic & Norepinephrine Reuptake Inhibitor (NRI)',
+          uses: [
+            'Management of moderate to severe acute pain in adults (e.g. severe musculoskeletal injury, post-operative/orthopedic recovery)',
+            'Management of severe chronic neuropathic pain (such as Diabetic Peripheral Neuropathy - DPN) where non-opioid treatments are inadequate'
+          ],
+          mechanism: 'Dual Mechanism: Acts as an agonist at central μ-opioid receptors while simultaneously inhibiting norepinephrine reuptake in the spinal cord, blocking ascending pain signals.',
+          dosage: '• <strong>Immediate Release (IR):</strong> 50mg to 100mg orally every 4 to 6 hours as needed (Max 500mg Day 1, max 400mg/day thereafter).<br />• <strong>Extended Release (ER):</strong> 50mg to 250mg orally twice daily (every 12 hours) for chronic pain.<br />• <strong>Administration:</strong> Take with water. Swallow ER tablets whole; do not crush, chew, or dissolve.',
+          sideEffects: '• <strong>Common:</strong> Nausea, dizziness, drowsiness, constipation, headache, dry mouth.<br />• <strong>Serious:</strong> Respiratory depression, extreme sedation, serotonin syndrome risk, physical dependence/tolerance.',
+          warnings: '⚠️ <strong>Controlled Substance (Schedule II / Schedule H1):</strong> Black-Box Warning for opioid abuse, addiction, and life-threatening respiratory depression. Strictly avoid concurrent alcohol, sedatives, or MAO inhibitors. Requires an authorized medical prescription from a licensed physician.',
+          otcAlternatives: 'For non-severe pain: Acetaminophen 500–1000mg + Ibuprofen 400mg with food, topical Lidocaine 4% patch.'
+        };
+      }
 
-    function sendSimOption(text) {
-      document.getElementById('simInput').value = text;
-      handleSimSubmit({ preventDefault: () => {} });
+      if (q.includes('metformin') || q.includes('glucophage') || q.includes('glycomet')) {
+        return {
+          name: 'Metformin (Brand Names: Glucophage, Glycomet, Fortamet)',
+          class: 'Biguanide Antihyperglycemic / Antidiabetic Agent',
+          uses: [
+            'First-line pharmacological treatment for Type 2 Diabetes Mellitus to improve glycemic control.',
+            'Polycystic Ovary Syndrome (PCOS) to manage insulin resistance and ovulatory dysfunction.'
+          ],
+          mechanism: 'Decreases hepatic glucose production (gluconeogenesis), reduces intestinal glucose absorption, and enhances peripheral insulin sensitivity.',
+          dosage: '• <strong>Immediate Release:</strong> 500mg or 850mg orally twice daily with meals (Max 2550mg/day).<br />• <strong>Extended Release (XR):</strong> 500mg to 2000mg once daily with the evening meal.',
+          sideEffects: '• <strong>Common:</strong> Gastrointestinal upset (diarrhea, nausea, flatulence, metallic taste).<br />• <strong>Rare/Serious:</strong> Lactic acidosis (rare but severe), Vitamin B12 malabsorption with long-term therapy.',
+          warnings: 'Contraindicated in severe renal impairment (eGFR < 30 mL/min) or acute metabolic acidosis. Withhold prior to iodinated radiocontrast procedures.',
+          otcAlternatives: 'Dietary carbohydrate restriction, regular aerobic exercise, and berberine/fiber supplementation.'
+        };
+      }
+
+      if (q.includes('omeprazole') || q.includes('pantoprazole') || q.includes('prilosec') || q.includes('pan-d') || q.includes('esomeprazole') || q.includes('nexium')) {
+        return {
+          name: 'Omeprazole / Pantoprazole (Brand Names: Prilosec, Protonix, Nexium)',
+          class: 'Proton Pump Inhibitor (PPI) / Gastric Acid Reducer',
+          uses: [
+            'Gastroesophageal Reflux Disease (GERD), persistent heartburn, and acid regurgitation.',
+            'Treatment and prophylaxis of gastric and duodenal peptic ulcers.',
+            'Helicobacter pylori (H. pylori) eradication in combination with antibiotics.'
+          ],
+          mechanism: 'Irreversibly inhibits the H+/K+ ATPase pump in gastric parietal cells, profoundly suppressing basal and stimulated gastric acid production.',
+          dosage: '• <strong>Standard Dose:</strong> 20mg to 40mg orally once daily.<br />• <strong>Administration:</strong> Take in the morning, 30 to 60 minutes before breakfast with a full glass of water.',
+          sideEffects: '• <strong>Common:</strong> Headache, abdominal pain, diarrhea, constipation.<br />• <strong>Long-term:</strong> Hypomagnesemia, decreased B12/Calcium absorption, increased risk of C. diff infection.',
+          warnings: 'Do not crush or chew delayed-release tablets. Limit self-treatment OTC use to 14 days unless directed by a doctor.',
+          otcAlternatives: 'Famotidine (Pepcid) 20mg, Calcium Carbonate (Tums), Sodium Alginate (Gaviscon).'
+        };
+      }
+
+      if (q.includes('amoxicillin') || q.includes('augmentin') || q.includes('moxikind') || q.includes('antibiotic')) {
+        return {
+          name: 'Amoxicillin / Amoxicillin-Clavulanate (Brand Names: Augmentin, Moxikind)',
+          class: 'Aminopenicillin / Beta-Lactam Antibiotic',
+          uses: [
+            'Bacterial respiratory tract infections (streptococcal pharyngitis, acute bacterial sinusitis, community-acquired pneumonia).',
+            'Acute otitis media (middle ear infection), dental abscesses, and urinary tract infections (UTIs).'
+          ],
+          mechanism: 'Inhibits bacterial cell wall peptidoglycan synthesis, triggering autolytic enzyme activation and bacterial cell lysis.',
+          dosage: '• <strong>Adult Dose:</strong> 500mg every 8 hours OR 875mg every 12 hours for 7 to 10 days.<br />• <strong>Crucial:</strong> Finish the full course of antibiotics even if feeling better to prevent bacterial resistance.',
+          sideEffects: '• <strong>Common:</strong> Diarrhea, mild nausea, candidiasis (thrush), skin rash.<br />• <strong>Serious:</strong> Anaphylaxis, Clostridioides difficile colitis.',
+          warnings: '⚠️ Strictly contraindicated in patients with known severe penicillin or beta-lactam allergies. Ineffective against viral infections (common cold, flu, COVID).',
+          otcAlternatives: 'Throat numbing sprays, warm salt-water gargles, honey-lemon tea (antibiotics require a prescription).'
+        };
+      }
+
+      if (q.includes('atorvastatin') || q.includes('lipitor') || q.includes('rosuvastatin') || q.includes('statin')) {
+        return {
+          name: 'Atorvastatin / Rosuvastatin (Brand Names: Lipitor, Crestor, Storvas)',
+          class: 'HMG-CoA Reductase Inhibitor (Lipid-Lowering Statin)',
+          uses: [
+            'Reduction of elevated LDL cholesterol, total cholesterol, and triglycerides.',
+            'Primary and secondary prevention of myocardial infarction (heart attack) and ischemic stroke.'
+          ],
+          mechanism: 'Inhibits HMG-CoA reductase (the rate-limiting step in cholesterol biosynthesis), upregulating hepatic LDL receptors to clear circulating LDL.',
+          dosage: '• <strong>Standard Dose:</strong> 10mg to 80mg orally once daily, ideally in the evening or at bedtime with or without food.',
+          sideEffects: '• <strong>Common:</strong> Muscle aches (myalgia), joint pain, slight elevation in liver enzymes.<br />• <strong>Rare/Serious:</strong> Rhabdomyolysis (muscle breakdown with dark urine), hepatotoxicity.',
+          warnings: 'Contraindicated in active liver disease and during pregnancy. Avoid high amounts of grapefruit juice (CYP3A4 inhibition).',
+          otcAlternatives: 'Omega-3 EPA/DHA fatty acids, plant sterols, Mediterranean diet, 150 min/week aerobic exercise.'
+        };
+      }
+
+      if (q.includes('gabapentin') || q.includes('pregabalin') || q.includes('neurontin') || q.includes('lyrica')) {
+        return {
+          name: 'Gabapentin / Pregabalin (Brand Names: Neurontin, Lyrica)',
+          class: 'GABA Analog / Voltage-Gated Calcium Channel Alpha-2-Delta Ligand',
+          uses: [
+            'Management of neuropathic pain (post-herpetic shingles neuralgia, diabetic neuropathy).',
+            'Fibromyalgia and chronic spinal nerve pain.',
+            'Adjunctive therapy for partial seizures.'
+          ],
+          mechanism: 'Binds to the alpha-2-delta subunit of voltage-gated calcium channels in the CNS, decreasing the release of excitatory neurotransmitters.',
+          dosage: '• <strong>Gabapentin:</strong> 300mg on Day 1, titrating up to 300mg–600mg three times daily (Max 3600mg/day).<br />• <strong>Pregabalin:</strong> 75mg to 150mg twice daily with or without food.',
+          sideEffects: '• <strong>Common:</strong> Dizziness, drowsiness, peripheral ankle swelling, unsteadiness.<br />• <strong>Serious:</strong> Respiratory depression when combined with opioid pain medications.',
+          warnings: 'Do not stop taking abruptly; taper off gradually over at least 1 week. May impair driving ability.',
+          otcAlternatives: 'Topical Capsaicin 0.025% cream, Alpha-lipoic acid (ALA) 600mg/day, Methylcobalamin B12.'
+        };
+      }
+
+      if (q.includes('sumatriptan') || q.includes('imitrex') || q.includes('triptan')) {
+        return {
+          name: 'Sumatriptan (Brand Names: Imitrex, Imigran, Suminat)',
+          class: 'Selective Serotonin 5-HT1B / 5-HT1D Receptor Agonist (Antimigraine Triptan)',
+          uses: [
+            'Acute abortive therapy of migraine headaches with or without aura in adults.',
+            'Acute treatment of cluster headache episodes.'
+          ],
+          mechanism: 'Constricts inflamed cranial blood vessels and blocks trigeminal sensory nerve inflammatory neuropeptide release.',
+          dosage: '• <strong>Oral:</strong> 50mg to 100mg at earliest onset of migraine. May repeat once after 2 hours if headache returns (Max 200mg/24h).',
+          sideEffects: '• <strong>Common:</strong> Chest/throat warmth or pressure sensation, tingling, flushing, drowsiness.<br />• <strong>Serious:</strong> Coronary vasospasm, myocardial ischemia, arrhythmias.',
+          warnings: '⚠️ Contraindicated in ischemic coronary artery disease, history of stroke/TIA, or uncontrolled hypertension.',
+          otcAlternatives: 'Acetaminophen + Aspirin + Caffeine (Excedrin Migraine), oral Magnesium Glycinate 400mg.'
+        };
+      }
+
+      // Fallback Drug Pattern (e.g. "what is the use of X", "use of X", "tell me about X", "is X safe")
+      const drugMatch = q.match(/(?:use of|what is|tell me about|how to take|side effects of|dose of|is|about)\s+([a-zA-Z0-9_-]+)/i) ||
+                        q.match(/([a-zA-Z0-9_-]+)\s+(?:uses|use|side effects|dosage|tablet|capsule|injection|medicine|drug)/i);
+      
+      const extractedDrug = drugMatch ? drugMatch[1] : (q.includes('use') || q.includes('medicine') || q.includes('drug') || q.includes('dose') || q.includes('tablet') ? q : null);
+      
+      if (extractedDrug && extractedDrug.length > 2 && !extractedDrug.includes('headache') && !extractedDrug.includes('fever') && !extractedDrug.includes('cough') && !extractedDrug.includes('rash')) {
+        const formattedName = extractedDrug.charAt(0).toUpperCase() + extractedDrug.slice(1);
+        return {
+          name: `${formattedName} (Pharmaceutical Evaluation)`,
+          class: 'Clinical Therapeutic Agent / Prescription Medication',
+          uses: [
+            `Indicated for targeted pharmacological management as evaluated and prescribed by your physician.`,
+            `Symptom control, metabolic modulation, or physiological stabilization under ongoing medical review.`
+          ],
+          mechanism: `Acts selectively upon specific cellular receptors, enzymatic pathways, or organ systems to produce therapeutic biological effects.`,
+          dosage: `• Dosage must be tailored strictly to patient body weight, renal/hepatic biomarkers, and clinical indications.<br />• Administer according to your verified doctor prescription label with plenty of water.`,
+          sideEffects: `• Potential adverse effects vary by therapeutic class. Watch for allergic rashes, facial swelling, severe dizziness, or persistent gastrointestinal irritation.`,
+          warnings: `⚠️ Always consult a licensed medical doctor or pharmacist before starting, stopping, or combining medications to prevent dangerous drug-drug interactions.`,
+          otcAlternatives: `Book a telehealth consultation with an MD for personalized prescription evaluation and safe OTC alternatives.`
+        };
+      }
+
+      return null;
     }
 
     function handleSimSubmit(e) {
@@ -573,6 +698,64 @@
             </div>
           `);
           setOptionChips(['🔄 Start New Consultation']);
+        }, 500);
+        return;
+      }
+
+      // Check for Pharmacology / Drug Monograph Lookup
+      const drugMonograph = lookupDrugMonograph(val);
+      if (drugMonograph) {
+        setTimeout(() => {
+          appendSimMessage('ai', `
+            <div class="space-y-3 p-1">
+              <div class="pb-2 border-b border-slate-800">
+                <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">Clinical Pharmacology & Medication Profile</span>
+                <h4 class="text-base font-extrabold text-white mt-0.5">${drugMonograph.name}</h4>
+                <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cyan-950 text-cyan-300 border border-cyan-800 inline-block mt-1">
+                  Class: ${drugMonograph.class}
+                </span>
+              </div>
+
+              <div class="text-[11px] text-slate-300 space-y-1">
+                <strong class="text-emerald-400 block">🎯 Primary Medical Uses & Indications:</strong>
+                <ul class="list-disc ml-4 space-y-0.5">
+                  ${drugMonograph.uses.map(u => `<li>${u}</li>`).join('')}
+                </ul>
+              </div>
+
+              <div class="text-[11px] text-slate-300 space-y-1">
+                <strong class="text-emerald-400 block">🧬 Mechanism of Action:</strong>
+                <p>${drugMonograph.mechanism}</p>
+              </div>
+
+              <div class="text-[11px] text-slate-300 space-y-1">
+                <strong class="text-emerald-400 block">⚖️ Standard Dosage & Administration:</strong>
+                <p>${drugMonograph.dosage}</p>
+              </div>
+
+              <div class="text-[11px] text-slate-300 space-y-1">
+                <strong class="text-amber-400 block">⚠️ Precautions & Adverse Effects:</strong>
+                <p>${drugMonograph.sideEffects}</p>
+                <div class="p-2 rounded-xl bg-slate-900 border border-amber-900/50 text-amber-200 mt-1">
+                  ${drugMonograph.warnings}
+                </div>
+              </div>
+
+              <div class="text-[11px] text-slate-300 space-y-1">
+                <strong class="text-cyan-400 block">🩹 Non-Prescription / OTC Alternatives:</strong>
+                <p>${drugMonograph.otcAlternatives}</p>
+              </div>
+
+              <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[10px]">
+                <span class="text-slate-400">Prescription required for controlled formulations.</span>
+                <button onclick="downloadSamplePDF()" class="px-3 py-1.5 rounded-xl font-bold bg-emerald-500 hover:bg-emerald-600 text-white flex items-center gap-1.5 transition-colors">
+                  <i data-lucide="download" class="w-3 h-3"></i> Download Drug Monograph PDF
+                </button>
+              </div>
+            </div>
+          `);
+          lucide.createIcons();
+          setOptionChips(['📅 Book Doctor for Prescription', '🔄 Check Another Medicine', '🩺 Start Symptom Triage']);
         }, 500);
         return;
       }
@@ -638,24 +821,24 @@
 
         if (lower.includes('fever') || lower.includes('cough') || lower.includes('throat')) {
           options = [
-            '🔥 Raw scratchy throat with painful swallowing',
-            '🫁 Dry hacking persistent cough',
-            '🫁 Deep wet cough with yellow phlegm',
-            '🌡️ Chills, sinus congestion, and body aches',
+            '🔥 Scratchy / painful raw throat',
+            '🫁 Dry hacking cough',
+            '🫁 Productive wet cough with phlegm',
+            '🌡️ Chills with body aches',
+          ];
+        } else if (lower.includes('skin') || lower.includes('rash') || lower.includes('itch')) {
+          options = [
+            '🔴 Red raised itchy patches / bumps',
+            '🔥 Dry scaly peeling skin',
+            '🫧 Small fluid-filled blisters',
+            '🩹 Swollen warm localized plaque',
           ];
         } else if (lower.includes('stomach') || lower.includes('nausea') || lower.includes('cramp')) {
           options = [
             '⚡ Sharp cramping in lower abdomen',
-            '🔥 Burning acid reflux in upper stomach',
-            '🤢 Nausea with heavy abdominal bloating',
+            '🔥 Burning acid pain in upper stomach / chest',
+            '🤢 Persistent nausea & bloating',
             '🚽 Watery diarrhea and stomach rumbling',
-          ];
-        } else if (lower.includes('rash') || lower.includes('skin') || lower.includes('itch')) {
-          options = [
-            '🔴 Raised itchy red bumps / hives',
-            '🔥 Dry scaly peeling patches',
-            '🫧 Small fluid-filled blisters',
-            '🩹 Swollen warm localized plaque',
           ];
         }
 
@@ -712,7 +895,7 @@
         return;
       }
 
-      // STAGE 4 -> 5: Synthesis & Comprehensive Diagnosis Card
+      // STAGE 4 -> 5: Synthesis & Comprehensive Diagnosis Card (with Pharmacotherapy Plan)
       if (simStage === 4) {
         simData.associated = val;
         simStage = 5;
@@ -723,14 +906,50 @@
 
         let diagTitle = 'Tension-Type Cephalea (ICD-11: 8A81.0)';
         let isMigraine = char.includes('throbbing') || char.includes('one side') || val.toLowerCase().includes('light');
+        let medicationsHTML = `
+          <ul class="list-disc ml-4 space-y-1 text-slate-300">
+            <li><strong>First-Line OTC:</strong> Acetaminophen (Tylenol) 500mg–1000mg PO every 6h OR Ibuprofen 400mg PO with food (Max 1200mg OTC/day).</li>
+            <li><strong>Second-Line Combination:</strong> Acetaminophen + Aspirin + Caffeine (Excedrin) 1–2 tablets at onset.</li>
+            <li><strong>Preventive / Muscle Relaxant:</strong> Magnesium Glycinate 400mg PO daily at bedtime.</li>
+          </ul>
+        `;
+
         if (isMigraine) {
           diagTitle = 'Acute Migraine Episode without Aura (ICD-11: 8A80.0)';
+          medicationsHTML = `
+            <ul class="list-disc ml-4 space-y-1 text-slate-300">
+              <li><strong>First-Line Prescription Triptan:</strong> Sumatriptan (Imitrex) 50mg–100mg PO at earliest onset of headache; may repeat after 2h if needed (Max 200mg/24h).</li>
+              <li><strong>NSAID Combination:</strong> Naproxen Sodium 500mg PO OR Ibuprofen 600mg PO with food to suppress neurogenic inflammation.</li>
+              <li><strong>Antiemetic Adjunct (if nausea present):</strong> Ondansetron (Zofran) 4mg–8mg ODT OR Metoclopramide 10mg PO.</li>
+            </ul>
+          `;
         } else if (comp.includes('fever') || comp.includes('cough') || comp.includes('throat')) {
           diagTitle = 'Acute Upper Respiratory Viral Infection (ICD-11: CA40.0)';
+          medicationsHTML = `
+            <ul class="list-disc ml-4 space-y-1 text-slate-300">
+              <li><strong>Fever & Sore Throat:</strong> Acetaminophen 650mg PO every 4–6h OR Ibuprofen 400mg PO every 8h with meals.</li>
+              <li><strong>Cough & Mucus:</strong> Dextromethorphan-Guaifenesin (Mucinex DM) 10ml–20ml PO every 12h + Benzocaine throat lozenges.</li>
+              <li><strong>Nasal Congestion:</strong> Oxymetazoline (Afrin) nasal spray 2 sprays/nostril (Max 3 consecutive days) OR Cetirizine 10mg PO daily.</li>
+            </ul>
+          `;
         } else if (comp.includes('stomach') || comp.includes('nausea') || comp.includes('cramp')) {
           diagTitle = 'Acute Viral Gastroenteritis / Functional Dyspepsia (ICD-11: DA42)';
+          medicationsHTML = `
+            <ul class="list-disc ml-4 space-y-1 text-slate-300">
+              <li><strong>Hydration & Electrolytes:</strong> Oral Rehydration Salts (WHO ORS) 500ml–1000ml taken in small frequent sips.</li>
+              <li><strong>Acid & Heartburn Relief:</strong> Famotidine (Pepcid) 20mg PO twice daily OR Omeprazole 20mg PO 30 min before breakfast.</li>
+              <li><strong>Antiemetic / Nausea:</strong> Ondansetron 4mg ODT as needed for persistent vomiting (Prescription required).</li>
+            </ul>
+          `;
         } else if (comp.includes('rash') || comp.includes('skin') || comp.includes('itch')) {
           diagTitle = 'Contact Dermatitis / Acute Allergic Urticaria (ICD-11: EA80.0)';
+          medicationsHTML = `
+            <ul class="list-disc ml-4 space-y-1 text-slate-300">
+              <li><strong>Topical Anti-Inflammatory:</strong> Hydrocortisone 1% cream applied thinly to affected skin twice daily for up to 7 days.</li>
+              <li><strong>Oral Antihistamine:</strong> Cetirizine (Zyrtec) 10mg PO once daily OR Diphenhydramine 25mg PO at bedtime for severe itching.</li>
+              <li><strong>Barrier Protection:</strong> Ceramide-based barrier ointment (Aquaphor/CeraVe) applied liberally after washing with mild soap.</li>
+            </ul>
+          `;
         }
 
         setTimeout(() => {
@@ -753,8 +972,19 @@
                 <p>• <strong>Associated Signs:</strong> ${simData.associated}</p>
               </div>
 
+              <!-- Post-Diagnosis Pharmacotherapy Plan -->
+              <div class="text-[11px] text-slate-300 space-y-1 p-3 rounded-2xl bg-slate-900 border border-emerald-900/60">
+                <strong class="text-emerald-400 flex items-center gap-1.5">
+                  💊 Suggested Pharmacotherapy & Medication Plan:
+                </strong>
+                ${medicationsHTML}
+                <p class="text-[10px] text-slate-400 mt-2 italic">
+                  *Always confirm dosages and check for personal drug interactions or allergies with a pharmacist or licensed physician before taking new medications.*
+                </p>
+              </div>
+
               <div class="text-[11px] text-slate-300 space-y-1">
-                <strong class="text-emerald-400 block">Recommended Clinical Pathway:</strong>
+                <strong class="text-cyan-400 block">Recommended Clinical Pathway & Lifestyle:</strong>
                 <ul class="list-disc ml-4 space-y-0.5">
                   <li>Rest in a quiet, dark environment with 500ml electrolyte hydration</li>
                   <li>Avoid screen glare and physical strain for the next 12 hours</li>

@@ -306,6 +306,138 @@ export const Chat: React.FC = () => {
       };
     }
 
+    // ── Pharmacology / Drug Monograph Lookup ──────────────────────────────
+    interface DrugMonograph {
+      name: string; drugClass: string; uses: string[]; mechanism: string;
+      dosage: string; sideEffects: string; warnings: string; otcAlternatives: string;
+    }
+
+    const lookupDrug = (q: string): DrugMonograph | null => {
+      if (q.includes('tapentadol') || q.includes('tapendadol') || q.includes('nucynta') || q.includes('aspadol') || q.includes('tapal')) {
+        return {
+          name: 'Tapentadol (Nucynta / Tapal / Aspadol)',
+          drugClass: 'Centrally-Acting Opioid Analgesic & Norepinephrine Reuptake Inhibitor (NRI)',
+          uses: ['Moderate-to-severe acute pain (post-op, musculoskeletal injury)', 'Severe chronic neuropathic pain (diabetic peripheral neuropathy)'],
+          mechanism: 'Dual mechanism: μ-opioid receptor agonist + norepinephrine reuptake inhibition in dorsal horn, blocking ascending pain signals.',
+          dosage: '**IR:** 50–100 mg every 4–6 h as needed (max 500 mg Day 1; max 400 mg/day thereafter). **ER:** 50–250 mg orally twice daily for chronic pain. Swallow ER tablets whole — do not crush or chew.',
+          sideEffects: '**Common:** Nausea, dizziness, somnolence, constipation, headache, dry mouth. **Serious:** Respiratory depression, serotonin syndrome, physical dependence/tolerance.',
+          warnings: '⚠️ Schedule II / Schedule H1 Controlled Substance. Black-Box Warning: opioid addiction and life-threatening respiratory depression. Avoid concurrent alcohol, sedatives, or MAO inhibitors. **Prescription required.**',
+          otcAlternatives: 'For mild-moderate pain: Acetaminophen 500–1000 mg + Ibuprofen 400 mg with food; topical Lidocaine 4% patch.',
+        };
+      }
+      if (q.includes('metformin') || q.includes('glucophage') || q.includes('glycomet')) {
+        return {
+          name: 'Metformin (Glucophage / Glycomet / Fortamet)',
+          drugClass: 'Biguanide Antihyperglycemic / Antidiabetic Agent',
+          uses: ['First-line pharmacological treatment for Type 2 Diabetes Mellitus', 'Polycystic Ovary Syndrome (PCOS) — insulin resistance & ovulatory dysfunction'],
+          mechanism: 'Decreases hepatic gluconeogenesis, reduces intestinal glucose absorption, and enhances peripheral insulin sensitivity without causing hypoglycaemia.',
+          dosage: '**IR:** 500 mg or 850 mg orally twice daily with meals (max 2550 mg/day). **XR:** 500–2000 mg once daily with the evening meal.',
+          sideEffects: '**Common:** GI upset — diarrhoea, nausea, flatulence, metallic taste. **Rare/Serious:** Lactic acidosis; long-term Vitamin B12 malabsorption.',
+          warnings: 'Contraindicated in severe renal impairment (eGFR < 30 mL/min) and active metabolic acidosis. Withhold 48 h before iodinated contrast procedures.',
+          otcAlternatives: 'Dietary carbohydrate restriction, regular aerobic exercise, berberine 500 mg TID, soluble fibre supplementation.',
+        };
+      }
+      if (q.includes('omeprazole') || q.includes('pantoprazole') || q.includes('prilosec') || q.includes('esomeprazole') || q.includes('nexium') || q.includes('pan-d') || q.includes('rabeprazole')) {
+        return {
+          name: 'Omeprazole / Pantoprazole (Prilosec / Protonix / Nexium)',
+          drugClass: 'Proton Pump Inhibitor (PPI) / Gastric Acid Reducer',
+          uses: ['Gastroesophageal Reflux Disease (GERD) & chronic acid regurgitation', 'Peptic ulcer treatment & H. pylori eradication (in combination with antibiotics)'],
+          mechanism: 'Irreversibly inhibits H⁺/K⁺ ATPase in gastric parietal cells, profoundly suppressing acid secretion.',
+          dosage: '**Standard:** 20–40 mg orally once daily. Take 30–60 min before breakfast. Swallow delayed-release capsules whole.',
+          sideEffects: '**Common:** Headache, abdominal pain, diarrhoea, constipation. **Long-term:** Hypomagnesaemia, reduced B12/Ca absorption, increased C. difficile risk.',
+          warnings: 'Limit OTC self-treatment to 14 days without physician guidance. Not for immediate relief — antacids work faster for acute heartburn.',
+          otcAlternatives: 'Famotidine (Pepcid) 20 mg, Calcium Carbonate (Tums), Sodium Alginate (Gaviscon) for acute relief.',
+        };
+      }
+      if (q.includes('amoxicillin') || q.includes('augmentin') || q.includes('moxikind') || q.includes('penicillin')) {
+        return {
+          name: 'Amoxicillin / Amoxicillin-Clavulanate (Augmentin / Moxikind)',
+          drugClass: 'Aminopenicillin / Beta-Lactam Antibiotic',
+          uses: ['Bacterial pharyngitis, sinusitis, community-acquired pneumonia', 'Otitis media, dental abscesses, and urinary tract infections (UTIs)'],
+          mechanism: 'Inhibits bacterial cell wall peptidoglycan synthesis → autolytic enzyme activation → cell lysis.',
+          dosage: '**Adult:** 500 mg every 8 h OR 875 mg every 12 h for 7–10 days. **Critical:** Complete the full antibiotic course to prevent resistance.',
+          sideEffects: '**Common:** Diarrhoea, nausea, oral candidiasis (thrush), skin rash. **Serious:** Anaphylaxis, C. difficile colitis.',
+          warnings: '⚠️ Contraindicated in penicillin / beta-lactam hypersensitivity. Ineffective against viral infections (cold, flu, COVID-19). **Prescription required.**',
+          otcAlternatives: 'Throat numbing sprays, warm salt-water gargles, honey-lemon teas (for viral sore throat only).',
+        };
+      }
+      if (q.includes('atorvastatin') || q.includes('lipitor') || q.includes('rosuvastatin') || q.includes('crestor') || q.includes('statin')) {
+        return {
+          name: 'Atorvastatin / Rosuvastatin (Lipitor / Crestor / Storvas)',
+          drugClass: 'HMG-CoA Reductase Inhibitor (Statin) / Lipid-Lowering Agent',
+          uses: ['Reduction of elevated LDL, total cholesterol, and triglycerides', 'Primary & secondary prevention of myocardial infarction (MI) and ischaemic stroke'],
+          mechanism: 'Inhibits HMG-CoA reductase (rate-limiting step of cholesterol synthesis), upregulating hepatic LDL receptors to clear circulating LDL.',
+          dosage: '**Atorvastatin:** 10–80 mg orally once daily (evening preferred). **Rosuvastatin:** 5–40 mg once daily.',
+          sideEffects: '**Common:** Myalgia, arthralgia, mild LFT elevation. **Rare/Serious:** Rhabdomyolysis, hepatotoxicity.',
+          warnings: 'Contraindicated in active hepatic disease and pregnancy. Avoid grapefruit juice (CYP3A4 inhibition with atorvastatin).',
+          otcAlternatives: 'Omega-3 EPA/DHA (4 g/day), plant sterols, Mediterranean diet, ≥150 min/week moderate aerobic exercise.',
+        };
+      }
+      if (q.includes('gabapentin') || q.includes('pregabalin') || q.includes('neurontin') || q.includes('lyrica')) {
+        return {
+          name: 'Gabapentin / Pregabalin (Neurontin / Lyrica)',
+          drugClass: 'GABA Analog / Voltage-Gated Ca²⁺ Channel α2δ Ligand',
+          uses: ['Neuropathic pain: post-herpetic neuralgia, diabetic peripheral neuropathy', 'Fibromyalgia, chronic spinal nerve pain, adjunct for partial seizures'],
+          mechanism: 'Binds α2δ subunit of voltage-gated calcium channels in CNS dorsal horn, reducing excitatory neurotransmitter (glutamate, Substance P) release.',
+          dosage: '**Gabapentin:** 300 mg Day 1, titrate to 300–600 mg TID (max 3600 mg/day). **Pregabalin:** 75–150 mg BID with or without food.',
+          sideEffects: '**Common:** Dizziness, somnolence, peripheral oedema, ataxia. **Serious:** Respiratory depression when co-administered with opioids or CNS depressants.',
+          warnings: 'Do not discontinue abruptly — taper over ≥1 week to prevent withdrawal seizures. May significantly impair driving ability.',
+          otcAlternatives: 'Topical Capsaicin 0.025% cream, Alpha-lipoic acid (ALA) 600 mg/day, Methylcobalamin B12 1500 mcg/day.',
+        };
+      }
+      if (q.includes('sumatriptan') || q.includes('imitrex') || q.includes('triptan') || q.includes('imigran') || q.includes('suminat')) {
+        return {
+          name: 'Sumatriptan (Imitrex / Imigran / Suminat)',
+          drugClass: 'Selective Serotonin 5-HT1B/1D Receptor Agonist (Antimigraine Triptan)',
+          uses: ['Acute abortive treatment of migraine headache with or without aura', 'Acute treatment of cluster headache episodes'],
+          mechanism: 'Selective cranial vasoconstriction + blockade of trigeminal nociceptive neuropeptide release (CGRP, Substance P).',
+          dosage: '**Oral:** 50–100 mg at earliest onset. May repeat once after 2 h if headache returns (max 200 mg/24 h). **Nasal:** 10–20 mg in one nostril.',
+          sideEffects: '**Common:** Chest/throat warmth or pressure sensation, tingling, flushing, somnolence. **Serious:** Coronary vasospasm, MI, arrhythmias.',
+          warnings: '⚠️ Contraindicated in ischaemic CAD, history of stroke/TIA, uncontrolled hypertension, and within 24 h of ergotamine/other triptans.',
+          otcAlternatives: 'Acetaminophen + Aspirin + Caffeine (Excedrin Migraine), oral Magnesium Glycinate 400 mg, rest in dark quiet room.',
+        };
+      }
+      if (q.includes('cetirizine') || q.includes('zyrtec') || q.includes('loratadine') || q.includes('claritin') || q.includes('antihistamine') || q.includes('fexofenadine') || q.includes('allegra')) {
+        return {
+          name: 'Cetirizine / Loratadine / Fexofenadine (Zyrtec / Claritin / Allegra)',
+          drugClass: 'Second-Generation H1 Antihistamine / Antiallergic Agent',
+          uses: ['Seasonal and perennial allergic rhinitis (hay fever)', 'Chronic urticaria (hives), allergic conjunctivitis, skin pruritus'],
+          mechanism: 'Selective inverse agonist at peripheral H1 histamine receptors, blocking histamine-mediated allergic inflammatory cascade.',
+          dosage: '**Cetirizine / Loratadine / Fexofenadine:** 10 mg orally once daily. Can be taken with or without food.',
+          sideEffects: '**Cetirizine:** Mild drowsiness, dry mouth. **Loratadine / Fexofenadine:** Non-sedating at standard doses.',
+          warnings: 'Cetirizine may impair driving at higher doses. Use with caution in severe renal impairment. Separate from antacids by 15 min (fexofenadine).',
+          otcAlternatives: 'HEPA air purifiers, nasal saline rinse (Neti pot), local honey, allergen avoidance strategies.',
+        };
+      }
+      // Generic drug pattern fallback: "what is tapentadol", "use of X", "tell me about X", "X tablet"
+      const drugMatch = q.match(/(?:use of|what is|about|tell me about|how to take|side effects of|dose of|is)\s+([a-zA-Z0-9_-]{3,})/i)
+        ?? q.match(/([a-zA-Z0-9_-]{4,})\s+(?:tablet|capsule|injection|uses|use|medicine|drug|dosage|side effects|dose)/i);
+      const extractedDrug = drugMatch?.[1];
+      if (extractedDrug && !['headache','fever','cough','rash','pain','cold','stomach','symptom','disease'].includes(extractedDrug)) {
+        const displayName = extractedDrug.charAt(0).toUpperCase() + extractedDrug.slice(1);
+        return {
+          name: `${displayName} — Pharmaceutical Assessment`,
+          drugClass: 'Prescription Therapeutic Agent',
+          uses: ['Targeted pharmacological management as evaluated and prescribed by your physician', 'Symptom control or physiological stabilisation under ongoing medical supervision'],
+          mechanism: 'Acts selectively on specific cellular receptors, enzymatic pathways, or organ systems to produce therapeutic biological effects.',
+          dosage: '**Dosage:** Must be individually tailored by your prescribing physician based on body weight, renal/hepatic function, and clinical indication. Administer strictly as written on your prescription label.',
+          sideEffects: 'Adverse effects vary by drug class. Monitor for allergic rashes, facial swelling, severe dizziness, or persistent GI irritation.',
+          warnings: '⚠️ Always consult a licensed physician or pharmacist before starting, stopping, or combining any medications to prevent dangerous interactions.',
+          otcAlternatives: 'Book a telehealth consultation with an MD for a personalised prescription review and safe OTC alternatives.',
+        };
+      }
+      return null;
+    };
+
+    const drugMonograph = lookupDrug(lower);
+    if (drugMonograph) {
+      return {
+        reply: `### 💊 Clinical Pharmacology Profile\n\n**${drugMonograph.name}**\n*Drug Class:* ${drugMonograph.drugClass}\n\n---\n\n**🎯 Primary Medical Uses:**\n${drugMonograph.uses.map(u => `- ${u}`).join('\n')}\n\n**🧬 Mechanism of Action:**\n${drugMonograph.mechanism}\n\n**⚖️ Standard Dosage & Administration:**\n${drugMonograph.dosage}\n\n**⚠️ Precautions & Adverse Effects:**\n${drugMonograph.sideEffects}\n\n> ${drugMonograph.warnings}\n\n**🩹 Non-Prescription / OTC Alternatives:**\n${drugMonograph.otcAlternatives}\n\n---\n*This pharmacology profile is for educational purposes. Always confirm with a licensed physician or pharmacist before use.*`,
+        nextOptions: ['📅 Book Video Consult for Prescription', '💊 Ask About Another Medicine', '🩺 Start Symptom Triage', '🔄 New Clinical Consultation'],
+        nextStage: currentInterview.stage,
+      };
+    }
+
     // Conversational Follow-up Questions & General Medical Q&A
     if (
       lower.includes('medicine') ||
