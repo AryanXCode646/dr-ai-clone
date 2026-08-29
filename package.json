@@ -29,11 +29,13 @@
         "typescript": "^4.9.5",
         "web-vitals": "^2.1.4"
     },
+    "homepage": "https://aryanxcode646.github.io/dr-ai-clone",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "deploy:docs": "git subtree push --prefix docs origin gh-pages"
     },
     "eslintConfig": {
         "extends": [
