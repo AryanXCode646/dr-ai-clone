@@ -31,9 +31,17 @@
     },
     "homepage": "https://aryanxcode646.github.io/dr-ai-clone",
     "scripts": {
-        "start": "react-scripts start",
+        "install:all": "npm install --legacy-peer-deps && npm install --prefix dr-ai-backend --legacy-peer-deps",
+        "start": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"blue.bold,green.bold\" \"npm run server\" \"npm run client\"",
+        "dev": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"blue.bold,green.bold\" \"npm run server\" \"npm run client\"",
+        "client": "react-scripts start",
+        "server": "npm run dev --prefix dr-ai-backend",
         "build": "react-scripts build",
+        "build:backend": "npm run build --prefix dr-ai-backend",
+        "build:all": "npm run build && npm run build:backend",
         "test": "react-scripts test",
+        "test:backend": "npm test --prefix dr-ai-backend",
+        "test:all": "CI=true npm test -- --watchAll=false && npm run test:backend",
         "eject": "react-scripts eject",
         "deploy:docs": "git subtree push --prefix docs origin gh-pages"
     },
@@ -54,5 +62,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "concurrently": "^10.0.5"
     }
 }

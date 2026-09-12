@@ -173,37 +173,73 @@ dr-ai-clone/
 
 ### 1. Prerequisites
 - **Node.js**: v18+ (tested up to Node v26)
-- **MongoDB**: v6+ (or automatic in-memory MongoDB during automated tests)
+- **MongoDB**: Optional for development (runs with automatic offline fallback, or connects to MongoDB on `localhost:27017`)
 
-### 2. Backend Setup & Testing
+---
+
+### ⚡ One-Command Setup & Launch
+
+You can install all dependencies and run both the Express backend (`:5000`) and the React frontend (`:3000`) concurrently from the project root in a single command:
+
+```bash
+# Install dependencies for both root and backend
+npm run install:all
+
+# Start both Backend (port 5000) and Frontend (port 3000) concurrently
+npm start
+# (or: npm run dev)
+```
+
+Both services will start concurrently with labeled, color-coded console logs:
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend**: [http://localhost:5000](http://localhost:5000)
+- **Health Check**: [http://localhost:5000/api/health](http://localhost:5000/api/health)
+
+---
+
+### 🧪 Run All Automated Tests (One Command)
+
+```bash
+# Executes both frontend (30 tests) and backend (60 tests) suites in one command
+npm run test:all
+```
+
+---
+
+### 🛠️ Individual Subsystem Commands
+
+<details>
+<summary><strong>Backend Only (`dr-ai-backend`)</strong></summary>
+
 ```bash
 cd dr-ai-backend
 npm install --legacy-peer-deps
 
-# Run complete integration test suite (Uses mongodb-memory-server, no external DB needed)
+# Run backend integration tests (in-memory MongoDB)
 npm test
 
 # Build TypeScript
 npm run build
 
-# Start Backend Server (runs on http://localhost:5000)
+# Start backend standalone server
 npm run dev
 ```
+</details>
 
-### 3. Frontend Setup & Testing
+<details>
+<summary><strong>Frontend Only (`dr-ai-clone`)</strong></summary>
+
 ```bash
-# In project root
-npm install --legacy-peer-deps
-
-# Run frontend tests
+# Run frontend unit & security tests
 npm test -- --watchAll=false
 
 # Build production bundle
 npm run build
 
-# Start Frontend Dev Server (runs on http://localhost:3000)
-npm start
+# Start frontend standalone dev server
+npm run client
 ```
+</details>
 
 ### 4. Evaluator Demo Credentials
 For frictionless evaluation without registering a new email:
