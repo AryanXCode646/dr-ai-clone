@@ -30,53 +30,53 @@ import {
 const MEDICAL_BOARD = [
   {
     name: 'Dr. Sarah Johnson, MD, FACP',
-    role: 'Chief Medical Officer',
-    education: 'Harvard Medical School • Johns Hopkins Residency',
+    role: 'Clinical Advisor (Demo Profile)',
+    education: 'Internal Medicine & Telehealth Protocol Design',
     image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&auto=format&fit=crop&q=80',
-    bio: '14+ years in internal medicine and telemedicine protocols, leading the medical AI safety validation board.',
+    bio: 'Simulated advisor profile demonstrating primary care workflows and clinical AI triage validation.',
   },
   {
     name: 'Dr. Michael Chen, MD, FACC',
-    role: 'Head of Clinical Cardiology & AI Telemetry',
-    education: 'Stanford Medicine • Mayo Clinic Fellowship',
+    role: 'Cardiology Advisor (Demo Profile)',
+    education: 'Cardiovascular Assessment & Triage Protocols',
     image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80',
-    bio: 'Pioneered remote cardiovascular monitoring and continuous algorithm benchmarking for acute triage.',
+    bio: 'Simulated advisor profile modeling acute cardiovascular red-flag detection and escalation pathways.',
   },
   {
     name: 'Dr. Emily Rodriguez, MD, FAAP',
-    role: 'Director of Pediatric Telehealth',
-    education: 'Columbia University College of Physicians & Surgeons',
+    role: 'Pediatric Advisor (Demo Profile)',
+    education: 'Pediatric Telehealth & Adolescent Guidance',
     image: 'https://images.unsplash.com/photo-1594824813626-d621187d7b37?w=400&auto=format&fit=crop&q=80',
-    bio: 'Specialist in adolescent medicine, child developmental assessments, and digital parent guidance.',
+    bio: 'Simulated advisor profile modeling parent-facing pediatric intake and fever triage safety rules.',
   },
   {
     name: 'Dr. James Wilson, MD, FAAD',
-    role: 'Lead Dermatological Consultant',
-    education: 'UCSF School of Medicine • Mass General Hospital',
+    role: 'Dermatology Advisor (Demo Profile)',
+    education: 'Dermatological Informatics & Image Intake',
     image: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&auto=format&fit=crop&q=80',
-    bio: 'Author of peer-reviewed clinical research in tele-dermatoscopy and automated rash classification.',
+    bio: 'Simulated advisor profile demonstrating multi-modal image triage and dermatology tele-referral.',
   },
 ];
 
 const SECURITY_STANDARDS = [
   {
-    title: 'HIPAA Safe Harbor Compliance',
-    desc: 'All patient health information (PHI) is strictly guarded under US Department of Health and Human Services guidelines.',
+    title: 'Role-Based Access Control',
+    desc: 'Strict authorization boundaries partition Patient, Doctor, and Admin access across all endpoints.',
     icon: <ShieldCheck className="w-6 h-6 text-emerald-500" />,
   },
   {
-    title: '256-Bit End-to-End Encryption',
-    desc: 'All video feeds, audio streams, and clinical messages are encrypted in transit and at rest using AES-256 standards.',
+    title: 'Bcrypt & Signed Tokens',
+    desc: 'Passwords hashed with salt rounds. Ephemeral JWTs validated on each API boundary with algorithm enforcement.',
     icon: <Lock className="w-6 h-6 text-cyan-500" />,
   },
   {
-    title: 'AMA & Board Certified Physicians',
-    desc: 'Every doctor on our network is actively licensed and verified through primary source medical credentialing.',
+    title: 'Deterministic Emergency Rules',
+    desc: 'Acute symptoms (chest pain, stroke, dyspnea) trigger immediate emergency routing before LLM invocation.',
     icon: <Award className="w-6 h-6 text-amber-500" />,
   },
   {
-    title: 'Clinically Grounded AI (ICD-11)',
-    desc: 'Diagnostic algorithms are aligned with World Health Organization classifications and continuous peer review.',
+    title: 'Defensible AI Provenance',
+    desc: 'Clear source labeling distinguishes live LLM inference from deterministic fallback templates with no fabricated confidence.',
     icon: <Bot className="w-6 h-6 text-purple-500" />,
   },
 ];
@@ -89,13 +89,13 @@ export const About: React.FC = () => {
       {/* Hero Section */}
       <Box className="text-center max-w-3xl mx-auto space-y-4">
         <Box className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-          <Sparkles className="w-3.5 h-3.5" /> Our Mission & Clinical Standards
+          <Sparkles className="w-3.5 h-3.5" /> Architecture & Clinical Safeguards
         </Box>
         <Typography variant="h3" component="h1" className="font-black text-gray-900 dark:text-white tracking-tight">
-          Democratizing World-Class Healthcare Through Intelligent AI & Telemedicine
+          Technically Defensible AI Healthcare Architecture
         </Typography>
         <Typography variant="body1" className="text-gray-500 dark:text-gray-400 leading-relaxed">
-          Dr.AI was engineered to bridge the gap between initial symptom uncertainty and licensed medical care — empowering patients with instant, evidence-based triage and immediate access to top physicians.
+          Dr.AI is an end-to-end prototype designed to prove production-grade clinical AI safeguards, authenticated telehealth workflows, and transactional medical record persistence.
         </Typography>
       </Box>
 
@@ -106,13 +106,13 @@ export const About: React.FC = () => {
         <Grid container spacing={6} alignItems="center">
           <Grid item xs={12} md={6} className="space-y-4">
             <Typography variant="h4" className="font-black text-gray-900 dark:text-white">
-              Why We Built Dr.AI
+              Engineering Defensible Healthcare AI
             </Typography>
             <Typography variant="body1" className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Every day, millions of people search the internet for health symptoms and find alarming, inaccurate, or overwhelming advice. Meanwhile, booking an in-person doctor visit can take days or weeks.
+              Consumer health queries require more than open-ended chat. A production healthcare architecture must enforce deterministic emergency safety gates, verified identity boundaries, and real conflict-free appointment scheduling.
             </Typography>
             <Typography variant="body1" className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Dr.AI solves this by combining multi-turn adaptive clinical AI for instant structured triage with instant video consultations, enabling patients to understand their health in minutes.
+              Dr.AI demonstrates how an AI decision support layer integrates seamlessly with backend databases, role-based access control, and simulated telehealth rooms.
             </Typography>
 
             <Box className="flex flex-wrap gap-3 pt-2">
@@ -134,7 +134,7 @@ export const About: React.FC = () => {
                 onClick={() => navigate('/video-consult')}
                 sx={{ borderRadius: 2.5, fontWeight: 600 }}
               >
-                Meet the Doctors
+                Explore Telehealth Demo
               </Button>
             </Box>
           </Grid>
@@ -142,10 +142,10 @@ export const About: React.FC = () => {
           <Grid item xs={12} md={6}>
             <Grid container spacing={2}>
               {[
-                { number: '10M+', label: 'Triaged Consultations' },
-                { number: '500+', label: 'Board-Certified Doctors' },
-                { number: '< 18s', label: 'Average Diagnostic Speed' },
-                { number: '99.4%', label: 'Clinical Concordance' },
+                { number: '100%', label: 'Emergency Guardrail Intercept' },
+                { number: '3', label: 'Isolated Security Roles' },
+                { number: '< 1s', label: 'Booking Conflict Engine' },
+                { number: '0%', label: 'Fabricated Confidence Scores' },
               ].map((stat, idx) => (
                 <Grid item xs={6} key={idx}>
                   <Box className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200/80 dark:border-gray-800 text-center">

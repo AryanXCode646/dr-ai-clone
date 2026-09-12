@@ -1,48 +1,64 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
-const messageSchema = new mongoose.Schema({
+export interface IMessage {
+  content: string;
+  sender: 'user' | 'ai';
+  timestamp: Date;
+  metadata?: any;
+}
+
+export interface IChat extends Document {
+  userId: Types.ObjectId;
+  title: string;
+  persona?: string;
+  messages: IMessage[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const messageSchema = new Schema<IMessage>({
   content: {
     type: String,
-    required: true
+    required: true,
   },
   sender: {
     type: String,
     enum: ['user', 'ai'],
-    required: true
+    required: true,
   },
   timestamp: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+  },
+  metadata: {
+    type: Schema.Types.Mixed,
+  },
+});
+
+const chatSchema = new Schema<IChat>(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      index: true,
+    },
+    title: {
+      type: String,
+      required: true,
+      default: 'Clinical Consultation',
+    },
+    persona: {
+      type: String,
+      default: 'general',
+    },
+    messages: [messageSchema],
+  },
+  {
+    timestamps: true,
   }
-});
+);
 
-const chatSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  messages: [messageSchema],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+const Chat: Model<IChat> = mongoose.model<IChat>('Chat', chatSchema);
 
-// Update the updatedAt timestamp before saving
-chatSchema.pre('save', function(next) {
-  this.updatedAt = new Date();
-  next();
-});
-
-const Chat = mongoose.model('Chat', chatSchema);
-
-export default Chat; 
+export default Chat;

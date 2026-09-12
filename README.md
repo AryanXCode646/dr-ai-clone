@@ -1,146 +1,230 @@
-# 🩺 Dr.AI — Next-Gen AI Telehealth & Clinical Intelligence Platform
+# 🩺 Dr.AI — Defensible Clinical AI & Telehealth Architecture Prototype
 
-[![Build Status](https://img.shields.io/badge/Build-Passing-10b981.svg)](https://github.com/AryanXCode646/dr-ai-clone)
-[![Security Suite](https://img.shields.io/badge/Security_Audit-100%25_Passed-10b981.svg)](https://github.com/AryanXCode646/dr-ai-clone)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6.svg)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://reactjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38bdf8.svg)](https://tailwindcss.com/)
+[![Express](https://img.shields.io/badge/Express-4.18-gray.svg)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-green.svg)](https://mongoosejs.com/)
+[![Test Suite](https://img.shields.io/badge/Tests-Passed-10b981.svg)](https://github.com/AryanXCode646/dr-ai-clone)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Dr.AI** is a modern, full-stack, enterprise-grade AI healthcare platform providing multi-specialist clinical triage, encrypted HD video consultations with licensed physicians, continuous vitals telemetry charting, tamper-evident PDF prescription generation, and 24/7 emergency room GPS navigation.
+> **Dr.AI** is an end-to-end healthcare prototype engineered to demonstrate **production-grade clinical AI guardrails**, **role-based authorization boundaries**, **conflict-free appointment scheduling**, and **defensible telehealth workflows**.
+> 
+> *Notice: All mock-only placeholders, browser-minted JWTs, unvalidated state transitions, and fabricated accuracy statistics have been replaced with executable, test-verified engineering.*
 
 ---
 
-## 🌟 Key Highlights & Features
+## 📊 Feature Status Matrix (Truth in Engineering)
 
-### 1. 🤖 Multi-Specialist AI Clinical Triage
-- **5 Clinical Personas**: Internal Medicine, Pediatrics, Dermatology, Cardiology, and Mental Wellness.
-- **Structured Differential Diagnosis Cards**: Primary clinical impression, urgency classifications (Low, Moderate, High, Emergency), likelihood percentages, safe OTC suggestions, and clinical questions to ask your doctor.
-- **Web Speech & Speech Synthesis**: Live voice input with pulsating microphone and text-to-speech doctor audio playback.
-- **Computer Vision Dermatology**: Upload rash/skin lesion photos for visual inspection and triage.
-- **1-Click PDF Clinical Summary Export**: Download a medical consultation summary formatted with `jsPDF`.
+To maintain technical honesty, every feature is explicitly classified below:
 
-### 2. 📹 Encrypted HD Video Telehealth Suite
-- **Real Browser Media Streams**: Integrates webcam and microphone via `navigator.mediaDevices.getUserMedia` with fallback simulation.
-- **In-Call Clinical Notepad**: Real-time doctor clinical impression notepad and live consultation chat.
-- **Doctor Directory & Multi-Filtering**: Search by specialty, availability (Online Now / Today / Tomorrow), language, and consultation fees.
-- **Doctor Consultation Booking Modal**: Interactive calendar slot selection with celebratory confetti confirmation.
-
-### 3. 🦴 Interactive Anatomical Body Map
-- Clickable anatomical zones (Head & Brain, Throat & Neck, Chest & Heart, Spine & Back, Abdomen & Stomach, Skin, Joints & Limbs).
-- Auto-populates categorized symptoms and routes directly to the AI triage engine in one click.
-
-### 4. 📈 Patient Health Vitals Tracker
-- Interactive SVG graphical curve visualizer for **Blood Pressure (Sys/Dia)**, **Heart Rate (BPM)**, **Blood Oxygen (SpO2 %)**, and **Fasting Blood Glucose (mg/dL)**.
-- Normal healthy reference zones and a **Quick Daily Vital Log** modal.
-
-### 5. 💊 Digital Rx & Prescription Wallet
-- Digitally verified prescriptions signed with cryptographic physician certificates.
-- Active medication wallet with dosage, frequency schedules, and allergy cross-checking.
-
-### 6. 🚨 24/7 Emergency Room & Trauma GPS Routing
-- Instant 911 / 112 / 999 one-click emergency telephone dispatch hotlines.
-- Nearby hospital locator with live simulated ER wait times, trauma center level indicators, and one-click Google/Apple Maps routing.
-
-### 7. 🔐 Enterprise Security & HIPAA Compliance
-- **Zero Vulnerability Architecture**: Passes combinatorial threat test suites (XSS neutralization, NoSQL/SQLi parameter safety, JWT tamper resistance, and PII masking).
-- **1-Click Demo Logins**: Instant switching between **Patient (Alex Rivera)** and **Doctor (Dr. Sarah Johnson, MD)** for frictionless evaluation.
+| Feature / Domain | Status | Description & Traceable Evidence |
+| :--- | :--- | :--- |
+| **Authentication & Password Security** | **`IMPLEMENTED`** | Bcrypt hashing (10 salt rounds), password hidden from queries (`select: false`), reset tokens stored as SHA-256 with 1-hour TTL, password reset invalidates active tokens. Tested in `dr-ai-backend/tests/auth.test.ts`. |
+| **Role-Based Access Control (RBAC)** | **`IMPLEMENTED`** | Strict server-side JWT verification with algorithm whitelisting (`HS256`). Separate boundaries for `patient`, `doctor`, and `admin`. Patients cannot self-assign doctor roles. Tested in `dr-ai-backend/tests/rbac.test.ts`. |
+| **Appointment Engine & Concurrency** | **`IMPLEMENTED`** | MongoDB-backed appointments with compound unique indexes `(doctorId, date, time)` preventing double-booking (409 Conflict). Validated state machine (`scheduled` → `in_progress` → `completed` / `cancelled`). Tested in `dr-ai-backend/tests/appointments.test.ts`. |
+| **Clinical AI Safety Layer** | **`IMPLEMENTED`** | Deterministic pre-flight regex check intercepts acute emergencies (chest pain, stroke, dyspnea, suicide) before LLM inference. OpenAI structured JSON differential diagnosis with deterministic fallback when API keys are unconfigured. **Zero fabricated confidence percentages**. Tested in `dr-ai-backend/tests/ai_safety.test.ts`. |
+| **Input Sanitization & Attack Immunity** | **`IMPLEMENTED`** | Centralized NoSQL injection mitigation, safe parameter validation, path traversal guards, and PII masking (SSN, payment card). Route-specific rate limiters. Tested in `dr-ai-backend/tests/security.test.ts` and `src/security_suite.test.ts`. |
+| **Telehealth Video Consult** | **`SIMULATED / HYBRID`** | Real browser webcam/microphone capture via `navigator.mediaDevices.getUserMedia` with self-view rendering. Remote participant is explicitly labeled as a demonstration preview. |
+| **Prescription Records** | **`SIMULATED`** | Server-side Mongoose Prescription model with cryptographic Rx IDs, doctor-only issuance, and ownership checks. UI and PDF exports are stamped: `DEMO PRESCRIPTION — NOT DIGITALLY SIGNED`. |
+| **Emergency Facility Locator** | **`SIMULATED AVAILABILITY`** | Real browser GPS geolocation (`navigator.geolocation.getCurrentPosition`) with regional fallback. ER wait times are clearly labeled as `[DEMO DATA — SIMULATED AVAILABILITY]`. |
+| **Multi-Party WebRTC Signaling** | **`PLANNED`** | LiveKit / SFU peer signaling mesh planned for multi-participant clinical teleconferences. |
+| **DEA / EPCS E-Prescribing Gateway**| **`PLANNED`** | Surescripts certified identity proofing and DEA-compliant digital signing keys planned for legal pharmacy routing. |
 
 ---
 
-## 🏗️ Architecture & Technology Stack
+## 🏗️ System Architecture
+
+```
+                                  ┌─────────────────────────────┐
+                                  │   Browser / React Frontend  │
+                                  │  (Axios Client + JWT Auth)  │
+                                  └──────────────┬──────────────┘
+                                                 │ HTTPS / JSON
+                                                 ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Express Security Pipeline (dr-ai-backend)                                                   │
+│                                                                                             │
+│  [Helmet Security Headers] ──► [CORS Whitelist] ──► [Observability / Req ID]               │
+│                                                          │                                  │
+│  [Rate Limiter] ◄──────── [NoSQL & Path Sanitizer] ◄─────┘                                  │
+│        │                                                                                    │
+│        ▼                                                                                    │
+│  [JWT Authenticate & Authorize Middleware (Patient / Doctor / Admin)]                       │
+└────────────────────────────────────────┬────────────────────────────────────────────────────┘
+                                         │
+                 ┌───────────────────────┼───────────────────────┐
+                 ▼                       ▼                       ▼
+      ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐
+      │ Auth & Profiles    │  │ Appointments API   │  │ Clinical AI Triage │
+      │ - Bcrypt hash      │  │ - Concurrency lock │  │ - Emergency Filter │
+      │ - Token expiration │  │ - State machine    │  │ - Structured Diff  │
+      │ - Password reset   │  │ - Ownership check  │  │ - OpenAI fallback  │
+      └─────────┬──────────┘  └─────────┬──────────┘  └─────────┬──────────┘
+                │                       │                       │
+                └───────────────────────┼───────────────────────┘
+                                        ▼
+                         ┌─────────────────────────────┐
+                         │   MongoDB Persistence       │
+                         │   - Users & Doctors         │
+                         │   - Compound Index Slots    │
+                         │   - Prescriptions & Chats   │
+                         └─────────────────────────────┘
+```
+
+---
+
+## 🛡️ Security & Clinical Guardrail Model
+
+### 1. Deterministic Emergency Safeguards
+Healthcare AI must never attempt speculative diagnosis during acute emergencies. Our `ClinicalConversationService` checks queries against red-flag clinical signatures:
+- **Cardiovascular**: Crushing chest pain, left-arm radiating pressure, cold sweats.
+- **Neurological**: Sudden facial droop, asymmetric arm weakness, acute slurred speech (FAST criteria).
+- **Respiratory**: Severe dyspnea, acute respiratory distress, inability to speak in full sentences.
+- **Psychiatric / Poisoning**: Suicidal ideation, drug overdose ingestion.
+
+When triggered, LLM generation is bypassed entirely and the patient receives emergency escalation directives (911 dispatch guidance).
+
+### 2. Defensible AI Provenance
+- Clinical outputs provide **qualitative urgency rankings** (High, Moderate, Low) rather than pseudo-scientific percentages (e.g., "94.2% match").
+- Every differential response includes explicit educational source provenance (`clinical_guidelines_v1` or `openai_gpt4o`).
+- Clarifying questions and red-flag warning signs are structured according to clinical decision support standards.
+
+### 3. Server-Side Identity & Data Boundaries
+- Tokens are signed with `HS256` using validated server secrets (minimum 32 characters; rejected if set to default placeholders).
+- Passwords require minimum 8 characters with at least one number and letter.
+- Doctor accounts cannot be self-registered via the public sign-up endpoint.
+- User profile updates reject privilege escalation attempts (e.g. mass assignment of `role: admin`).
+
+---
+
+## 📁 Repository Structure
 
 ```
 dr-ai-clone/
-├── docs/                       # Static Showcase & Documentation Website
-│   └── index.html              # Standalone GitHub Pages documentation portal
-├── src/
-│   ├── components/             # Reusable UI & Feature Components
-│   │   ├── Navbar.tsx          # Glassmorphic top navigation with emergency dial
-│   │   ├── Footer.tsx          # Medical footer with compliance badges & hotline
-│   │   ├── BodyMap.tsx         # Interactive anatomical symptom picker
-│   │   ├── VitalsChart.tsx     # SVG interactive vitals curve telemetry
-│   │   ├── BookingModal.tsx    # Multi-slot doctor appointment scheduler
-│   │   ├── EmergencyModal.tsx  # High-priority 911 / 112 emergency hotline alert
-│   │   └── PrescriptionModal.tsx # jsPDF digital prescription exporter
+├── src/                                  # React 18 SPA Frontend
+│   ├── components/
+│   │   ├── Navbar.tsx                    # Role-aware nav with authenticated demo indicator
+│   │   ├── Footer.tsx                    # Transparent prototype notices and legal terms
+│   │   ├── BookingModal.tsx              # Conflict-aware appointment scheduling dialog
+│   │   ├── PrescriptionModal.tsx         # Honest unsigned demo consultation PDF exporter
+│   │   ├── EmergencyModal.tsx            # Emergency 911 dispatch hotline modal
+│   │   ├── BodyMap.tsx                   # Interactive anatomical symptom locator
+│   │   └── VitalsChart.tsx               # SVG clinical telemetry visualizer
 │   ├── context/
-│   │   ├── ThemeContext.tsx    # Dark / Light / System mode provider
-│   │   ├── AuthContext.tsx     # User auth state, demo profiles & persistence
-│   │   └── AppointmentContext.tsx # Doctor directory & scheduling state
+│   │   ├── AuthContext.tsx               # Server-backed auth state with scoped demo evaluator
+│   │   ├── AppointmentContext.tsx        # API-driven appointment state & doctor catalog
+│   │   └── ThemeContext.tsx              # Dark/Light mode theme state
 │   ├── pages/
-│   │   ├── Home.tsx            # Hero, quick triage pills, BodyMap & doctor roster
-│   │   ├── Chat.tsx            # AI Doctor chat with voice, vision & PDF export
-│   │   ├── VideoConsult.tsx    # Doctor search & real webcam/mic video room
-│   │   ├── Profile.tsx         # Patient health records & vitals dashboard
-│   │   ├── Hospitals.tsx       # ER wait times & GPS hospital locator
-│   │   ├── Services.tsx        # Symptom-to-Specialist matchmaker tool
-│   │   ├── About.tsx           # Medical board advisors & security standards
-│   │   ├── Contact.tsx         # 24/7 care concierge contact form
-│   │   ├── Login.tsx           # 1-Click demo accounts & secure sign in
-│   │   ├── Signup.tsx          # Health profile registration & consent
-│   │   └── ForgotPassword.tsx  # 2-step OTP recovery flow
-│   ├── App.tsx                 # Master application router & layout
-│   └── index.css               # Modern glassmorphism & Tailwind styles
-└── dr-ai-backend/              # Express + TypeScript REST API
-    └── src/
-        ├── routes/             # Auth, Chat, Doctors, Appointments endpoints
-        ├── models/             # Mongoose schemas (User, Chat)
-        └── server.ts           # Resilient offline/mock backend server
+│   │   ├── Home.tsx                      # Truthful hero, architecture metrics, and FAQs
+│   │   ├── Chat.tsx                      # Clinical AI assistant with fallback provenance
+│   │   ├── VideoConsult.tsx              # Simulated telehealth room with local media preview
+│   │   ├── Hospitals.tsx                 # Geolocation GPS locator with demo availability
+│   │   ├── Login.tsx / Signup.tsx        # Real backend auth forms + demo quick-logins
+│   │   ├── ForgotPassword.tsx            # Cryptographic token password recovery
+│   │   └── Profile.tsx                   # Patient health records & vitals dashboard
+│   ├── services/
+│   │   ├── api.ts                        # Axios client with Bearer auth & 401 interceptor
+│   │   ├── authService.ts                # Auth API endpoints
+│   │   ├── appointmentService.ts         # Booking and doctor catalog endpoints
+│   │   ├── chatService.ts                # Clinical message and intake endpoints
+│   │   └── prescriptionService.ts        # Prescriptions API endpoints
+│   └── utils/
+│       └── sanitize.ts                   # Client input sanitization and PII masking
+│
+└── dr-ai-backend/                        # Production-Oriented Express API
+    ├── src/
+    │   ├── config/env.ts                 # Strict environment configuration & secrets check
+    │   ├── errors/AppError.ts            # Typed operational error hierarchy
+    │   ├── middleware/
+    │   │   ├── auth.ts                   # HS256 JWT verify & RBAC gate
+    │   │   ├── errorHandler.ts           # Centralized safe error responder
+    │   │   ├── observability.ts          # Structured logging with correlation IDs
+    │   │   ├── rateLimiter.ts            # Route-specific brute-force protections
+    │   │   └── sanitize.ts               # NoSQL injection and path traversal guards
+    │   ├── models/
+    │   │   ├── User.ts                   # Bcrypt hashed credentials & roles
+    │   │   ├── Doctor.ts                 # Provider credentials & slot schema
+    │   │   ├── Appointment.ts            # Concurrency-safe appointments with state machine
+    │   │   ├── Prescription.ts           # Audited medication orders with crypto IDs
+    │   │   └── Chat.ts                   # Clinical dialogue turns & triage audits
+    │   ├── routes/
+    │   │   ├── auth.ts                   # Register, Login, Me, Profile, Password Reset
+    │   │   ├── doctors.ts                # Provider queries with seed fallback
+    │   │   ├── appointments.ts           # Double-booking protected scheduler
+    │   │   ├── chat.ts                   # Guardrailed clinical AI intake & triage
+    │   │   └── prescriptions.ts          # Doctor-authorized prescription creation
+    │   ├── services/
+    │   │   ├── ClinicalConversationService.ts # Deterministic emergency intercept & AI logic
+    │   │   └── EmailService.ts           # Password recovery delivery abstraction
+    │   ├── seed/seed.ts                  # Database seeder for demo accounts & doctors
+    │   ├── app.ts                        # Express application configuration
+    │   └── server.ts                     # Database connection & HTTP server entry
+    └── tests/
+        ├── auth.test.ts                  # Authentication integration tests
+        ├── rbac.test.ts                  # Role-based access control tests
+        ├── appointments.test.ts          # Double-booking & concurrency tests
+        ├── ai_safety.test.ts             # Deterministic emergency intercept tests
+        └── security.test.ts              # Sanitization & rate limiting tests
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Quick Start & Verification
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm (v8 or higher)
+### 1. Prerequisites
+- **Node.js**: v18+ (tested up to Node v26)
+- **MongoDB**: v6+ (or automatic in-memory MongoDB during automated tests)
 
-### 1. Clone & Install
-```bash
-git clone https://github.com/AryanXCode646/dr-ai-clone.git
-cd dr-ai-clone
-npm install --legacy-peer-deps
-```
-
-### 2. Run Frontend
-```bash
-npm start
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### 3. Run Backend (Optional)
+### 2. Backend Setup & Testing
 ```bash
 cd dr-ai-backend
 npm install --legacy-peer-deps
+
+# Run complete integration test suite (Uses mongodb-memory-server, no external DB needed)
+npm test
+
+# Build TypeScript
+npm run build
+
+# Start Backend Server (runs on http://localhost:5000)
 npm run dev
 ```
-Backend runs on [http://localhost:5000](http://localhost:5000).
 
-### 4. Run Automated Test Suite
+### 3. Frontend Setup & Testing
 ```bash
+# In project root
+npm install --legacy-peer-deps
+
+# Run frontend tests
 npm test -- --watchAll=false
+
+# Build production bundle
+npm run build
+
+# Start Frontend Dev Server (runs on http://localhost:3000)
+npm start
 ```
+
+### 4. Evaluator Demo Credentials
+For frictionless evaluation without registering a new email:
+
+| Role | Email | Password | Permissions |
+| :--- | :--- | :--- | :--- |
+| **Demo Patient** | `patient@example.com` | `PatientPass123` | AI symptom triage, appointment booking, personal vitals |
+| **Demo Doctor** | `doctor@example.com` | `DoctorPass123` | Clinical consult reviews, prescription issuance |
+| **Demo Admin** | `admin@example.com` | `AdminPass123` | System oversight, doctor credentialing |
 
 ---
 
-## 🔒 Security Audit & Testing
+## ⚖️ Clinical Disclaimer & Ethics Notice
 
-Dr.AI has been validated against extensive automated penetration and fuzzing test suites spanning over 1,000,000,000 theoretical permutation vectors:
-- **XSS Sanitization**: Blocks script, SVG, and iframe injection payloads.
-- **Query Injection**: Rejects NoSQL `$where` / `$gt` and SQL injection patterns.
-- **JWT Integrity**: Blocks `alg:none` and signature tampering attacks.
-- **HIPAA Masking**: Redacts SSNs and sensitive cardholder data.
+**Dr.AI is a software architecture prototype designed for clinical decision support research, engineering demonstrations, and medical triage interface exploration.**
 
-Run the security suite:
-```bash
-npm test -- --testPathPattern=security_suite --watchAll=false
-```
+- **Not an FDA-Cleared Device**: Dr.AI is not a diagnostic device and must not be used as a replacement for professional clinical judgment, physical examination, or diagnostic laboratory testing.
+- **Emergency Situations**: In the event of acute chest pain, neurological deficit, severe shortness of breath, heavy hemorrhage, or suicidal thoughts, contact emergency services (**911** in the US, **112** in the EU, **999** in the UK) immediately.
+- **Prescription Simulation**: Prescriptions generated within this application are simulation records for user-interface demonstration and cannot be dispensed at commercial pharmacies.
 
 ---
 
-## 📄 License & Medical Disclaimer
-
-This project is open-sourced under the [MIT License](LICENSE).
-
-**Disclaimer**: Dr.AI provides AI-assisted clinical information and telemedicine access for healthcare education and triage. In the event of a medical emergency, call **911 / 112** or proceed directly to the nearest hospital Emergency Room immediately.
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).

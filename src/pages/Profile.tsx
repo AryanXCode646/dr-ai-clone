@@ -87,7 +87,9 @@ export const Profile: React.FC = () => {
     updateProfile({ allergies: current.filter((a) => a !== allergy) });
   };
 
-  const upcomingApts = appointments.filter((a) => a.status === 'upcoming');
+  const upcomingApts = appointments.filter(
+    (a) => a.status === 'scheduled' || a.status === 'confirmed' || a.status === 'upcoming'
+  );
   const pastApts = appointments.filter((a) => a.status === 'completed');
 
   return (

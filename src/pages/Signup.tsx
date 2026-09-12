@@ -53,10 +53,9 @@ export const Signup: React.FC = () => {
     }
 
     const res = await signup({
-      name: `${formData.firstName} ${formData.lastName}`,
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
       email: formData.email,
-      dateOfBirth: formData.dateOfBirth,
-      bloodGroup: formData.bloodGroup,
+      password: formData.password,
     });
 
     if (res.success) {

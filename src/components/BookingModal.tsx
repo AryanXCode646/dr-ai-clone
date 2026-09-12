@@ -14,6 +14,8 @@ import {
   FormControlLabel,
   Radio,
   Rating,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
 import {
   Calendar as CalendarIcon,
@@ -43,8 +45,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   doctor,
   initialReason = '',
 }) => {
-  const { bookAppointment, startCall } = useAppointments();
-  const { user } = useAuth();
+  const { bookAppointment } = useAppointments();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const [selectedDate, setSelectedDate] = useState<string>('Today');
@@ -53,6 +55,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [reason, setReason] = useState<string>(initialReason);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [bookedAptId, setBookedAptId] = useState<string>('');
+  const [bookingError, setBookingError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   React.useEffect(() => {
     if (doctor?.availableSlots?.[0]) {
@@ -63,37 +67,46 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       setReason(initialReason);
     }
     setIsSuccess(false);
+    setBookingError(null);
   }, [doctor, initialReason, open]);
 
   if (!doctor) return null;
 
   const currentSlotGroup = doctor.availableSlots.find((s) => s.date === selectedDate) || doctor.availableSlots[0];
 
-  const handleConfirmBooking = () => {
-    const newApt = bookAppointment({
-      doctorId: doctor.id,
-      doctorName: doctor.name,
-      doctorSpecialty: doctor.specialty,
-      doctorImage: doctor.image,
-      doctorFee: doctor.fee,
-      patientName: user?.name || 'Alex Rivera',
-      patientEmail: user?.email || 'patient@example.com',
-      date: selectedDate,
-      time: selectedTime,
-      type: consultType,
-      reason: reason || 'General Medical Consultation',
-    });
+  const handleConfirmBooking = async () => {
+    if (!isAuthenticated) {
+      setBookingError('Please sign in or select a demo role to confirm your consultation.');
+      return;
+    }
 
-    setBookedAptId(newApt.id);
-    setIsSuccess(true);
+    setBookingError(null);
+    setIsSubmitting(true);
 
-    // Fire celebratory confetti!
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#10B981', '#06B6D4', '#3B82F6', '#F59E0B'],
-    });
+    try {
+      const newApt = await bookAppointment({
+        doctorId: doctor.id,
+        date: selectedDate,
+        time: selectedTime,
+        type: consultType,
+        reason: reason.trim() || 'General Medical Consultation',
+      });
+
+      setBookedAptId(newApt.id);
+      setIsSuccess(true);
+
+      // Fire celebratory confetti!
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#10B981', '#06B6D4', '#3B82F6', '#F59E0B'],
+      });
+    } catch (err: any) {
+      setBookingError(err.message || 'Unable to book consultation. Slot may already be reserved.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleStartImmediateCall = () => {
@@ -265,11 +278,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               />
             </Box>
 
+            {bookingError && (
+              <Alert severity="error" sx={{ borderRadius: 2 }}>
+                {bookingError}
+              </Alert>
+            )}
+
             {/* Confirm Button */}
             <Button
               fullWidth
               variant="contained"
               size="large"
+              disabled={isSubmitting}
               onClick={handleConfirmBooking}
               sx={{
                 background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
@@ -279,7 +299,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 borderRadius: 2.5,
               }}
             >
-              Confirm Appointment (${doctor.fee})
+              {isSubmitting ? <CircularProgress size={24} color="inherit" /> : `Confirm Appointment ($${doctor.fee})`}
             </Button>
           </Box>
         ) : (

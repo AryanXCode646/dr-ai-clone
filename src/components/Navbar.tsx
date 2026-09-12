@@ -50,7 +50,7 @@ import { EmergencyModal } from './EmergencyModal';
 
 export const Navbar: React.FC = () => {
   const { mode, toggleTheme } = useAppTheme();
-  const { user, logout, switchDemoUser } = useAuth();
+  const { user, logout, switchDemoUser, isDemoMode } = useAuth();
   const { appointments } = useAppointments();
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,7 +60,9 @@ export const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [emergencyOpen, setEmergencyOpen] = useState(false);
 
-  const upcomingAppointments = appointments.filter((a) => a.status === 'upcoming');
+  const upcomingAppointments = appointments.filter(
+    (a) => a.status === 'scheduled' || a.status === 'confirmed' || a.status === 'upcoming'
+  );
 
   const navLinks = [
     { label: 'Home', path: '/', icon: <Activity className="w-4 h-4" /> },
@@ -274,9 +276,16 @@ export const Navbar: React.FC = () => {
                       sx={{ width: 34, height: 34, border: '2px solid #10B981' }}
                     />
                     <Box className="hidden sm:block text-left">
-                      <Typography variant="caption" className="font-bold leading-tight block text-gray-800 dark:text-gray-200">
-                        {user.name.split(' ')[0]}
-                      </Typography>
+                      <Box className="flex items-center gap-1">
+                        <Typography variant="caption" className="font-bold leading-tight block text-gray-800 dark:text-gray-200">
+                          {user.name.split(' ')[0]}
+                        </Typography>
+                        {isDemoMode && (
+                          <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold uppercase">
+                            Demo
+                          </span>
+                        )}
+                      </Box>
                       <Typography variant="caption" className="text-[10px] text-emerald-600 dark:text-emerald-400 capitalize block leading-none font-semibold">
                         {user.role}
                       </Typography>
@@ -327,40 +336,42 @@ export const Navbar: React.FC = () => {
                       <ListItemText primary="Video Telehealth Rooms" />
                     </MenuItem>
 
-                    <Divider sx={{ my: 1 }} />
+                    {isDemoMode && (
+                      <>
+                        <Divider sx={{ my: 1 }} />
+                        <Box className="px-3 py-1">
+                          <Typography variant="caption" className="font-bold text-gray-400 uppercase text-[10px]">
+                            Switch Demo Role:
+                          </Typography>
+                        </Box>
 
-                    {/* Switch Demo Profiles */}
-                    <Box className="px-3 py-1">
-                      <Typography variant="caption" className="font-bold text-gray-400 uppercase text-[10px]">
-                        Switch Demo Role:
-                      </Typography>
-                    </Box>
+                        <MenuItem
+                          onClick={() => {
+                            switchDemoUser('patient');
+                            setProfileAnchor(null);
+                          }}
+                          className="rounded-lg"
+                        >
+                          <ListItemIcon>
+                            <CheckCircle className={`w-4 h-4 ${user.role === 'patient' ? 'text-emerald-500' : 'text-gray-400'}`} />
+                          </ListItemIcon>
+                          <ListItemText primary="Patient (Alex Rivera)" />
+                        </MenuItem>
 
-                    <MenuItem
-                      onClick={() => {
-                        switchDemoUser('patient');
-                        setProfileAnchor(null);
-                      }}
-                      className="rounded-lg"
-                    >
-                      <ListItemIcon>
-                        <CheckCircle className={`w-4 h-4 ${user.role === 'patient' ? 'text-emerald-500' : 'text-gray-400'}`} />
-                      </ListItemIcon>
-                      <ListItemText primary="Patient (Alex Rivera)" />
-                    </MenuItem>
-
-                    <MenuItem
-                      onClick={() => {
-                        switchDemoUser('doctor');
-                        setProfileAnchor(null);
-                      }}
-                      className="rounded-lg"
-                    >
-                      <ListItemIcon>
-                        <CheckCircle className={`w-4 h-4 ${user.role === 'doctor' ? 'text-emerald-500' : 'text-gray-400'}`} />
-                      </ListItemIcon>
-                      <ListItemText primary="Doctor (Dr. Sarah Johnson, MD)" />
-                    </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            switchDemoUser('doctor');
+                            setProfileAnchor(null);
+                          }}
+                          className="rounded-lg"
+                        >
+                          <ListItemIcon>
+                            <CheckCircle className={`w-4 h-4 ${user.role === 'doctor' ? 'text-emerald-500' : 'text-gray-400'}`} />
+                          </ListItemIcon>
+                          <ListItemText primary="Doctor (Dr. Sarah Johnson, MD)" />
+                        </MenuItem>
+                      </>
+                    )}
 
                     <Divider sx={{ my: 1 }} />
 

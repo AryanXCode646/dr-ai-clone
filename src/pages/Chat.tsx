@@ -40,6 +40,7 @@ import { useAuth } from '../context/AuthContext';
 import { useAppointments } from '../context/AppointmentContext';
 import { EmergencyModal } from '../components/EmergencyModal';
 import { BookingModal } from '../components/BookingModal';
+import { chatService } from '../services/chatService';
 
 interface SpecialistPersona {
   id: string;
@@ -760,16 +761,54 @@ export const Chat: React.FC = () => {
     };
   };
 
-  // Main user message handler
-  const handleUserMessage = (text: string) => {
+  // Main user message handler calling backend clinical intelligence pipeline
+  const handleUserMessage = async (text: string) => {
     if (!text.trim() && !uploadedImage) return;
 
+    if (text.includes('Start New Clinical Triage') || text.includes('🔄')) {
+      setInterview({
+        stage: 1,
+        chiefComplaint: '',
+        characterLocation: '',
+        durationSeverity: '',
+        associatedSymptoms: [],
+      });
+      setMessages([
+        {
+          id: 'msg-' + Date.now(),
+          sender: 'ai',
+          text: activePersona.greeting,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          suggestedOptions: [
+            '🤕 Throbbing Headache',
+            '🌡️ Fever & Sore Throat',
+            '🧴 Itchy Skin Rash',
+            '🫄 Stomach Pain & Nausea',
+            '🫁 Shortness of Breath',
+            '💥 Joint / Muscle Aches',
+          ],
+        },
+      ]);
+      return;
+    }
+
+    if (text.includes('Book Video Consult') || text.includes('📅')) {
+      setBookingOpen(true);
+      return;
+    }
+
+    if (text.includes('Download PDF') || text.includes('📄')) {
+      downloadConsultationPDF();
+      return;
+    }
+
+    const currentImage = uploadedImage;
     const userMessage: Message = {
       id: 'msg-' + Date.now(),
       sender: 'user',
-      text: text || 'Uploaded medical photo for inspection',
+      text: text || 'Uploaded medical photo for clinician intake',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      image: uploadedImage || undefined,
+      image: currentImage || undefined,
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -777,65 +816,85 @@ export const Chat: React.FC = () => {
     setUploadedImage(null);
     setIsLoading(true);
 
-    setTimeout(() => {
-      if (text.includes('Start New Clinical Triage') || text.includes('🔄')) {
-        setInterview({
-          stage: 1,
-          chiefComplaint: '',
-          characterLocation: '',
-          durationSeverity: '',
-          associatedSymptoms: [],
-        });
-        setMessages([
-          {
-            id: 'msg-' + Date.now(),
-            sender: 'ai',
-            text: activePersona.greeting,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            suggestedOptions: [
-              '🤕 Throbbing Headache',
-              '🌡️ Fever & Sore Throat',
-              '🧴 Itchy Skin Rash',
-              '🫄 Stomach Pain & Nausea',
-              '🫁 Shortness of Breath',
-              '💥 Joint / Muscle Aches',
-            ],
-          },
-        ]);
-        setIsLoading(false);
-        return;
+    try {
+      if (currentImage) {
+        // Send image to backend intake for clinician review
+        await chatService.uploadImage(currentImage, 'clinical_intake.jpg', 'image/jpeg');
       }
 
-      if (text.includes('Book Video Consult') || text.includes('📅')) {
-        setBookingOpen(true);
-        setIsLoading(false);
-        return;
+      const history = messages
+        .filter((m) => m.id !== 'msg-init')
+        .slice(-6)
+        .map((m) => ({
+          sender: m.sender === 'user' ? ('user' as const) : ('assistant' as const),
+          content: m.text,
+        }));
+
+      const assessment = await chatService.sendMessage(
+        text || 'Attached clinical photo for clinician review',
+        activePersona.id,
+        history
+      );
+
+      if (assessment.isEmergency) {
+        setEmergencySymptom(assessment.summary);
+        setEmergencyOpen(true);
       }
 
-      if (text.includes('Download PDF') || text.includes('📄')) {
-        downloadConsultationPDF();
-        setIsLoading(false);
-        return;
-      }
-
-      const interviewResult = processInterviewStep(text, { ...interview });
-      setInterview((prev) => ({
-        ...prev,
-        stage: interviewResult.nextStage,
-      }));
+      const card: DiagnosticCard = {
+        primaryImpression: assessment.possibleConditions[0]?.name || assessment.summary,
+        confidence: null as any,
+        urgency: assessment.urgency,
+        differential: assessment.possibleConditions.map((c) => ({
+          condition: c.name,
+          probability: c.description,
+        })),
+        recommendations: [assessment.recommendedNextStep],
+        otcSuggestions: ['Consult an attending healthcare provider before taking over-the-counter medications.'],
+        doctorQuestions: ['What is the expected timeline?', 'What changes require immediate escalation?'],
+        redFlags: assessment.redFlags,
+      };
 
       const aiResponse: Message = {
         id: 'msg-' + (Date.now() + 1),
         sender: 'ai',
-        text: interviewResult.reply,
+        text: assessment.summary,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        diagnosticCard: interviewResult.card,
-        suggestedOptions: interviewResult.nextOptions,
+        diagnosticCard: card,
+        suggestedOptions: [
+          '📅 Book Video Consult with MD',
+          '📄 Download PDF Clinical Report',
+          '🔄 Start New Clinical Triage',
+        ],
       };
 
       setMessages((prev) => [...prev, aiResponse]);
+    } catch (err) {
+      console.warn('Backend clinical triage inquiry encountered an error; falling back to rule intake:', err);
+      const fallbackCard: DiagnosticCard = {
+        primaryImpression: 'General Symptom Intake (Clinical Review Recommended)',
+        confidence: null as any,
+        urgency: 'Low',
+        differential: [{ condition: 'Non-emergency symptom cluster', probability: 'In-person medical exam recommended' }],
+        recommendations: ['Schedule a consultation with a licensed physician.'],
+        otcSuggestions: ['Do not self-medicate without doctor confirmation.'],
+        doctorQuestions: ['Are symptoms worsening over time?'],
+        redFlags: ['Shortness of breath', 'Chest pressure', 'High fever'],
+      };
+
+      const aiResponse: Message = {
+        id: 'msg-' + (Date.now() + 1),
+        sender: 'ai',
+        text: `### 📋 Clinical Triage Notice\n\nYour reported input has been recorded: "${text}".\n\n*Note: This AI assessment is educational and not a substitute for a licensed healthcare provider.*`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        diagnosticCard: fallbackCard,
+        suggestedOptions: ['📅 Book Video Consult with MD', '🔄 Start New Clinical Triage'],
+      };
+
+      setMessages((prev) => [...prev, aiResponse]);
+    } finally {
       setIsLoading(false);
-    }, 700);
+    }
   };
 
   // Download PDF Report
@@ -853,7 +912,7 @@ export const Chat: React.FC = () => {
     doc.text(`Patient: ${user?.name || 'Alex Rivera'}`, 14, 40);
     doc.text(`Consultation Date: ${new Date().toLocaleDateString()}`, 14, 46);
     doc.text(`Clinical Specialist: ${activePersona.name} (${activePersona.specialty})`, 14, 52);
-    doc.text('Standard: WHO ICD-11 Diagnostic Protocol', 14, 58);
+    doc.text('Standard: AI Clinical Triage Advisory (Educational Prototype - Not a Confirmed Diagnosis)', 14, 58);
 
     doc.line(14, 64, 196, 64);
 
@@ -874,11 +933,11 @@ export const Chat: React.FC = () => {
       if (m.diagnosticCard) {
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(16, 185, 129);
-        doc.text(`Primary Impression: ${m.diagnosticCard.primaryImpression}`, 14, currentY);
+        doc.text(`Primary Consideration: ${m.diagnosticCard.primaryImpression}`, 14, currentY);
         currentY += 6;
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(71, 85, 105);
-        doc.text(`Confidence: ${m.diagnosticCard.confidence}% | Urgency: ${m.diagnosticCard.urgency}`, 14, currentY);
+        doc.text(`Urgency: ${m.diagnosticCard.urgency} | Status: AI-Assisted Assessment`, 14, currentY);
         currentY += 8;
       }
       if (currentY > 260) {
@@ -992,7 +1051,7 @@ export const Chat: React.FC = () => {
                     <Box className="flex justify-between items-start">
                       <Box>
                         <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">
-                          Primary Differential Diagnosis
+                          AI-Generated Clinical Consideration
                         </span>
                         <Typography variant="h6" className="font-black text-white leading-snug">
                           {msg.diagnosticCard.primaryImpression}
@@ -1000,7 +1059,7 @@ export const Chat: React.FC = () => {
                       </Box>
                       <Box className="flex gap-2">
                         <Chip
-                          label={`Confidence ${msg.diagnosticCard.confidence}%`}
+                          label="AI-Generated Consideration"
                           size="small"
                           sx={{ bgcolor: 'rgba(16,185,129,0.2)', color: '#10B981', fontWeight: 800 }}
                         />

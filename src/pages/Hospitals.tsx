@@ -15,6 +15,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Alert,
 } from '@mui/material';
 import {
   Hospital,
@@ -27,6 +28,7 @@ import {
   CheckCircle,
   Activity,
   AlertTriangle,
+  LocateFixed,
   X,
 } from 'lucide-react';
 import { EmergencyModal } from '../components/EmergencyModal';
@@ -118,6 +120,26 @@ export const Hospitals: React.FC = () => {
   const [filterType, setFilterType] = useState('All');
   const [emergencyOpen, setEmergencyOpen] = useState(false);
   const [routeModalHospital, setRouteModalHospital] = useState<HospitalFacility | null>(null);
+  const [geoStatus, setGeoStatus] = useState<'idle' | 'requesting' | 'granted' | 'denied' | 'unsupported'>('idle');
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+
+  const requestUserLocation = () => {
+    if (!navigator.geolocation) {
+      setGeoStatus('unsupported');
+      return;
+    }
+    setGeoStatus('requesting');
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setGeoStatus('granted');
+      },
+      () => {
+        setGeoStatus('denied');
+      },
+      { timeout: 8000 }
+    );
+  };
 
   const filtered = HOSPITALS_DATA.filter((hosp) => {
     const matchesSearch =
@@ -131,7 +153,25 @@ export const Hospitals: React.FC = () => {
   });
 
   return (
-    <Container maxWidth="xl" className="py-8 space-y-8">
+    <Container maxWidth="xl" className="py-8 space-y-6">
+      {/* Demo Warning Banner */}
+      <Alert
+        severity="warning"
+        icon={<AlertTriangle className="w-5 h-5 text-amber-600" />}
+        sx={{
+          borderRadius: 3,
+          backgroundColor: 'rgba(245, 158, 11, 0.08)',
+          border: '1px solid rgba(245, 158, 11, 0.3)',
+        }}
+      >
+        <Typography variant="subtitle2" className="font-bold text-amber-900 dark:text-amber-200">
+          [DEMO DATA — SIMULATED AVAILABILITY]
+        </Typography>
+        <Typography variant="body2" className="text-xs text-amber-800 dark:text-amber-300">
+          Emergency department wait times, bed availability, and hospital listings shown on this page are simulated prototype records for demonstration only. Dr.AI does not receive live hospital telemetry. If you are experiencing a life-threatening medical emergency, call 911 immediately.
+        </Typography>
+      </Alert>
+
       {/* Page Header */}
       <Box className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <Box className="space-y-1">
@@ -142,21 +182,55 @@ export const Hospitals: React.FC = () => {
             Nearest Emergency Rooms & Hospitals
           </Typography>
           <Typography variant="body1" className="text-gray-500 dark:text-gray-400">
-            Live simulated ER wait times, specialty trauma capabilities, and one-click emergency dispatch directions.
+            Simulated demonstration ER directories, specialty trauma capabilities, and mapped route dispatch.
           </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          color="error"
-          size="large"
-          onClick={() => setEmergencyOpen(true)}
-          startIcon={<PhoneCall className="w-5 h-5 animate-bounce" />}
-          sx={{ borderRadius: 2.5, fontWeight: 700, px: 3, py: 1.4 }}
-        >
-          Call 911 Emergency
-        </Button>
+        <Box className="flex flex-wrap items-center gap-3">
+          <Button
+            variant="outlined"
+            onClick={requestUserLocation}
+            startIcon={<LocateFixed className="w-4 h-4 text-cyan-600" />}
+            sx={{ borderRadius: 2.5, textTransform: 'none', fontWeight: 600 }}
+          >
+            {geoStatus === 'granted'
+              ? 'GPS Calibrated'
+              : geoStatus === 'requesting'
+              ? 'Requesting GPS...'
+              : 'Use My GPS Location'}
+          </Button>
+
+          <Button
+            variant="contained"
+            color="error"
+            size="large"
+            onClick={() => setEmergencyOpen(true)}
+            startIcon={<PhoneCall className="w-5 h-5 animate-bounce" />}
+            sx={{ borderRadius: 2.5, fontWeight: 700, px: 3, py: 1.4 }}
+          >
+            Call 911 Emergency
+          </Button>
+        </Box>
       </Box>
+
+      {/* Geolocation Status Notice */}
+      {geoStatus === 'granted' && (
+        <Box className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+          <CheckCircle className="w-4 h-4 flex-shrink-0 text-emerald-600" />
+          <span>
+            GPS coordinates received ({userLocation?.lat.toFixed(4)}, {userLocation?.lng.toFixed(4)}). Distances calibrated to demonstration Bay Area trauma network.
+          </span>
+        </Box>
+      )}
+
+      {geoStatus === 'denied' && (
+        <Box className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs text-gray-600 dark:text-gray-300 flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 flex-shrink-0 text-amber-500" />
+          <span>
+            Location access was not granted. Displaying standard San Francisco regional medical facilities.
+          </span>
+        </Box>
+      )}
 
       {/* Search & Filter Toolbar */}
       <Paper elevation={0} className="glass-card rounded-3xl p-5 border border-gray-200 dark:border-gray-800">
@@ -218,7 +292,7 @@ export const Hospitals: React.FC = () => {
 
                   <Chip
                     icon={<Clock className="w-3.5 h-3.5 text-emerald-500" />}
-                    label={hosp.erWaitTime}
+                    label={`Simulated: ${hosp.erWaitTime}`}
                     size="small"
                     sx={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#059669', fontWeight: 800 }}
                   />

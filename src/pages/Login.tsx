@@ -26,7 +26,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 export const Login: React.FC = () => {
-  const { login, switchDemoUser } = useAuth();
+  const { login, loginDemoUser, isDemoMode } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -58,20 +58,34 @@ export const Login: React.FC = () => {
     }
   };
 
-  const handleDemoPatient = () => {
-    switchDemoUser('patient');
-    setSuccess(true);
-    setTimeout(() => {
-      navigate('/profile');
-    }, 500);
+  const handleDemoPatient = async () => {
+    setLoading(true);
+    setError('');
+    const res = await loginDemoUser('patient');
+    setLoading(false);
+    if (res.success) {
+      setSuccess(true);
+      setTimeout(() => {
+        navigate('/profile');
+      }, 600);
+    } else {
+      setError(res.error || 'Demo login failed');
+    }
   };
 
-  const handleDemoDoctor = () => {
-    switchDemoUser('doctor');
-    setSuccess(true);
-    setTimeout(() => {
-      navigate('/video-consult');
-    }, 500);
+  const handleDemoDoctor = async () => {
+    setLoading(true);
+    setError('');
+    const res = await loginDemoUser('doctor');
+    setLoading(false);
+    if (res.success) {
+      setSuccess(true);
+      setTimeout(() => {
+        navigate('/video-consult');
+      }, 600);
+    } else {
+      setError(res.error || 'Demo login failed');
+    }
   };
 
   return (
@@ -125,48 +139,54 @@ export const Login: React.FC = () => {
               </Typography>
             </Box>
 
-            {/* 1-Click Demo Profiles */}
-            <Box className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-300/60 dark:border-emerald-900 space-y-2">
-              <Box className="flex items-center justify-between">
-                <span className="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" /> 1-Click Instant Demo Login:
-                </span>
+            {/* Explicit Opt-In Demo Profiles */}
+            {isDemoMode && (
+              <Box className="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-300/60 dark:border-amber-900 space-y-2">
+                <Box className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wider flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5" /> [Demo Mode] Preconfigured Evaluator Accounts:
+                  </span>
+                </Box>
+                <Box className="grid grid-cols-2 gap-2">
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    onClick={handleDemoPatient}
+                    startIcon={<User className="w-4 h-4 text-amber-700" />}
+                    sx={{
+                      borderRadius: 2,
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      backgroundColor: 'white',
+                      borderColor: '#F59E0B',
+                      color: '#B45309',
+                      '&:hover': { backgroundColor: '#FEF3C7' },
+                    }}
+                  >
+                    Demo Patient
+                  </Button>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    onClick={handleDemoDoctor}
+                    startIcon={<Stethoscope className="w-4 h-4 text-cyan-600" />}
+                    sx={{
+                      borderRadius: 2,
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      backgroundColor: 'white',
+                      borderColor: '#06B6D4',
+                      color: '#0E7490',
+                      '&:hover': { backgroundColor: '#ECFEFF' },
+                    }}
+                  >
+                    Demo Doctor
+                  </Button>
+                </Box>
               </Box>
-              <Box className="grid grid-cols-2 gap-2">
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  onClick={handleDemoPatient}
-                  startIcon={<User className="w-4 h-4 text-emerald-600" />}
-                  sx={{
-                    borderRadius: 2,
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    backgroundColor: 'white',
-                    '&:hover': { backgroundColor: '#F0FDF4' },
-                  }}
-                >
-                  Patient Demo
-                </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  onClick={handleDemoDoctor}
-                  startIcon={<Stethoscope className="w-4 h-4 text-cyan-600" />}
-                  sx={{
-                    borderRadius: 2,
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    backgroundColor: 'white',
-                    '&:hover': { backgroundColor: '#F0FDF4' },
-                  }}
-                >
-                  Doctor Demo
-                </Button>
-              </Box>
-            </Box>
+            )}
 
             <Divider className="text-xs text-gray-400">OR SIGN IN WITH EMAIL</Divider>
 

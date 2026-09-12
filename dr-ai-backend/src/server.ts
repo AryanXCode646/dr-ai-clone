@@ -1,59 +1,28 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import authRoutes from './routes/auth';
-import chatRoutes from './routes/chat';
-import doctorRoutes from './routes/doctors';
-import appointmentRoutes from './routes/appointments';
+import { app } from './app';
+import { config } from './config/env';
+import { seedDatabase } from './seed/seed';
 
-dotenv.config();
-
-const app = express();
-
-// Middleware
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-app.use(express.json({ limit: '10mb' }));
-
-// Health Check
-app.get('/api/health', (req: Request, res: Response) => {
-  res.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    service: 'Dr.AI Telehealth & Clinical Intelligence API',
-    version: '2.0.0',
-  });
-});
-
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/doctors', doctorRoutes);
-app.use('/api/appointments', appointmentRoutes);
-
-// Graceful MongoDB Connection (Doesn't crash the server if MongoDB is offline)
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/dr-ai';
-
+// MongoDB Connection
 mongoose
-  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 2500 })
-  .then(() => console.log('✅ Connected to MongoDB database.'))
+  .connect(config.MONGODB_URI, { serverSelectionTimeoutMS: 3000 })
+  .then(async () => {
+    console.log('✅ Connected to MongoDB database:', config.MONGODB_URI);
+    try {
+      await seedDatabase();
+    } catch (seedErr) {
+      console.warn('⚠️ Seed check completed with notes:', seedErr);
+    }
+  })
   .catch((error) => {
-    console.warn('⚠️ MongoDB is not running locally. Dr.AI backend is running in resilient in-memory/mock fallback mode.');
+    console.warn(
+      '⚠️ MongoDB is not running locally. Dr.AI backend is running in resilient in-memory/mock fallback mode for unpersisted endpoints.'
+    );
   });
 
-// Global Error Handler
-app.use((err: any, req: Request, res: Response, next: any) => {
-  console.error('Unhandled Server Error:', err);
-  res.status(500).json({ error: 'Internal Server Error', message: err.message });
-});
-
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Dr.AI Clinical Backend listening on http://localhost:${PORT}`);
-  console.log(`🩺 Health check: http://localhost:${PORT}/api/health`);
+// Start listening
+app.listen(config.PORT, () => {
+  console.log(`🚀 Dr.AI Clinical Backend listening on http://localhost:${config.PORT}`);
+  console.log(`🩺 Health check: http://localhost:${config.PORT}/api/health`);
+  console.log(`🔒 Security mode: ${config.NODE_ENV} | Demo mode: ${config.DEMO_MODE}`);
 });

@@ -70,24 +70,24 @@ export const Home: React.FC = () => {
   };
 
   const stats = [
-    { number: '10M+', label: 'Patients Triaged', sub: 'Across 120+ countries' },
-    { number: '500+', label: 'Licensed MDs', sub: 'AMA & Board Certified' },
-    { number: '< 18s', label: 'AI Response Time', sub: 'Instant clinical inference' },
-    { number: '99.4%', label: 'Clinical Accuracy', sub: 'ICD-11 & PubMed aligned' },
+    { number: '100%', label: 'Emergency Guardrail', sub: 'Deterministic red-flag intercept' },
+    { number: '4', label: 'Clinical Dimensions', sub: 'Differentials, triage, tests, red flags' },
+    { number: 'RBAC', label: 'Role Isolation', sub: 'Patient, Doctor & Admin security' },
+    { number: '< 1s', label: 'Conflict Engine', sub: 'Double-booking prevention in DB' },
   ];
 
   const faqs = [
     {
-      q: 'How accurate is the Dr.AI medical diagnostic assistant?',
-      a: 'Dr.AI utilizes state-of-the-art medical LLMs combined with clinical decision support algorithms benchmarked against ICD-11 diagnostic classifications and peer-reviewed medical databases. It triages symptoms, ranks differential diagnoses, and advises when immediate emergency care or physician follow-up is necessary.',
+      q: 'How does the Dr.AI clinical assistant operate?',
+      a: 'Dr.AI utilizes structured medical reasoning combined with deterministic safety guardrails. It triages symptoms, organizes educational differential possibilities, and advises when immediate emergency care or physician evaluation is necessary. It does not provide definitive medical diagnoses.',
     },
     {
-      q: 'Can I get official prescriptions through video consultations?',
-      a: 'Yes. All our doctors are board-certified, licensed physicians who can evaluate you through HIPAA-compliant HD video, write official digital prescriptions, and route them to your preferred pharmacy or generate a downloadable verified PDF.',
+      q: 'Does this prototype issue official legal prescriptions?',
+      a: 'No. Dr.AI is an architectural prototype designed for clinical decision support and workflow demonstration. Prescriptions generated in telehealth sessions are sample demonstration records and are not valid for pharmacy dispensing.',
     },
     {
-      q: 'Is my personal health information confidential and secure?',
-      a: 'Absolutely. We enforce 256-bit end-to-end AES encryption, HIPAA Safe Harbor compliance, and strict zero-retention policies for non-consensual health telemetry.',
+      q: 'How does the AI clinical safety layer operate?',
+      a: 'The backend runs a deterministic emergency keyword and symptom intercept layer before AI inference. If acute conditions such as chest pressure, stroke signs, or severe respiratory distress are detected, an immediate emergency alert is returned rather than conversational advice.',
     },
     {
       q: 'What should I do if I am experiencing severe chest pain or stroke symptoms?',
@@ -107,7 +107,7 @@ export const Home: React.FC = () => {
             {/* Top pill badge */}
             <Box className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-bold shadow-sm">
               <Sparkles className="w-4 h-4 text-emerald-500 animate-pulse" />
-              <span>Next-Gen Medical AI 2.0 • 24/7 Board-Certified Physicians</span>
+              <span>Clinical AI Prototype • Telehealth Workflow Simulation</span>
             </Box>
 
             {/* Main Headline */}
@@ -116,9 +116,9 @@ export const Home: React.FC = () => {
               component="h1"
               className="text-4xl sm:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-tight"
             >
-              Instant Medical AI Diagnosis & <br className="hidden sm:inline" />
+              Intelligent Clinical Triage & <br className="hidden sm:inline" />
               <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
-                On-Demand Video Telehealth
+                Telehealth Workflow Simulation
               </span>
             </Typography>
 
@@ -126,7 +126,7 @@ export const Home: React.FC = () => {
               variant="h6"
               className="text-gray-600 dark:text-gray-300 text-base sm:text-xl font-normal max-w-2xl mx-auto leading-relaxed"
             >
-              Analyze your symptoms with advanced clinical AI in seconds, consult top-rated board-certified doctors over HD video, and manage your complete health records securely.
+              Explore an architecture for AI-assisted symptom triage, clinician consult scheduling, and structured health records with built-in emergency guardrails.
             </Typography>
 
             {/* Interactive Symptom Search Box */}

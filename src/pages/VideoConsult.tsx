@@ -51,7 +51,7 @@ import { BookingModal } from '../components/BookingModal';
 import { PrescriptionModal } from '../components/PrescriptionModal';
 
 export const VideoConsult: React.FC = () => {
-  const { doctors, appointments, completeAppointment } = useAppointments();
+  const { doctors, appointments } = useAppointments();
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -277,10 +277,10 @@ export const VideoConsult: React.FC = () => {
 
             <Box className="flex items-center gap-2">
               <Chip
-                icon={<ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />}
-                label="HIPAA 256-Bit Encrypted"
+                icon={<ShieldCheck className="w-3.5 h-3.5 text-amber-500" />}
+                label="Simulated Telehealth (Demo Mode)"
                 size="small"
-                sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+                sx={{ display: { xs: 'none', sm: 'inline-flex' }, borderColor: '#F59E0B', color: '#D97706' }}
               />
               <Button
                 variant="contained"
@@ -298,12 +298,17 @@ export const VideoConsult: React.FC = () => {
           <Grid container spacing={3}>
             <Grid item xs={12} lg={inCallTab === 'none' ? 12 : 8}>
               <Box className="relative rounded-3xl overflow-hidden bg-slate-950 aspect-video max-h-[68vh] flex items-center justify-center border border-slate-800 shadow-2xl">
-                {/* Doctor Video Feed (Simulated high-res feed) */}
+                {/* Doctor Video Feed (Simulated feed) */}
                 <img
                   src={activeDoctor.image}
                   alt={activeDoctor.name}
                   className="w-full h-full object-cover object-top opacity-90"
                 />
+
+                {/* Simulated Peer Banner */}
+                <Box className="absolute top-4 right-4 px-3 py-1.5 rounded-xl bg-amber-500/90 text-slate-950 text-xs font-extrabold border border-amber-400 shadow-lg backdrop-blur-md">
+                  Simulated Remote Provider (Demo Call)
+                </Box>
 
                 {/* Doctor Nameplate */}
                 <Box className="absolute top-4 left-4 p-3 rounded-2xl bg-black/60 backdrop-blur-md text-white border border-white/10 flex items-center gap-3">
@@ -313,7 +318,7 @@ export const VideoConsult: React.FC = () => {
                       {activeDoctor.name}
                     </Typography>
                     <Typography variant="caption" className="text-emerald-400 block text-[11px]">
-                      {activeDoctor.specialty} • Attending
+                      {activeDoctor.specialty} • Demo Provider
                     </Typography>
                   </Box>
                 </Box>
@@ -335,17 +340,17 @@ export const VideoConsult: React.FC = () => {
                     </Box>
                   )}
                   <span className="absolute bottom-1.5 left-2 text-[10px] font-bold text-white bg-black/60 px-2 py-0.5 rounded-md">
-                    You ({user?.name ? user.name.split(' ')[0] : 'Alex'})
+                    You ({user?.name ? user.name.split(' ')[0] : 'Patient'})
                   </span>
                 </Box>
 
                 {/* Center Audio Waveform Indicator */}
-                <Box className="absolute bottom-4 left-4 p-2.5 rounded-2xl bg-black/60 backdrop-blur-md text-emerald-400 flex items-center gap-2 border border-white/10">
-                  <span className="w-2 h-4 bg-emerald-400 rounded-full animate-bounce" />
-                  <span className="w-2 h-6 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                  <span className="w-2 h-3 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+                <Box className="absolute bottom-4 left-4 p-2.5 rounded-2xl bg-black/60 backdrop-blur-md text-amber-400 flex items-center gap-2 border border-white/10">
+                  <span className="w-2 h-4 bg-amber-400 rounded-full animate-bounce" />
+                  <span className="w-2 h-6 bg-amber-400 rounded-full animate-bounce [animation-delay:0.2s]" />
+                  <span className="w-2 h-3 bg-amber-400 rounded-full animate-bounce [animation-delay:0.4s]" />
                   <Typography variant="caption" className="text-white text-xs font-semibold">
-                    Doctor Audio Active
+                    Simulated Doctor Audio Stream (Demo)
                   </Typography>
                 </Box>
               </Box>

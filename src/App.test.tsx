@@ -27,6 +27,6 @@ test('renders Dr.AI brand and primary navigation', () => {
 
 test('renders main hero headline', () => {
   render(<App />);
-  const heroElement = screen.getByText(/Instant Medical AI Diagnosis/i);
+  const heroElement = screen.getByText(/Intelligent Clinical Triage/i);
   expect(heroElement).toBeInTheDocument();
 });

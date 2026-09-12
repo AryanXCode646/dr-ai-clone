@@ -55,26 +55,26 @@ export const Footer: React.FC = () => {
               </Typography>
             </Box>
             <Typography variant="body2" className="text-slate-400 leading-relaxed mb-6">
-              AI-driven clinical intelligence, instant differential symptom triage, and on-demand encrypted video consultations with board-certified physicians.
+              Clinical AI triage architecture prototype with explicit deterministic emergency safeguards, structured educational analysis, and integrated telehealth workflow demonstration.
             </Typography>
 
-            {/* Compliance Badges */}
+            {/* Prototype Badges */}
             <Box className="flex flex-wrap gap-2 mb-6">
               <Chip
                 icon={<ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />}
-                label="HIPAA Compliant"
+                label="Safety Guardrails Active"
                 size="small"
                 sx={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34D399', fontWeight: 600 }}
               />
               <Chip
                 icon={<Lock className="w-3.5 h-3.5 text-cyan-400" />}
-                label="256-Bit AES Encrypted"
+                label="Research Prototype"
                 size="small"
                 sx={{ backgroundColor: 'rgba(6, 182, 212, 0.15)', color: '#22D3EE', fontWeight: 600 }}
               />
               <Chip
                 icon={<Award className="w-3.5 h-3.5 text-amber-400" />}
-                label="AMA Verified Doctors"
+                label="Educational Triage"
                 size="small"
                 sx={{ backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#FBBF24', fontWeight: 600 }}
               />
@@ -215,11 +215,11 @@ export const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} Dr.AI Healthcare Systems Inc. All rights reserved.
           </Typography>
           <Box className="flex gap-4">
-            <span className="hover:text-slate-400 cursor-pointer">HIPAA Safe Harbor</span>
+            <span className="hover:text-slate-400 cursor-pointer">Prototype Notice & Ethics</span>
             <span>•</span>
-            <span className="hover:text-slate-400 cursor-pointer">Terms of Telehealth</span>
+            <span className="hover:text-slate-400 cursor-pointer">Terms of Telehealth Demonstration</span>
             <span>•</span>
-            <span className="hover:text-slate-400 cursor-pointer">Doctor Verification</span>
+            <span className="hover:text-slate-400 cursor-pointer">Provider Verification Protocol</span>
           </Box>
         </Box>
       </Container>
