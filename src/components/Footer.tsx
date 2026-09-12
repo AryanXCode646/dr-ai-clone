@@ -17,10 +17,7 @@ import {
   ShieldCheck,
   Lock,
   Award,
-  Heart,
   PhoneCall,
-  Mail,
-  MapPin,
   Send,
   AlertCircle,
 } from 'lucide-react';

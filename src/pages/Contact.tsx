@@ -11,7 +11,6 @@ import {
   Snackbar,
   Alert,
   Card,
-  CardContent,
 } from '@mui/material';
 import {
   Mail,
@@ -21,9 +20,6 @@ import {
   Clock,
   ShieldAlert,
   Sparkles,
-  CheckCircle,
-  HelpCircle,
-  Building,
 } from 'lucide-react';
 import { EmergencyModal } from '../components/EmergencyModal';
 

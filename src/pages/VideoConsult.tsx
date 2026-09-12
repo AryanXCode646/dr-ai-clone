@@ -5,7 +5,6 @@ import {
   Typography,
   Grid,
   Card,
-  CardContent,
   Button,
   Chip,
   Avatar,
@@ -19,7 +18,7 @@ import {
   Dialog,
   DialogContent,
 } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   Video,
   Mic,
@@ -28,33 +27,27 @@ import {
   PhoneOff,
   MessageSquare,
   FileText,
-  Share2,
-  Settings,
   Search,
-  Filter,
   CheckCircle,
   Sparkles,
   Calendar,
-  Clock,
   Building,
   GraduationCap,
   Languages,
   ShieldCheck,
   Send,
-  Star,
   Download,
   User,
 } from 'lucide-react';
-import { Doctor, Appointment, useAppointments } from '../context/AppointmentContext';
+import { Doctor, useAppointments } from '../context/AppointmentContext';
 import { useAuth } from '../context/AuthContext';
 import { BookingModal } from '../components/BookingModal';
 import { PrescriptionModal } from '../components/PrescriptionModal';
 
 export const VideoConsult: React.FC = () => {
-  const { doctors, appointments } = useAppointments();
+  const { doctors } = useAppointments();
   const { user } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,7 +64,6 @@ export const VideoConsult: React.FC = () => {
   const [activeDoctor, setActiveDoctor] = useState<Doctor>(doctors[0]);
   const [isMicOn, setIsMicOn] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(true);
-  const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [inCallTab, setInCallTab] = useState<'none' | 'chat' | 'notes'>('none');
   const [inCallMessages, setInCallMessages] = useState<Array<{ sender: string; text: string; time: string }>>([
@@ -101,10 +93,10 @@ export const VideoConsult: React.FC = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const room = params.get('room');
-    if (room) {
+    if (room && doctors.length > 0) {
       startLiveConsultation(doctors[0]);
     }
-  }, [location.search]);
+  }, [location.search, doctors]);
 
   // Timer for active call
   useEffect(() => {

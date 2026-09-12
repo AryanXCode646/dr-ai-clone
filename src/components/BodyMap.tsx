@@ -8,7 +8,6 @@ import {
   Grid,
 } from '@mui/material';
 import {
-  Activity,
   ArrowRight,
   Sparkles,
   ShieldCheck,

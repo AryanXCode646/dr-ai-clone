@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  MenuItem,
   IconButton,
 } from '@mui/material';
 import {
@@ -21,7 +20,6 @@ import {
   TrendingUp,
   X,
   Check,
-  ShieldCheck,
 } from 'lucide-react';
 
 interface VitalLog {

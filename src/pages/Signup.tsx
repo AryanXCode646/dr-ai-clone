@@ -18,9 +18,6 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Activity,
   UserPlus,
-  ShieldCheck,
-  CheckCircle,
-  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 

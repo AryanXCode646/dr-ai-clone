@@ -8,7 +8,6 @@ import {
   Card,
   CardContent,
   Chip,
-  Avatar,
   Rating,
   Accordion,
   AccordionSummary,
@@ -18,19 +17,11 @@ import { useNavigate } from 'react-router-dom';
 import {
   Bot,
   Video,
-  ShieldCheck,
-  Zap,
   ArrowRight,
-  Clock,
   Sparkles,
   Search,
-  CheckCircle,
-  HeartPulse,
   Activity,
-  Users,
   ChevronDown,
-  Stethoscope,
-  Building,
 } from 'lucide-react';
 import { BodyMap } from '../components/BodyMap';
 import { BookingModal } from '../components/BookingModal';

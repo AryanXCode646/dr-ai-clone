@@ -37,10 +37,8 @@ import {
   X,
   Bell,
   PhoneCall,
-  ShieldAlert,
   Calendar,
   LogOut,
-  Sparkles,
   CheckCircle,
 } from 'lucide-react';
 import { useAppTheme } from '../context/ThemeContext';

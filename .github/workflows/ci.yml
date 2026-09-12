@@ -28,11 +28,18 @@ jobs:
 
     - name: Build Production Frontend Bundle
       run: npm run build
+      env:
+        CI: false
 
     - name: Install Backend Dependencies
       run: |
         cd dr-ai-backend
         npm install --legacy-peer-deps
+
+    - name: Run Backend Integration & RBAC Tests
+      run: |
+        cd dr-ai-backend
+        npm test
 
     - name: Build Backend TypeScript
       run: |

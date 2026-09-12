@@ -11,7 +11,6 @@ import {
   Snackbar,
   Alert,
   Grid,
-  Chip,
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
@@ -21,7 +20,6 @@ import {
   User,
   Stethoscope,
   Sparkles,
-  Lock,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 

@@ -3,7 +3,6 @@ import {
   Container,
   Grid,
   Card,
-  CardContent,
   Typography,
   Button,
   Box,
@@ -22,10 +21,7 @@ import {
   Activity,
   ArrowRight,
   Sparkles,
-  ShieldCheck,
   CheckCircle2,
-  Stethoscope,
-  HeartPulse,
 } from 'lucide-react';
 
 const SERVICES = [

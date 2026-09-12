@@ -5,7 +5,6 @@ import {
   Typography,
   Grid,
   Card,
-  CardContent,
   Avatar,
   Button,
   TextField,
@@ -17,10 +16,8 @@ import {
   Paper,
   Tabs,
   Tab,
-  Divider,
 } from '@mui/material';
 import {
-  User,
   Heart,
   Calendar,
   Pill,
@@ -30,14 +27,12 @@ import {
   MapPin,
   Edit,
   Plus,
-  Trash2,
   Video,
   Download,
   AlertCircle,
   Clock,
   X,
   Check,
-  Building,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -46,7 +41,7 @@ import { VitalsChart } from '../components/VitalsChart';
 import { PrescriptionModal } from '../components/PrescriptionModal';
 
 export const Profile: React.FC = () => {
-  const { user, updateProfile, switchDemoUser } = useAuth();
+  const { user, updateProfile } = useAuth();
   const { appointments, cancelAppointment } = useAppointments();
   const navigate = useNavigate();
 

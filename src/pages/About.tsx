@@ -7,8 +7,6 @@ import {
   Paper,
   Avatar,
   Card,
-  CardContent,
-  Chip,
   Button,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -16,14 +14,8 @@ import {
   ShieldCheck,
   Award,
   Lock,
-  Heart,
   Bot,
-  Video,
   Sparkles,
-  Users,
-  CheckCircle,
-  Building,
-  GraduationCap,
   ArrowRight,
 } from 'lucide-react';
 
