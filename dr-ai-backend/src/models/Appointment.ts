@@ -160,8 +160,17 @@ appointmentSchema.methods.canTransitionTo = function (nextStatus: AppointmentSta
   return allowed.includes(nextStatus);
 };
 
-// Composite index to prevent double booking of the same doctor at the same start time for active appointments
-appointmentSchema.index({ doctorId: 1, scheduledStart: 1, status: 1 });
+// Compound unique index ensuring no two active appointments exist for the same doctor at the same start time.
+// Cancelled or completed appointments release the slot for rebooking.
+appointmentSchema.index(
+  { doctorId: 1, scheduledStart: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      status: { $in: ['scheduled', 'confirmed', 'in_progress'] },
+    },
+  }
+);
 
 const Appointment: Model<IAppointment> = mongoose.model<IAppointment>('Appointment', appointmentSchema);
 

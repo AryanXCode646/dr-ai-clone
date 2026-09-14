@@ -404,7 +404,7 @@ export const Profile: React.FC = () => {
         <Box className="space-y-6">
           <Box className="flex justify-between items-center">
             <Typography variant="h5" className="font-extrabold text-gray-900 dark:text-white">
-              Active Prescriptions & Medication Wallet
+              Active Prescriptions & Medication Wallet [DEMO DATA — SIMULATED]
             </Typography>
           </Box>
 

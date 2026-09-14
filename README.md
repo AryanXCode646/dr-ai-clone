@@ -1,4 +1,4 @@
-# 🩺 Dr.AI — Defensible Clinical AI & Telehealth Architecture Prototype
+# 🩺 Dr.AI — Healthcare Application Prototype & Telehealth Simulation
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6.svg)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18-61dafb.svg)](https://reactjs.org/)
@@ -7,9 +7,9 @@
 [![Test Suite](https://img.shields.io/badge/Tests-Passed-10b981.svg)](https://github.com/AryanXCode646/dr-ai-clone)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Dr.AI** is an end-to-end healthcare prototype engineered to demonstrate **production-grade clinical AI guardrails**, **role-based authorization boundaries**, **conflict-free appointment scheduling**, and **defensible telehealth workflows**.
+> **Dr.AI** is a **security-conscious healthcare application prototype** and **LLM-powered healthcare workflow prototype** engineered to demonstrate **AI safety guardrails**, **role-based authorization boundaries**, **conflict-free appointment scheduling**, **simulated telehealth workflows**, and **simulated prescription workflows**.
 > 
-> *Notice: All mock-only placeholders, browser-minted JWTs, unvalidated state transitions, and fabricated accuracy statistics have been replaced with executable, test-verified engineering.*
+> *Notice: This project is an engineering exploration and prototype. It does not provide medical diagnoses or clinical validation.*
 
 ---
 
@@ -23,7 +23,7 @@ To maintain technical honesty, every feature is explicitly classified below:
 | **Role-Based Access Control (RBAC)** | **`IMPLEMENTED`** | Strict server-side JWT verification with algorithm whitelisting (`HS256`). Separate boundaries for `patient`, `doctor`, and `admin`. Patients cannot self-assign doctor roles. Tested in `dr-ai-backend/tests/rbac.test.ts`. |
 | **Appointment Engine & Concurrency** | **`IMPLEMENTED`** | MongoDB-backed appointments with compound unique indexes `(doctorId, date, time)` preventing double-booking (409 Conflict). Validated state machine (`scheduled` → `in_progress` → `completed` / `cancelled`). Tested in `dr-ai-backend/tests/appointments.test.ts`. |
 | **Clinical AI Safety Layer** | **`IMPLEMENTED`** | Deterministic pre-flight regex check intercepts acute emergencies (chest pain, stroke, dyspnea, suicide) before LLM inference. OpenAI structured JSON differential diagnosis with deterministic fallback when API keys are unconfigured. **Zero fabricated confidence percentages**. Tested in `dr-ai-backend/tests/ai_safety.test.ts`. |
-| **Input Sanitization & Attack Immunity** | **`IMPLEMENTED`** | Centralized NoSQL injection mitigation, safe parameter validation, path traversal guards, and PII masking (SSN, payment card). Route-specific rate limiters. Tested in `dr-ai-backend/tests/security.test.ts` and `src/security_suite.test.ts`. |
+| **Input Sanitization & Injection Guards** | **`IMPLEMENTED`** | Centralized NoSQL injection mitigation, safe parameter validation, path traversal guards, and PII masking (SSN, payment card). Route-specific rate limiters. Tested in `dr-ai-backend/tests/security.test.ts` and `src/security_suite.test.ts`. |
 | **Telehealth Video Consult** | **`SIMULATED / HYBRID`** | Real browser webcam/microphone capture via `navigator.mediaDevices.getUserMedia` with self-view rendering. Remote participant is explicitly labeled as a demonstration preview. |
 | **Prescription Records** | **`SIMULATED`** | Server-side Mongoose Prescription model with cryptographic Rx IDs, doctor-only issuance, and ownership checks. UI and PDF exports are stamped: `DEMO PRESCRIPTION — NOT DIGITALLY SIGNED`. |
 | **Emergency Facility Locator** | **`SIMULATED AVAILABILITY`** | Real browser GPS geolocation (`navigator.geolocation.getCurrentPosition`) with regional fallback. ER wait times are clearly labeled as `[DEMO DATA — SIMULATED AVAILABILITY]`. |
@@ -177,69 +177,72 @@ dr-ai-clone/
 
 ---
 
-### ⚡ One-Command Setup & Launch
+### ⚙️ Environment Configuration
 
-You can install all dependencies and run both the Express backend (`:5000`) and the React frontend (`:3000`) concurrently from the project root in a single command:
+Copy example environment files before launching:
 
 ```bash
-# Install dependencies for both root and backend
-npm run install:all
+# Frontend environment (.env)
+cp .env.example .env
 
-# Start both Backend (port 5000) and Frontend (port 3000) concurrently
-npm start
-# (or: npm run dev)
+# Backend environment (dr-ai-backend/.env)
+cp dr-ai-backend/.env.example dr-ai-backend/.env
 ```
 
-Both services will start concurrently with labeled, color-coded console logs:
+Key environment variables:
+- **Frontend** (`.env`):
+  - `REACT_APP_API_URL`: Backend API base URL (default: `http://localhost:5000/api`)
+  - `REACT_APP_DEMO_MODE`: Enables quick-login evaluator accounts (default: `true`)
+- **Backend** (`dr-ai-backend/.env`):
+  - `PORT`: HTTP server port (default: `5000`)
+  - `NODE_ENV`: `development` | `production` | `test`
+  - `MONGODB_URI`: MongoDB connection URI (default: `mongodb://localhost:27017/dr-ai`)
+  - `JWT_SECRET`: Signing secret (required in production, min 32 characters)
+  - `OPENAI_API_KEY`: Optional OpenAI key; falls back to deterministic triage if omitted
+  - `CORS_ORIGIN`: Allowed frontend origin (default: `http://localhost:3000`)
+  - `DEMO_MODE`: Enables demo seed data (default: `true`)
+
+---
+
+### ⚡ Exact Startup Commands
+
+Install dependencies and start services concurrently:
+
+```bash
+# Install root and backend dependencies
+npm install --legacy-peer-deps
+npm --prefix dr-ai-backend install --legacy-peer-deps
+
+# Start both Backend (port 5000) and Frontend (port 3000)
+npm run dev
+# (or: npm start)
+```
+
+Verified access points:
 - **Frontend**: [http://localhost:3000](http://localhost:3000)
 - **Backend**: [http://localhost:5000](http://localhost:5000)
 - **Health Check**: [http://localhost:5000/api/health](http://localhost:5000/api/health)
 
 ---
 
-### 🧪 Run All Automated Tests (One Command)
+### 🧪 Automated Tests & AI Safety Evaluation
 
 ```bash
-# Executes both frontend (30 tests) and backend (60 tests) suites in one command
-npm run test:all
+# Run frontend test suite (30 unit & security tests)
+npm test
+
+# Run backend integration & concurrency test suite (69 tests)
+npm run test:backend
+
+# Run deterministic AI safety & triage evaluation harness
+npm run evaluate:ai
+
+# Build production artifacts
+npm run build
+npm run build:backend
 ```
 
 ---
-
-### 🛠️ Individual Subsystem Commands
-
-<details>
-<summary><strong>Backend Only (`dr-ai-backend`)</strong></summary>
-
-```bash
-cd dr-ai-backend
-npm install --legacy-peer-deps
-
-# Run backend integration tests (in-memory MongoDB)
-npm test
-
-# Build TypeScript
-npm run build
-
-# Start backend standalone server
-npm run dev
-```
-</details>
-
-<details>
-<summary><strong>Frontend Only (`dr-ai-clone`)</strong></summary>
-
-```bash
-# Run frontend unit & security tests
-npm test -- --watchAll=false
-
-# Build production bundle
-npm run build
-
-# Start frontend standalone dev server
-npm run client
-```
-</details>
 
 ### 4. Evaluator Demo Credentials
 For frictionless evaluation without registering a new email:
@@ -248,7 +251,20 @@ For frictionless evaluation without registering a new email:
 | :--- | :--- | :--- | :--- |
 | **Demo Patient** | `patient@example.com` | `PatientPass123` | AI symptom triage, appointment booking, personal vitals |
 | **Demo Doctor** | `doctor@example.com` | `DoctorPass123` | Clinical consult reviews, prescription issuance |
-| **Demo Admin** | `admin@example.com` | `AdminPass123` | System oversight, doctor credentialing |
+| **Demo Admin** | `admin@example.com` | `AdminPass123` | System oversight, user list access |
+
+---
+
+## ⚠️ Current Limitations
+
+To maintain strict engineering honesty, the following genuine architectural boundaries apply:
+
+1. **Not a Diagnostic Medical Device**: Dr.AI is an engineering prototype for demonstrating decision support workflows. It has not undergone clinical validation, FDA 510(k) clearance, or CE mark certification.
+2. **Deterministic Pre-Flight Emergency Filter**: While regex-based emergency screening catches recognized high-acuity keywords, unlisted idiosyncratic phrases may bypass pre-flight checks and fall back to LLM inference or default guidelines.
+3. **Simulated Telehealth Media Mesh**: Video consultations render the user's local camera/mic stream alongside simulated provider demonstration streams. Multi-participant SFU signaling (e.g. LiveKit) is planned for future implementation.
+4. **Demonstration Prescription Records**: Prescriptions generated in this application are stamped `DEMO PRESCRIPTION — NOT DIGITALLY SIGNED` and cannot be dispensed at pharmacies. Integration with Surescripts / DEA EPCS gateways is planned.
+5. **Simulated Hospital Telemetry**: ER wait times, bed availability, and trauma capabilities are simulated demonstration records. The system does not interface with municipal 911 dispatch networks.
+6. **Persistence Fallback**: When MongoDB is not running locally, backend endpoints operate in an ephemeral in-memory fallback mode. Full persistence requires an active MongoDB database.
 
 ---
 

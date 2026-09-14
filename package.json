@@ -39,9 +39,10 @@
         "build": "react-scripts build",
         "build:backend": "npm run build --prefix dr-ai-backend",
         "build:all": "npm run build && npm run build:backend",
-        "test": "react-scripts test",
+        "test": "react-scripts test --watchAll=false",
         "test:backend": "npm test --prefix dr-ai-backend",
-        "test:all": "CI=true npm test -- --watchAll=false && npm run test:backend",
+        "test:all": "npm test && npm run test:backend",
+        "evaluate:ai": "npm run evaluate:ai --prefix dr-ai-backend",
         "eject": "react-scripts eject",
         "deploy:docs": "git subtree push --prefix docs origin gh-pages"
     },

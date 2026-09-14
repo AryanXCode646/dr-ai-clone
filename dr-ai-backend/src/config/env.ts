@@ -23,6 +23,9 @@ export interface AppConfig {
 export function validateConfig(): AppConfig {
   const NODE_ENV = (process.env.NODE_ENV as 'development' | 'production' | 'test') || 'development';
   const PORT = parseInt(process.env.PORT || '5000', 10);
+  if (isNaN(PORT) || PORT <= 0 || PORT > 65535) {
+    throw new Error('[FATAL] Startup halted: Invalid PORT configured. Must be between 1 and 65535.');
+  }
   const JWT_SECRET = process.env.JWT_SECRET || (NODE_ENV === 'test' ? 'test-environment-jwt-secret-key-at-least-32-chars!' : '');
   const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/dr-ai';
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY || undefined;

@@ -142,7 +142,7 @@ export const Login: React.FC = () => {
               <Box className="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-300/60 dark:border-amber-900 space-y-2">
                 <Box className="flex items-center justify-between">
                   <span className="text-[11px] font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wider flex items-center gap-1">
-                    <Sparkles className="w-3.5 h-3.5" /> [Demo Mode] Preconfigured Evaluator Accounts:
+                    <Sparkles className="w-3.5 h-3.5" /> [DEMO DATA] Preconfigured Evaluator Accounts (NOT FOR PRODUCTION):
                   </span>
                 </Box>
                 <Box className="grid grid-cols-2 gap-2">

@@ -13,6 +13,8 @@ describe('RBAC & Authorization Escalation Test Matrix', () => {
   let patientBId: string;
   let doctorToken: string;
   let doctorId: string;
+  let doctorBToken: string;
+  let adminToken: string;
   let appointmentAId: string;
 
   beforeAll(async () => {
@@ -48,7 +50,7 @@ describe('RBAC & Authorization Escalation Test Matrix', () => {
       { algorithm: 'HS256', expiresIn: '1h' }
     );
 
-    // 3. Create Doctor
+    // 3. Create Doctor A
     const doc = new User({
       name: 'Dr. Physician',
       email: 'doctor@example.com',
@@ -58,7 +60,35 @@ describe('RBAC & Authorization Escalation Test Matrix', () => {
     await doc.save();
     doctorId = String(doc._id);
     doctorToken = jwt.sign(
-      { userId: doctorId, email: doc.email, role: doc.role },
+      { userId: doctorId, email: doc.email, role: doc.role, name: doc.name },
+      config.JWT_SECRET,
+      { algorithm: 'HS256', expiresIn: '1h' }
+    );
+
+    // 3b. Create Doctor B (for unauthorized cross-doctor checks)
+    const docB = new User({
+      name: 'Dr. Other Specialist',
+      email: 'doctor.b@example.com',
+      password: 'Password123!',
+      role: 'doctor',
+    });
+    await docB.save();
+    doctorBToken = jwt.sign(
+      { userId: String(docB._id), email: docB.email, role: docB.role, name: docB.name },
+      config.JWT_SECRET,
+      { algorithm: 'HS256', expiresIn: '1h' }
+    );
+
+    // 3c. Create Admin User
+    const admin = new User({
+      name: 'System Admin',
+      email: 'admin.test@example.com',
+      password: 'Password123!',
+      role: 'admin',
+    });
+    await admin.save();
+    adminToken = jwt.sign(
+      { userId: String(admin._id), email: admin.email, role: admin.role, name: admin.name },
       config.JWT_SECRET,
       { algorithm: 'HS256', expiresIn: '1h' }
     );
@@ -214,6 +244,77 @@ describe('RBAC & Authorization Escalation Test Matrix', () => {
       expect(res.body).toHaveProperty('prescriptionId');
       expect(res.body.prescriptionId).toMatch(/^RX-[0-9A-F]{4}-[0-9A-F]{4}$/);
       expect(res.body.signingStatus).toBe('demo_unsigned'); // Truthful status
+    });
+  });
+
+  describe('Admin Endpoint Access & Credential Exposure Shield', () => {
+    it('blocks normal patient from accessing admin user management endpoint', async () => {
+      const res = await request(app)
+        .get('/api/auth/users')
+        .set('Authorization', `Bearer ${patientAToken}`);
+
+      expect(res.status).toBe(403);
+      expect(res.body.message).toContain('Forbidden');
+    });
+
+    it('blocks doctor from accessing admin user management endpoint', async () => {
+      const res = await request(app)
+        .get('/api/auth/users')
+        .set('Authorization', `Bearer ${doctorToken}`);
+
+      expect(res.status).toBe(403);
+      expect(res.body.message).toContain('Forbidden');
+    });
+
+    it('allows system administrator to access user management endpoint and never returns password hashes', async () => {
+      const res = await request(app)
+        .get('/api/auth/users')
+        .set('Authorization', `Bearer ${adminToken}`);
+
+      expect(res.status).toBe(200);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body.length).toBeGreaterThan(0);
+      for (const u of res.body) {
+        expect(u.password).toBeUndefined();
+        expect(u.resetPasswordToken).toBeUndefined();
+        expect(u.resetPasswordExpires).toBeUndefined();
+      }
+    });
+  });
+
+  describe('Cross-Doctor & Object Ownership Protection', () => {
+    it('blocks Doctor B from modifying or advancing Doctor A consultation', async () => {
+      const res = await request(app)
+        .post(`/api/appointments/${appointmentAId}/transition`)
+        .set('Authorization', `Bearer ${doctorBToken}`)
+        .send({ status: 'in_progress' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.message).toContain("do not have permission to modify another doctor's appointment");
+    });
+
+    it('blocks Doctor B from cancelling Doctor A consultation', async () => {
+      const res = await request(app)
+        .post(`/api/appointments/${appointmentAId}/cancel`)
+        .set('Authorization', `Bearer ${doctorBToken}`)
+        .send({ reason: 'Malicious cancellation by another doctor' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.message).toContain('do not have permission to cancel this appointment');
+    });
+
+    it('prevents privilege escalation via user profile updates', async () => {
+      const res = await request(app)
+        .put('/api/auth/profile')
+        .set('Authorization', `Bearer ${patientAToken}`)
+        .send({
+          role: 'admin', // Attempt mass assignment privilege escalation
+          name: 'Updated Alpha Name',
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.user.role).toBe('patient'); // Strictly remains patient
+      expect(res.body.user.name).toBe('Updated Alpha Name');
     });
   });
 });

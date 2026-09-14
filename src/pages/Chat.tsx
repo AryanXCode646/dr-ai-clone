@@ -48,7 +48,7 @@ const SPECIALIST_PERSONAS: SpecialistPersona[] = [
     name: 'Dr. AI Generalist',
     specialty: 'Internal Medicine & Triage',
     avatar: '🩺',
-    greeting: "Hello! I'm Dr. AI. To provide an accurate, hospital-grade clinical overview, I will ask you a few targeted questions about your symptoms. What is your primary health concern today?",
+    greeting: "Hello! I'm Dr. AI. To provide educational symptom triage guidance, I will ask you a few targeted questions about your symptoms. What is your primary health concern today?",
     systemRole: 'General Internal Medicine Physician',
     color: '#10B981',
   },
@@ -443,7 +443,7 @@ export const Chat: React.FC = () => {
                 {activePersona.name}
               </Typography>
               <Chip
-                label="Clinical CDS Mode"
+                label="AI Triage Prototype"
                 size="small"
                 sx={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#10B981', fontWeight: 800, fontSize: '10px' }}
               />
@@ -530,8 +530,8 @@ export const Chat: React.FC = () => {
                   <Box className="p-5 rounded-3xl bg-slate-900 border border-emerald-500/40 shadow-xl space-y-4 text-xs text-white">
                     <Box className="flex justify-between items-start">
                       <Box>
-                        <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">
-                          AI-Generated Clinical Consideration
+                        <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider">
+                          [SIMULATED — NOT A MEDICAL DIAGNOSIS]
                         </span>
                         <Typography variant="h6" className="font-black text-white leading-snug">
                           {msg.diagnosticCard.primaryImpression}
@@ -539,7 +539,7 @@ export const Chat: React.FC = () => {
                       </Box>
                       <Box className="flex gap-2">
                         <Chip
-                          label="AI-Generated Consideration"
+                          label="Simulated Consideration"
                           size="small"
                           sx={{ bgcolor: 'rgba(16,185,129,0.2)', color: '#10B981', fontWeight: 800 }}
                         />
@@ -555,10 +555,10 @@ export const Chat: React.FC = () => {
                       </Box>
                     </Box>
 
-                    {/* Differential Probabilities */}
+                    {/* Differential Considerations */}
                     <Box>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1.5">
-                        Differential Likelihood Matrix:
+                        Differential Considerations (Simulated / Educational Guidance):
                       </span>
                       <Grid container spacing={1.5}>
                         {msg.diagnosticCard.differential.map((diff, i) => (

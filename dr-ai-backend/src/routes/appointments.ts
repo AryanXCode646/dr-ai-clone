@@ -28,8 +28,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response, next: Next
     if (userRole === 'patient') {
       filter.patient = userId;
     } else if (userRole === 'doctor') {
-      // Find appointments where doctorId matches user's doctor ID or email
-      filter.$or = [{ doctorId: userId }, { patientEmail: req.user!.email }];
+      filter.$or = [{ doctorId: userId }, { doctorName: req.user!.name }];
     } // Admins get unrestricted access
 
     const appointments = await Appointment.find(filter)
@@ -142,7 +141,14 @@ router.post(
       await appointment.save();
 
       res.status(201).json(appointment);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.code === 11000) {
+        return next(
+          new ConflictError(
+            `Doctor already has a confirmed booking at the requested date and time slot. Please select another time slot.`
+          )
+        );
+      }
       next(error);
     }
   }
@@ -160,11 +166,12 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response, next: N
 
     // Ownership check
     const isPatient = appointment.patient.toString() === req.user!.userId;
-    const isDoctor =
-      appointment.doctorId === req.user!.userId || appointment.patientEmail === req.user!.email;
+    const isAssignedDoctor =
+      req.user!.role === 'doctor' &&
+      (appointment.doctorId === req.user!.userId || appointment.doctorName === req.user!.name);
     const isAdmin = req.user!.role === 'admin';
 
-    if (!isPatient && !isDoctor && !isAdmin) {
+    if (!isPatient && !isAssignedDoctor && !isAdmin) {
       throw new AuthorizationError('You do not have permission to view this appointment.');
     }
 
@@ -184,13 +191,14 @@ router.post('/:id/cancel', authenticate, async (req: AuthRequest, res: Response,
       throw new NotFoundError('Appointment not found.');
     }
 
-    // Ownership check: patient, doctor, or admin
+    // Ownership check: patient, assigned doctor, or admin
     const isPatient = appointment.patient.toString() === req.user!.userId;
-    const isDoctor =
-      appointment.doctorId === req.user!.userId || appointment.patientEmail === req.user!.email;
+    const isAssignedDoctor =
+      req.user!.role === 'doctor' &&
+      (appointment.doctorId === req.user!.userId || appointment.doctorName === req.user!.name);
     const isAdmin = req.user!.role === 'admin';
 
-    if (!isPatient && !isDoctor && !isAdmin) {
+    if (!isPatient && !isAssignedDoctor && !isAdmin) {
       throw new AuthorizationError('You do not have permission to cancel this appointment.');
     }
 
@@ -239,6 +247,15 @@ router.post(
       // Only doctors or admins can advance appointments to in_progress or completed
       if (req.user!.role === 'patient') {
         throw new AuthorizationError('Patients cannot advance appointment clinical states.');
+      }
+
+      // Verify doctor ownership: must be the assigned doctor or an admin
+      const isAssignedDoctor =
+        appointment.doctorId === req.user!.userId || appointment.doctorName === req.user!.name;
+      const isAdmin = req.user!.role === 'admin';
+
+      if (!isAssignedDoctor && !isAdmin) {
+        throw new AuthorizationError("You do not have permission to modify another doctor's appointment.");
       }
 
       if (!appointment.canTransitionTo(targetStatus as AppointmentStatus)) {

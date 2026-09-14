@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import User, { IUser, UserRole } from '../models/User';
-import { authenticate, AuthRequest } from '../middleware/auth';
+import { authenticate, authorize, AuthRequest } from '../middleware/auth';
 import { authLimiter, passwordResetLimiter } from '../middleware/rateLimiter';
 import { ValidationError, AuthenticationError, NotFoundError } from '../errors/AppError';
 import { config } from '../config/env';
@@ -316,10 +316,16 @@ router.post('/reset-password', passwordResetLimiter, async (req: Request, res: R
 });
 
 /**
- * Logout endpoint.
+ * Admin: List all users.
+ * Strictly restricted to authenticated users with 'admin' role.
  */
-router.post('/logout', (req: Request, res: Response) => {
-  res.json({ message: 'Successfully logged out.' });
+router.get('/users', authenticate, authorize('admin'), async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const users = await User.find({}, '-password -resetPasswordToken -resetPasswordExpires').lean();
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
 });
 
 export default router;

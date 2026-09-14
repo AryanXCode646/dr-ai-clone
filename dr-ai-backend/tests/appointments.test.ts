@@ -20,6 +20,7 @@ describe('Appointments Engine & Concurrency Suite', () => {
     for (const doc of SEED_DOCTORS) {
       await Doctor.findOneAndUpdate({ id: doc.id }, doc, { upsert: true });
     }
+    await Appointment.init();
 
     const patient = new User({
       name: 'Verified Patient',
@@ -135,5 +136,83 @@ describe('Appointments Engine & Concurrency Suite', () => {
 
     expect(reCancelRes.status).toBe(400);
     expect(reCancelRes.body.message).toContain('Cannot cancel appointment with current status');
+  });
+
+  it('handles simultaneous booking requests safely so exactly one succeeds and the other gets 409', async () => {
+    const slot = {
+      doctorId: 'doc-1',
+      date: '2026-11-05',
+      time: '2:00 PM',
+      type: 'video',
+      reason: 'Simultaneous booking race check',
+    };
+
+    const [resA, resB] = await Promise.all([
+      request(app).post('/api/appointments').set('Authorization', `Bearer ${patientToken}`).send(slot),
+      request(app).post('/api/appointments').set('Authorization', `Bearer ${patientToken}`).send(slot),
+    ]);
+
+    const statuses = [resA.status, resB.status].sort();
+    expect(statuses).toEqual([201, 409]);
+  });
+
+  it('allows rebooking the same slot after an appointment has been cancelled', async () => {
+    // 1. Initial booking
+    const bookRes = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patientToken}`)
+      .send({
+        doctorId: 'doc-1',
+        date: '2026-11-10',
+        time: '4:00 PM',
+        type: 'video',
+        reason: 'Initial consultation',
+      });
+    expect(bookRes.status).toBe(201);
+    const aptId = bookRes.body._id;
+
+    // 2. Cancel the appointment
+    const cancelRes = await request(app)
+      .post(`/api/appointments/${aptId}/cancel`)
+      .set('Authorization', `Bearer ${patientToken}`)
+      .send({ reason: 'Need to cancel' });
+    expect(cancelRes.status).toBe(200);
+
+    // 3. Rebook exact same slot - must succeed (201)
+    const rebookRes = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patientToken}`)
+      .send({
+        doctorId: 'doc-1',
+        date: '2026-11-10',
+        time: '4:00 PM',
+        type: 'video',
+        reason: 'Rebooked consultation after prior cancellation',
+      });
+    expect(rebookRes.status).toBe(201);
+    expect(rebookRes.body.status).toBe('scheduled');
+  });
+
+  it('blocks unauthorized users and patients from modifying appointment clinical states', async () => {
+    const bookRes = await request(app)
+      .post('/api/appointments')
+      .set('Authorization', `Bearer ${patientToken}`)
+      .send({
+        doctorId: 'doc-1',
+        date: '2026-11-12',
+        time: '1:00 PM',
+        type: 'video',
+        reason: 'State transition authorization test',
+      });
+    expect(bookRes.status).toBe(201);
+    const aptId = bookRes.body._id;
+
+    // Patient cannot transition to in_progress or completed
+    const patientTransitionRes = await request(app)
+      .post(`/api/appointments/${aptId}/transition`)
+      .set('Authorization', `Bearer ${patientToken}`)
+      .send({ status: 'in_progress' });
+    expect(patientTransitionRes.status).toBe(403);
+    expect(patientTransitionRes.body.message).toContain('Patients cannot advance appointment clinical states');
   });
 });
